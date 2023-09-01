@@ -18,4 +18,4 @@ export default function Card({ id, title, description }) {
       </a>
     </div>
   )
-} 
+}

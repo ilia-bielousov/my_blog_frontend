@@ -1,27 +1,33 @@
+import { Link } from "react-router-dom";
+
 import './Header.css';
 
-export default function Header() {
+const Header = () => {
   return (
-    <div className="header">
+    <header className="header">
       <div className="container">
-        <h1 className="header__title">
-          Hobby
-        </h1>
+        <Link to="/" className="header__title-link">
+          <h1 className="header__title">
+            Hobby
+          </h1>
+        </Link>
         <nav className="header__navigation nav">
           <ul className="nav__list">
             <li className="nav__item">
-              <a href="#first" className="nav__link">
+              <Link to="/projects" className="nav__link">
                 Arduino
-              </a>
+              </Link>
             </li>
             <li className="nav__item">
-              <a href="#second" className="nav__link">
+              <Link to="/modeling" className="nav__link">
                 Modeling
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
       </div>
-    </div>
-  )
+    </header>
+  );
 }
+
+export default Header;

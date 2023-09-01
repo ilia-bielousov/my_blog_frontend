@@ -1,3 +1,8 @@
+.header__title-link {
+  text-decoration: none;
+  color: #000;
+}
+
 .header__title {
   text-align: center;
   margin-top: 0px;
