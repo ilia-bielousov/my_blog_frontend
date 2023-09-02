@@ -1,8 +1,12 @@
+import { Link } from 'react-router-dom';
+
 import './Card.css';
 
-export default function Card({ id, title, description }) {
+export default function Card({ id, title, description, name }) {
+  
+
   return (
-    <div className="card" key={id}>
+    <div className="card">
       <img src="https://images.pexels.com/photos/442559/pexels-photo-442559.jpeg?auto=compress&cs=tinysrgb" alt="Man with backpack"
         className="card__img" />
       <div className="card__text">
@@ -13,9 +17,9 @@ export default function Card({ id, title, description }) {
           {description}
         </p>
       </div>
-      <a href="#0" className="card__link">
+      <Link to={`/${name}/${id}`} className="card__link" >
         Read More
-      </a>
+      </Link>
     </div>
   )
 }

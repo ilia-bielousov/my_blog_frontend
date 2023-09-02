@@ -1,14 +1,16 @@
 import Card from "../Card/Card";
 import './Content.css';
 
-const Content = ({ data }) => {
+const Content = ({ data, name }) => {
 
   const CreateThecards = data.map(card => {
     return (
       <Card
         key={card.id}
+        id={card.id}
         title={card.title}
         description={card.description}
+        name={name}
       />
     )
   });

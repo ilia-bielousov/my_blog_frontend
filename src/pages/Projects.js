@@ -1,9 +1,24 @@
+import { useState, useEffect } from "react";
+
 import Content from "../components/Content/Content";
-import { dataForCards } from './../utilities/utilities.js';
 
 const Projects = () => {
+  const [data, setData] = useState([]);
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    fetch('http://localhost:4000/data')
+      .then(res => res.json())
+      .then(data => {
+        setData(data.dataForProjects.data);
+        setName(data.dataForProjects.name);
+      });
+  }, []);
+
   return (
-    <Content data={dataForCards} />
+    <>
+      {data ? <Content data={data} name={name} /> : null}
+    </>
   )
 }
 
