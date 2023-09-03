@@ -1,4 +1,4 @@
-import { useState, useEffect, createElement } from "react";
+import { useState, useEffect, createElement, Fragment } from "react";
 import { useParams } from "react-router-dom";
 
 const SingleProject = () => {
@@ -16,19 +16,19 @@ const SingleProject = () => {
   const createArticle = () => {
     const t = Object.entries(text);
 
-    return t.map((item, i) => {
-      const t = createElement(
+    return t.map(item => {
+      const elements = createElement(
         item[1].tag,
-        { className: item[1].className, key: i },
-        item[1].text
+        { className: item[1].className },
+        item[1].text,
       )
 
       return (
         <>
-          {t}
+          {elements}
         </>
       )
-    }) 
+    })
   }
 
   const article = createArticle()
@@ -39,8 +39,12 @@ const SingleProject = () => {
         <p>
           article project #{id}
         </p>
-        {article.map(item => {
-          return item;
+        {article.map((item, i) => {
+          return (
+            <Fragment key={i}>
+              {item}
+            </Fragment>
+          );
         })}
       </div>
     </main>
@@ -48,3 +52,4 @@ const SingleProject = () => {
 }
 
 export default SingleProject;
+
