@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 import Card from "../Card/Card";
 import './Content.css';
 
@@ -17,17 +15,13 @@ const Content = ({ data, name }) => {
   });
 
   return (
-    <motion.main className='main__content'
-      initial={{ opacity: 0, y: -100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, ease: 'linear' }}
-    >
+    <main className='main__content'>
       <div className="container">
         <div className='cards'>
           {CreateThecards}
         </div>
       </div>
-    </motion.main>
+    </main>
   )
 }
 

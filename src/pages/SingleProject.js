@@ -1,6 +1,8 @@
 import { useState, useEffect, createElement, Fragment } from "react";
 import { useParams } from "react-router-dom";
 
+import './pages.css';
+
 const SingleProject = () => {
   const { id } = useParams();
   const [text, setText] = useState({});
@@ -19,7 +21,7 @@ const SingleProject = () => {
     return t.map(item => {
       const elements = createElement(
         item[1].tag,
-        { className: item[1].className },
+        { className: item[1].className, src: (item[1].src ? item[1].src : null) },
         item[1].text,
       )
 
@@ -36,16 +38,18 @@ const SingleProject = () => {
   return (
     <main className="main__content">
       <div className="container">
-        <p>
+        <h1 className="main__page-title">
           article project #{id}
-        </p>
-        {article.map((item, i) => {
-          return (
-            <Fragment key={i}>
-              {item}
-            </Fragment>
-          );
-        })}
+        </h1>
+        <div className="main__article">
+          {article.map((item, i) => {
+            return (
+              <Fragment key={i}>
+                {item}
+              </Fragment>
+            );
+          })}
+        </div>
       </div>
     </main>
   )

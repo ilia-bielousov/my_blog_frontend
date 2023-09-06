@@ -19,8 +19,8 @@ const SingleModeling = () => {
     return t.map(item => {
       const elements = createElement(
         item[1].tag,
-        { className: item[1].className },
-        item[1].text
+        { className: item[1].className, src: (item[1].src ? item[1].src : null) },
+        item[1].text,
       )
 
       return (
@@ -36,7 +36,7 @@ const SingleModeling = () => {
   return (
     <main className="main__content">
       <div className="container">
-        <h1>
+        <h1 className="main__page-title">
           article Modeling #{id}
         </h1>
         {article.map((item, i) => {

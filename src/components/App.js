@@ -6,6 +6,8 @@ import Projects from '../pages/Projects';
 import SingleProject from '../pages/SingleProject';
 import SingleModeling from '../pages/SingleModeling';
 import Modeling from '../pages/Modeling';
+import PageTransition from './PageTransition/PageTransition';
+// import Admin from '../pages/Admin/Admin';
 
 import './App.css';
 
@@ -14,12 +16,33 @@ const App = () => {
     <div className="App">
       <Routes>
         <Route path='/' element={<Layout />}>
-          <Route index element={<Home />}></Route>
-          <Route path='projects' element={<Projects />}></Route>
-          <Route path='projects/:id' element={<SingleProject />}></Route>
-          <Route path='modeling' element={<Modeling />}></Route>
-          <Route path='modeling/:id' element={<SingleModeling />}></Route>
+          <Route index  element={
+            <PageTransition>
+              <Home />
+            </PageTransition>
+          } />
+          <Route path='projects' element={
+            <PageTransition>
+              <Projects />
+            </PageTransition>
+          } />
+          <Route path='projects/:id' element={
+            <PageTransition>
+              <SingleProject />
+            </PageTransition>
+          } />
+          <Route path='modeling' element={
+            <PageTransition>
+              <Modeling />
+            </PageTransition>
+          } />
+          <Route path='modeling/:id' element={
+            <PageTransition>
+              <SingleModeling />
+            </PageTransition>
+          } />
         </Route>
+        {/* <Route path='/admin' element={<Admin />}></Route> */}
       </Routes>
     </div>
   );

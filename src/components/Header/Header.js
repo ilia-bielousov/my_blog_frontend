@@ -6,20 +6,32 @@ const Header = () => {
   return (
     <header className="header">
       <div className="container">
-        <Link to="/" className="header__title-link">
+        <Link
+          className="header__title-link"
+          to="/"
+          key={'/'}
+        >
           <h1 className="header__title">
-            test
+            Site
           </h1>
         </Link>
         <nav className="header__navigation nav">
           <ul className="nav__list">
             <li className="nav__item">
-              <Link to="/projects" className="nav__link">
+              <Link
+                className="nav__link"
+                to="/projects"
+                key={'/projects'}
+              >
                 Arduino
               </Link>
             </li>
             <li className="nav__item">
-              <Link to="/modeling" className="nav__link">
+              <Link
+                className="nav__link"
+                to="/modeling"
+                key={'/modeling'}
+              >
                 Modeling
               </Link>
             </li>

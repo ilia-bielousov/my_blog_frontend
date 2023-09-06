@@ -1,0 +1,39 @@
+.main__content .container {
+}
+
+.main__page-title {
+  font-size: 32px;
+  margin-bottom: 40px;
+  padding: 25px;
+}
+
+.main__article {
+  margin: 0px auto;
+  max-width: 992px;
+}
+
+.main__title {
+  margin-bottom: 35px;
+  text-align: center;
+  font-size: 32px;
+}
+
+.main__text {
+  padding: 5px 15px;
+  font-size: 20px;
+  text-indent: 2em;
+  line-height: 36px;
+  text-align: justify;
+}
+
+@media (min-width: 1000px) {
+  .main__text {
+    margin: 0px auto;
+    max-width: 992px;
+  }
+}
+
+.main__img {
+  display: block;
+  margin: 25px auto;
+}
