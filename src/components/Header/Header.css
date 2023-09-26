@@ -15,7 +15,7 @@
 
 .nav {
   margin: 0px auto;
-  max-width: 300px;
+  max-width: 500px;
 }
 
 .nav__list {
@@ -30,9 +30,15 @@
   margin-right: 15px;
 }
 
+.nav__item:last-child {
+  margin-right: 0px;
+}
+
 .nav__link {
   padding: 15px;
   font-size: 24px;
   text-decoration: none;
   color: #000;
+  font-weight: bold;
 }
+

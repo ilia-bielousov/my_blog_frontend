@@ -1,18 +1,18 @@
 import { Link } from "react-router-dom";
 
-import './Header.css';
+import './AdminHeader.css';
 
-const Header = () => {
+const AdminHeader = () => {
   return (
     <header className="header">
       <div className="container">
         <Link
-          className="header__title-link"
-          to="/"
-          key={'/'}
+          className="header__link-title"
+          to="./"
+          key={'./'}
         >
           <h1 className="header__title">
-            Site
+            Admin panel
           </h1>
         </Link>
         <nav className="header__navigation nav">
@@ -20,35 +20,26 @@ const Header = () => {
             <li className="nav__item">
               <Link
                 className="nav__link"
-                to="/projects"
-                key={'/projects'}
+                to="create-article"
+                key={'create-article'}
               >
-                Arduino
+                Create a article
               </Link>
             </li>
             <li className="nav__item">
               <Link
                 className="nav__link"
-                to="/modeling"
-                key={'/modeling'}
+                to="edit-article"
+                key={'edit-article'}
               >
-                Modeling
-              </Link>
-            </li>
-            <li className="nav__item">
-              <Link
-                className="nav__link"
-                to="/art"
-                key={'/art'}
-              >
-                Art
+                Edit a article
               </Link>
             </li>
           </ul>
         </nav>
       </div>
-    </header>
+    </header >
   );
-}
+};
 
-export default Header;
+export default AdminHeader;

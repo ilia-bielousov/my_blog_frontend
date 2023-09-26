@@ -16,6 +16,8 @@ const SingleModeling = () => {
   const createArticle = () => {
     const t = Object.entries(text);
 
+    console.log(t);
+
     return t.map(item => {
       const elements = createElement(
         item[1].tag,

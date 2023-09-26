@@ -1,5 +1,5 @@
 export default function request(content) {
-  fetch('http://localhost:4000/admin/create', {
+  fetch('http://localhost:4000/admin', {
     method: 'POST',
     body: JSON.stringify(content),
     headers: {
