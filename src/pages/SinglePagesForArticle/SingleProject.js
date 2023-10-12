@@ -1,12 +1,14 @@
 import { useState, useEffect, createElement, Fragment } from "react";
 import { useParams } from "react-router-dom";
 
-const SingleModeling = () => {
+import './pages.css';
+
+const SingleProject = () => {
   const { id } = useParams();
   const [text, setText] = useState({});
 
   useEffect(() => {
-    fetch(`http://localhost:4000/modeling/${id}`)
+    fetch(`http://localhost:4000/projects/${id}`)
       .then(res => res.json())
       .then(data => {
         setText(data);
@@ -15,8 +17,6 @@ const SingleModeling = () => {
 
   const createArticle = () => {
     const t = Object.entries(text);
-
-    console.log(t);
 
     return t.map(item => {
       const elements = createElement(
@@ -38,19 +38,22 @@ const SingleModeling = () => {
   return (
     <main className="main__content">
       <div className="container">
-        <h1 className="main__page-title">
-          article Modeling #{id}
-        </h1>
-        {article.map((item, i) => {
-          return (
-            <Fragment key={i}>
-              {item}
-            </Fragment>
-          );
-        })}
+        <h2 className="main__page-title">
+          article project #{id}
+        </h2>
+        <div className="main__article">
+          {article.map((item, i) => {
+            return (
+              <Fragment key={i}>
+                {item}
+              </Fragment>
+            );
+          })}
+        </div>
       </div>
     </main>
   )
 }
 
-export default SingleModeling;
+export default SingleProject;
+

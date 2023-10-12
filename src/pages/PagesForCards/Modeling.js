@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-import Content from "../components/Content/Content";
+import Content from "../../components/Content/Content";
 
-const Projects = () => {
+const Modeling = () => {
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
 
@@ -10,8 +10,8 @@ const Projects = () => {
     fetch('http://localhost:4000/data')
       .then(res => res.json())
       .then(data => {
-        setData(data.dataForProjects.data);
-        setName(data.dataForProjects.name);
+        setData(data.dataForModeling.data);
+        setName(data.dataForModeling.name);
       });
   }, []);
 
@@ -22,4 +22,4 @@ const Projects = () => {
   )
 }
 
-export default Projects;
+export default Modeling;

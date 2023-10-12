@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-import Content from "../components/Content/Content";
+import Content from "../../components/Content/Content";
 
-const Modeling = () => {
+const Art = () => {
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
 
@@ -10,16 +10,17 @@ const Modeling = () => {
     fetch('http://localhost:4000/data')
       .then(res => res.json())
       .then(data => {
-        setData(data.dataForModeling.data);
-        setName(data.dataForModeling.name);
+        setData(data.dataForArt.data);
+        setName(data.dataForArt.name);
       });
   }, []);
+
 
   return (
     <>
       {data ? <Content data={data} name={name} /> : null}
     </>
-  )
-}
+  );
+};
 
-export default Modeling;
+export default Art;

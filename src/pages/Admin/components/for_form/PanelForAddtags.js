@@ -1,5 +1,5 @@
 import AddTagForText from "./AddTagForText";
-import AddTagForTitle from "./AddTagForText";
+import AddTagForTitle from "./AddTagForTitle";
 
 import './PanelForAddtags.css';
 

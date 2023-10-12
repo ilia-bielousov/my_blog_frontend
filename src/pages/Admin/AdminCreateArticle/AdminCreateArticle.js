@@ -1,11 +1,11 @@
 import { useState } from "react";
-import PanelForAddtags from "../for_form/PanelForAddtags";
+import PanelForAddtags from "../components/for_form/PanelForAddtags";
 
 import './AdminCreateArticle.css';
+// сначала нам нужно создать карточку, а только потом статью
 
 const AdminCreateArticle = () => {
   const [elements, setElements] = useState([]);
-  const [elementsContent, setElementsContent] = useState([]); // текст внутри элементов
 
   return (
     <main className="main">

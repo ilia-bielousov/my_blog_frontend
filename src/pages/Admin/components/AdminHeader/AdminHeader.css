@@ -2,3 +2,9 @@
   text-decoration: none;
   color: #000;
 }
+
+.header__title-admin {
+  margin: 0px 0px 50px 0px;
+  text-align: center;
+  font-size: 48px;
+}

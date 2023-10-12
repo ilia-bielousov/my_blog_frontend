@@ -1,3 +1,4 @@
+import './AdminEdit.css';
 
 const AdminEdit = () => {
   return (

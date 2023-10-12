@@ -1,14 +1,14 @@
 import { useState, useEffect, createElement, Fragment } from "react";
 import { useParams } from "react-router-dom";
 
-import './pages.css';
+// нет базы данных, поэтому это только отдельный файл.
 
-const SingleProject = () => {
+const SingleArt = () => {
   const { id } = useParams();
   const [text, setText] = useState({});
 
   useEffect(() => {
-    fetch(`http://localhost:4000/projects/${id}`)
+    fetch(`http://localhost:4000/art/${id}`)
       .then(res => res.json())
       .then(data => {
         setText(data);
@@ -17,6 +17,8 @@ const SingleProject = () => {
 
   const createArticle = () => {
     const t = Object.entries(text);
+
+    console.log(t);
 
     return t.map(item => {
       const elements = createElement(
@@ -38,22 +40,19 @@ const SingleProject = () => {
   return (
     <main className="main__content">
       <div className="container">
-        <h1 className="main__page-title">
-          article project #{id}
-        </h1>
-        <div className="main__article">
-          {article.map((item, i) => {
-            return (
-              <Fragment key={i}>
-                {item}
-              </Fragment>
-            );
-          })}
-        </div>
+        <h2 className="main__page-title">
+          article Art #{id}
+        </h2>
+        {article.map((item, i) => {
+          return (
+            <Fragment key={i}>
+              {item}
+            </Fragment>
+          );
+        })}
       </div>
     </main>
   )
-}
+};
 
-export default SingleProject;
-
+export default SingleArt;
