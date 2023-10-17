@@ -1,25 +1,28 @@
 import { useState, useEffect, Fragment } from "react";
-import request from "../../request.js";
 
 import './style_component_form.css';
-// const [id, setId] = useState(0); нужно подумать, каким образом можно редактировать статьи
 
-const AddTagForTitle = () => {
+const AddTagForTitle = (props) => {
   const [text, setText] = useState('');
   const [send, setSend] = useState(false);
 
   const content = {
-    tag: 'h2',
+    tag: props.title,
     className: 'main__title',
-    text
+    text,
+    id: props.id
   }
 
   useEffect(() => {
     if (send) {
-      request(content);
-    }
+      props.setContentInElements(elements => {
 
-    setText('');
+        return [
+          ...elements,
+          content
+        ];
+      });
+    }
   }, [send]);
 
   const changeText = (e) => {
@@ -31,10 +34,10 @@ const AddTagForTitle = () => {
       <label className="form__sign">
         Input your title
       </label>
-      <input className="form__input-title" type="text" placeholder="input your text" onChange={(e) => changeText(e)} value={!send ? text : ''} />
+      <input className="form__input-title" type="text" placeholder="input your text" onChange={(e) => changeText(e)} value={text} readOnly={send ? true : false} />
       <div className="form__buttons-inner">
         <button className="form__send" disabled={send ? true : false} onClick={(e) => { e.preventDefault(); setSend(true); }}>send title</button>
-        <button className="form__update-state" onClick={(e) => { e.preventDefault(); setSend(false); }}>update state</button>
+        <button className="form__update-state" onClick={(e) => { e.preventDefault(); setSend(false); }}>edit title</button>
       </div>
     </Fragment>
   )

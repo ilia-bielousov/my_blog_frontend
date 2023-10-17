@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 const AdminCreateCard = () => {
   return (
     <main className="main">
-      <div className="container">
-        <div className="main__inner">
+      <div className="container__admin">
+        <article className="main__admin-article">
           <div className="main__create-article">
             <h2 className="">
               create card а только потом статью саму
             </h2>
           </div>
-        </div>
+        </article>
         {/* тут добавить форму */}
         <Link
           to="../create-article"

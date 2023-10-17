@@ -1,7 +1,10 @@
 .main__inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  flex-direction: column;
+  display: flex;
+
+}
+
+.main__create-title {
+  text-align: center;
 }
 
 .form {
@@ -17,10 +20,10 @@
   padding: 15px;
 }
 
-
 /* AdminCreateArticle */
 
 .main__create-article,
 .main__preview-article {
-  padding: 10px
+  padding: 10px;
+  width: 50%;
 }

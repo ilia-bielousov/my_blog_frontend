@@ -1,6 +1,6 @@
-export default function request(content) {
-  fetch('http://localhost:4000/admin', {
-    method: 'POST',
+export default function request(method = 'GET', url, content) {
+  fetch(`http://localhost:4000/admin/${url}`, {
+    method: method,
     body: JSON.stringify(content),
     headers: {
       'Content-type': 'application/json; charset=UTF-8'

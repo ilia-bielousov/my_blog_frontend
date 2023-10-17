@@ -1,50 +1,7 @@
-.main__inner-admin {
-  min-height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .main__admin-text {
   padding: 5px 15px;
   font-size: 20px;
   text-indent: 2em;
   line-height: 36px;
   text-align: justify;
-}
-
-.main__admin-article {
-  max-width: 80%;
-}
-
-.main__aside {
-  max-width: 20%;
-}
-
-.nav__admin {}
-
-.nav__admin-list {
-  list-style-type: none;
-}
-
-.nav__admin-item {
-  margin-bottom: 15px;
-  padding: 10px 15px;
-}
-
-.nav__admin-item:last-child {
-  margin-bottom: 0px;
-}
-
-.nav__admin-link {
-  /* padding: 10px 15px; */
-  display: inline-block;
-  font-size: 24px;
-  text-decoration: none;
-  color: #000;
-  transition: 0.3s;
-}
-
-.nav__admin-link:hover {
-  transform: scale(1.15);
 }

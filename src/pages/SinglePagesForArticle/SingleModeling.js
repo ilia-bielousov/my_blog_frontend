@@ -1,5 +1,8 @@
-import { useState, useEffect, createElement, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
+
+import createArticle from "../../utilities/utilities";
+import './pages.css';
 
 const SingleModeling = () => {
   const { id } = useParams();
@@ -13,27 +16,7 @@ const SingleModeling = () => {
       });
   }, []);
 
-  const createArticle = () => {
-    const t = Object.entries(text);
-
-    console.log(t);
-
-    return t.map(item => {
-      const elements = createElement(
-        item[1].tag,
-        { className: item[1].className, src: (item[1].src ? item[1].src : null) },
-        item[1].text,
-      )
-
-      return (
-        <>
-          {elements}
-        </>
-      )
-    })
-  }
-
-  const article = createArticle()
+  const article = createArticle(text);
 
   return (
     <main className="main__content">
