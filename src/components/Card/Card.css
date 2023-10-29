@@ -1,11 +1,16 @@
 .card {
-  position: relative;
+  min-width: 280px;
   max-width: 360px;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.15);
+  margin: 0px 15px 0px 15px;
+  box-shadow: 0 10px 10px 5px rgba(0,0,0,0.15);
   transition: all 0.25s ease-in;
   border-bottom: 5px solid transparent;
+}
+
+@media (max-width: 840px) {
+  .card {
+    margin: 15px 0px 15px 0px;
+  }
 }
 
 .card:hover {
@@ -20,7 +25,9 @@
 
 .card__img {
   display: block;
-  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  max-width: 100%;
 }
 
 .card__title {
@@ -36,21 +43,8 @@
 }
 
 .card__link {
-  display: inline-block;
-  margin-left: 2em;
-  margin-bottom: 2em;
-  text-align: center;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 2px;
   text-decoration: none;
   outline: none;
-  color: #2196fe;
+  color: rgba(0,0,0,0.9);
   transition: all 0.25s ease-in; 
-}
-
-.card__link:hover,
-.card__link:focus,
-.card__link:active {
-  color: #536dfe;
 }

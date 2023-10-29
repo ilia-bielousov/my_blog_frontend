@@ -1,33 +1,25 @@
 import Card from "../components/Card/Card";
 
 import programming from './../assets/images/programming1.jpeg';
-import arduino from './../assets/images/arduino.png';
+import arduino from './../assets/images/arduino1.png';
 import modeling from './../assets/images/modeling.png';
 
 const menuContent = [
   {
-    title: 'Programming',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
     name: 'programming',
+    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
     img: programming
   },
   {
-    title: 'Arduino',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
     name: 'projects',
+    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
     img: arduino
   },
   {
-    title: 'Modeling',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
     name: 'modeling',
+    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
     img: modeling
   },
-  {
-    title: 'art',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
-    name: 'art'
-  }
 ]
 
 const Home = () => {
@@ -39,9 +31,8 @@ const Home = () => {
             return (
               <Card
                 key={i}
-                title={card.title}
                 description={card.description}
-                name={card.name}
+                choose={card.name}
                 img={card.img}
               />
             )

@@ -1,5 +1,14 @@
 .cards {
+  height: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 840px) {
+  .cards {
+    flex-direction: column;
+    align-items: center;
+  }
 }

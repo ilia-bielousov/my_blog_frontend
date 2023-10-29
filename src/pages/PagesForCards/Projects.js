@@ -1,23 +1,20 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Content from "../../components/Content/Content";
+import { fetchCards } from "../../store/asyncAction/cards";
 
 const Projects = () => {
-  const [data, setData] = useState([]);
-  const [name, setName] = useState('');
+  const dispatch = useDispatch();
+  const cards = useSelector(state => state.client.cards)
 
   useEffect(() => {
-    fetch('http://localhost:4000/data')
-      .then(res => res.json())
-      .then(data => {
-        setData(data.dataForProjects.data);
-        setName(data.dataForProjects.name);
-      });
+    dispatch(fetchCards());
   }, []);
 
   return (
     <>
-      {data ? <Content data={data} name={name} /> : null}
+      {cards ? <Content data={cards} /> : null}
     </>
   )
 }

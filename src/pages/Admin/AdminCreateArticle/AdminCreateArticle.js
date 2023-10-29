@@ -1,6 +1,6 @@
 import { createElement, useState, Fragment } from "react";
 import PanelForAddtags from "../components/for_form/PanelForAddtags";
-import request from './../../../utilities/request';
+import { request } from './../../../utilities/request';
 
 import './AdminCreateArticle.css';
 // сначала нам нужно создать карточку, а только потом статью

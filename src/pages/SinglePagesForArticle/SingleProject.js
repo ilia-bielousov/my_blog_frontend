@@ -1,22 +1,19 @@
-import { useState, useEffect, Fragment } from "react";
+import { useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
+import { fetchArticle } from "../../store/asyncAction/article";
 import createArticle from "../../utilities/utilities";
 import './pages.css';
 
 const SingleProject = () => {
   const { id } = useParams();
-  const [text, setText] = useState({});
+  const dispatch = useDispatch();
+  const article = useSelector(state => state.client.article);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/projects/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        setText(data);
-      });
+    dispatch(fetchArticle(id, 'projects'));
   }, []);
-
-  const article = createArticle(text);
 
   return (
     <main className="main__content">
@@ -25,7 +22,7 @@ const SingleProject = () => {
           article project #{id}
         </h2>
         <div className="main__article">
-          {article.map((item, i) => {
+          {createArticle(article).map((item, i) => {
             return (
               <Fragment key={i}>
                 {item}

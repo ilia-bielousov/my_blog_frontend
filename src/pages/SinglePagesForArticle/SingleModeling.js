@@ -1,30 +1,29 @@
-import { useState, useEffect, Fragment } from "react";
+import { useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 
+import { fetchArticle } from "../../store/asyncAction/article";
 import createArticle from "../../utilities/utilities";
 import './pages.css';
 
 const SingleModeling = () => {
-  const { id } = useParams();
-  const [text, setText] = useState({});
+  const { id, pathname } = useParams();
+  const dispatch = useDispatch();
+  const article = useSelector(state => state.client.article);
 
+  console.log(pathname);
+  
   useEffect(() => {
-    fetch(`http://localhost:4000/modeling/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        setText(data);
-      });
+    dispatch(fetchArticle(id, 'modeling'));
   }, []);
-
-  const article = createArticle(text);
 
   return (
     <main className="main__content">
       <div className="container">
         <h2 className="main__page-title">
-          article Modeling #{id}
+          article Modeling #
         </h2>
-        {article.map((item, i) => {
+        {createArticle(article).map((item, i) => {
           return (
             <Fragment key={i}>
               {item}

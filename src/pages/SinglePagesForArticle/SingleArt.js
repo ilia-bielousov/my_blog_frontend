@@ -3,8 +3,6 @@ import { useParams } from "react-router-dom";
 
 import createArticle from "../../utilities/utilities";
 
-// нет базы данных, поэтому это только отдельный файл.
-
 const SingleArt = () => {
   const { id } = useParams();
   const [text, setText] = useState({});
@@ -16,6 +14,8 @@ const SingleArt = () => {
         setText(data);
       });
   }, []);
+
+  console.log(text);
 
   const article = createArticle(text)
 

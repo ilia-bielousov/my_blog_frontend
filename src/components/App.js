@@ -5,6 +5,7 @@ import Home from '../pages/Home';
 import Programming from '../pages/PagesForCards/Programming';
 import Projects from '../pages/PagesForCards/Projects';
 import Modeling from '../pages/PagesForCards/Modeling';
+import Test from '../pages/PagesForCards/Test';
 import Art from '../pages/PagesForCards/Art';
 import SingleProject from '../pages/SinglePagesForArticle/SingleProject';
 import SingleModeling from '../pages/SinglePagesForArticle/SingleModeling';
@@ -31,12 +32,12 @@ const App = () => {
           } />
           <Route path='programming' element={
             <PageTransition>
-              <Programming />
+              <Test />
             </PageTransition>
           } />
           <Route path='projects' element={
             <PageTransition>
-              <Projects />
+              <Test />
             </PageTransition>
           } />
           <Route path='projects/:id' element={
@@ -46,7 +47,7 @@ const App = () => {
           } />
           <Route path='modeling' element={
             <PageTransition>
-              <Modeling />
+              <Test />
             </PageTransition>
           } />
           <Route path='modeling/:id' element={
