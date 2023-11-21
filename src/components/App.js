@@ -2,14 +2,9 @@ import { Routes, Route } from 'react-router-dom';
 
 import Layout from './Layout.js/Layout';
 import Home from '../pages/Home';
-import Programming from '../pages/PagesForCards/Programming';
-import Projects from '../pages/PagesForCards/Projects';
-import Modeling from '../pages/PagesForCards/Modeling';
-import Test from '../pages/PagesForCards/Test';
-import Art from '../pages/PagesForCards/Art';
-import SingleProject from '../pages/SinglePagesForArticle/SingleProject';
-import SingleModeling from '../pages/SinglePagesForArticle/SingleModeling';
+import PageForCards from '../pages/PageForCards/PageForCards';
 import PageTransition from './PageTransition/PageTransition';
+import SinglePageForArticle from '../pages/SinglePageForArticle/SinglePageForArticle';
 import AdminLayout from '../pages/Admin/AdminLayout/AdminLayout';
 import AdminHome from '../pages/Admin/AdminHome/AdminHome';
 import AdminCreateArticle from '../pages/Admin/AdminCreateArticle/AdminCreateArticle';
@@ -32,32 +27,32 @@ const App = () => {
           } />
           <Route path='programming' element={
             <PageTransition>
-              <Test />
+              <PageForCards />
+            </PageTransition>
+          } />
+          <Route path='programming/:id' element={
+            <PageTransition>
+              <SinglePageForArticle />
             </PageTransition>
           } />
           <Route path='projects' element={
             <PageTransition>
-              <Test />
+              <PageForCards />
             </PageTransition>
           } />
           <Route path='projects/:id' element={
             <PageTransition>
-              <SingleProject />
+              <SinglePageForArticle />
             </PageTransition>
           } />
           <Route path='modeling' element={
             <PageTransition>
-              <Test />
+              <PageForCards />
             </PageTransition>
           } />
           <Route path='modeling/:id' element={
             <PageTransition>
-              <SingleModeling />
-            </PageTransition>
-          } />
-          <Route path='art' element={
-            <PageTransition>
-              <Art />
+              <SinglePageForArticle />
             </PageTransition>
           } />
         </Route>

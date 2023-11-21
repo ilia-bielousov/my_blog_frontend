@@ -1,20 +1,19 @@
 import { useEffect, Fragment } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchArticle } from "../../store/asyncAction/article";
 import createArticle from "../../utilities/utilities";
 import './pages.css';
 
-const SingleModeling = () => {
-  const { id, pathname } = useParams();
+const Test = () => {
+  const { id } = useParams();
+  const { pathname } = useLocation();
   const dispatch = useDispatch();
   const article = useSelector(state => state.client.article);
-
-  console.log(pathname);
   
   useEffect(() => {
-    dispatch(fetchArticle(id, 'modeling'));
+    dispatch(fetchArticle(id, pathname.split('/')[1]));
   }, []);
 
   return (
@@ -35,4 +34,4 @@ const SingleModeling = () => {
   )
 }
 
-export default SingleModeling;
+export default Test;

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import AddTagForText from "./AddTagForText";
-import AddTagForTitle from "./AddTagForTitle";
+import AddTag from "./AddTag";
 
 import './PanelForAddtags.css';
 
@@ -20,11 +19,32 @@ const PanelForAddtags = (props) => {
 
   return (
     <div className="panel">
-      <button className="panel__item" onClick={() => addElements(<AddTagForTitle id={id} contentInElements={props.contentInElements} setContentInElements={props.setContentInElements} title='h2' />)}>add title h2</button>
-      <button className="panel__item" onClick={() => addElements(<AddTagForTitle id={id} contentInElements={props.contentInElements} setContentInElements={props.setContentInElements} title='h3' />)}>add title h3</button>
-      <button className="panel__item" onClick={() => addElements(<AddTagForTitle id={id} contentInElements={props.contentInElements} setContentInElements={props.setContentInElements} title='h4' />)}>add title h4</button>
-      <button className="panel__item" onClick={() => addElements(<AddTagForText id={id} contentInElements={props.contentInElements} setContentInElements={props.setContentInElements} />)}>add text</button>
-      <button className="panel__item">test send </button>
+      <button
+        className="panel__item"
+        onClick={() => addElements(
+          <AddTag
+            tag={'h3'}
+            classN={'main__title'}
+            signLabel={'Input for your title'}
+            signButton={'title'}
+            id={id}
+            contentInElements={props.contentInElements}
+            setContentInElements={props.setContentInElements}
+          />)}>add title</button>
+
+      <button
+        className="panel__item"
+        onClick={() => addElements(
+          <AddTag
+            tag={'p'}
+            classN={'main__text'}
+            signLabel={'Input for your text'}
+            signButton={'text'}
+            id={id}
+            contentInElements={props.contentInElements}
+            setContentInElements={props.setContentInElements}
+          />)}>add text</button>
+
       <button className="panel__item" onClick={() => props.sendArticletoDb()}>send article</button>
     </div>
   );

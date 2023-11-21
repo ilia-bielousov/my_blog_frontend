@@ -1,49 +1,42 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
 
-import { request } from './../../../utilities/request';
+import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, setResponceId } from "../../../store/adminReducer";
 import './AdminCreateCard.css';
 
 const AdminCreateCard = () => {
-  const [cardContent, setCardContent] = useState({});
-  const [nextBtn, setNextBtn] = useState(false);
-  const [response, setResponce] = useState('');
+  // доделать форму валидация и тд
+  const dispatch = useDispatch();
+  const cardContent = useSelector(state => state.admin.creatingCard.content);
+  const nextBtn = useSelector(state => state.admin.creatingCard.status);
 
-  const request = async () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
+
+  const onSubmit = async function (data) {
+    dispatch(inputNameDescriptionCard(data));
+    dispatch(statusCreatingCard(true));
+
     await fetch(`http://localhost:4000/admin/create-card`, {
       method: 'POST',
-      body: JSON.stringify(cardContent),
+      body: JSON.stringify({...cardContent, ...data}),
       headers: {
         'Content-type': 'application/json; charset=UTF-8'
       }
     })
-    .then(res => res.json())
-    .then(data => setResponce(data))
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+      .then(res => res.json())
+      .then(data => dispatch(setResponceId(data)))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  const sendData = (e) => {
-    e.preventDefault();
-
-    if (checkData()) {
-      if (request()) {
-        alert('карточка создана, можно переходить дальше');
-        setNextBtn(true);
-      }
-    } else {
-      alert('заполены не все поля');
-    }
-  }
-
-  const checkData = () => Object.keys(cardContent).length < 3 ? false : true;
-
-  const inputContent = (e) => {
-    setCardContent(content => ({
-      ...content,
-      [e.target.name]: e.target.value
-    }));
+  const inputChoose = (e) => {
+    dispatch(inputChooseCard(e.target.value));
   }
 
   return (
@@ -54,24 +47,24 @@ const AdminCreateCard = () => {
             <h2 className="main__create-card-title">
               Создание карточки для статьи
             </h2>
-            <form onSubmit={(e) => sendData(e)} className="main__create-card-form form-card">
+            <form onSubmit={handleSubmit(onSubmit)} className="main__create-card-form form-card">
               <p className="form-card__info">
                 Сначала нужно выбрать, для какой секции будет написана статья.
               </p>
               <div className="form-card__inner">
-                <input onChange={(e) => inputContent(e)} type="radio" id="programming" name="choose" value="programming" className="form-card__input-radio" disabled={nextBtn ? true : false}/>
+                <input onClick={(e) => inputChoose(e)} type="radio" id="programming" name="choose" value="programming" className="form-card__input-radio" disabled={nextBtn ? true : false} />
                 <label htmlFor="programming">Programming</label>
-                <input onChange={(e) => inputContent(e)} type="radio" id="projects" name="choose" value="projects" className="form-card__input-radio" disabled={nextBtn ? true : false}/>
+                <input onClick={(e) => inputChoose(e)} type="radio" id="projects" name="choose" value="projects" className="form-card__input-radio" disabled={nextBtn ? true : false} />
                 <label htmlFor="projects">Arduino</label>
-                <input onChange={(e) => inputContent(e)} type="radio" id="modeling" name="choose" value="modeling" className="form-card__input-radio" disabled={nextBtn ? true : false}/>
+                <input onClick={(e) => inputChoose(e)} type="radio" id="modeling" name="choose" value="modeling" className="form-card__input-radio" disabled={nextBtn ? true : false} />
                 <label htmlFor="modeling">Modeling</label>
               </div>
               <div className="form-card__inner" style={{ marginBottom: '10px' }}>
                 <label style={{ display: 'block', marginBottom: '10px' }} htmlFor="name">Придумайте название статьи:</label>
-                <input onChange={(e) => inputContent(e)} style={{ width: '450px', marginBottom: '15px', padding: '5px', border: '1px solid #000', borderRadius: '5px', outline: 'none', }} type="text" id="name" name="name" readOnly={nextBtn ? true : false}/>
+                <input {...register('name')} style={{ width: '450px', marginBottom: '15px', padding: '5px', border: '1px solid #000', borderRadius: '5px', outline: 'none', }} type="text" id="name" name="name" readOnly={nextBtn ? true : false} />
                 <br />
                 <label style={{ display: 'block', marginBottom: '10px' }} htmlFor="name">Короткое описание статьи:</label>
-                <textarea onChange={(e) => inputContent(e)} style={{ width: '450px', height: '150px', padding: '10px', border: '1px solid #000', borderRadius: '5px', resize: 'none' }} id="description" name="description" readOnly={nextBtn ? true : false}/>
+                <textarea {...register('description')} style={{ width: '450px', height: '150px', padding: '10px', border: '1px solid #000', borderRadius: '5px', resize: 'none' }} id="description" name="description" readOnly={nextBtn ? true : false} />
               </div>
               <div className="form-card__inner">
                 <label style={{ display: 'block', marginBottom: '10px' }} htmlFor="image">Картина для карточки</label>
