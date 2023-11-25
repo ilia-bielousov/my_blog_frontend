@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Content from "../../components/Content/Content";
 import { fetchCards } from "../../store/asyncAction/cards";
 
-const Test = () => {
+const PageForCards = () => {
   const dispatch = useDispatch();
   const cards = useSelector(state => state.client.cards)
 
@@ -19,4 +19,4 @@ const Test = () => {
   )
 }
 
-export default Test;
+export default PageForCards;

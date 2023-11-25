@@ -6,8 +6,8 @@ async function request(method = 'GET', url, content) {
       'Content-type': 'application/json; charset=UTF-8'
     }
   })
-  // .then(res => res.json())
-  // .then(data => console.log(data))
+  .then(res => res.json())
+  .then(data => console.log(data))
   .catch((err) => {
     console.log(err);
   })

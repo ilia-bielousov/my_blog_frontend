@@ -12,6 +12,7 @@
 }
 
 .form-card__info {
+  display: block;
   font-size: 22px;
   margin-bottom: 20px;
 }

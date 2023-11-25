@@ -1,8 +1,6 @@
 import { createElement } from "react"
 
 const createArticle = (content) => {
-  console.log(content);
-  
   const t = Object.entries(content);
 
   return t.map(item => {

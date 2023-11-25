@@ -1,6 +1,6 @@
 const defaultState = {
   cards: [],
-  article: {}
+  article: null
 };
 
 const GET_CARDS = 'GET_CARDS';
@@ -11,7 +11,7 @@ export const clientReducer = (state = defaultState, action) => {
     case GET_CARDS:
       return { ...state, cards: [...action.payload] }
     case GET_ARTICLE: {
-      return { ...state, article: {...action.payload }}
+      return { ...state, article: action.payload }
     }
     default: 
       return state;

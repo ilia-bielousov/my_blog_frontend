@@ -1,17 +1,12 @@
-import { createElement, useState, Fragment } from "react";
+import { createElement, Fragment } from "react";
+import { useSelector } from 'react-redux';
 import PanelForAddtags from "../components/for_form/PanelForAddtags";
-import { request } from './../../../utilities/request';
 
 import './AdminCreateArticle.css';
-// сначала нам нужно создать карточку, а только потом статью
 
 const AdminCreateArticle = () => {
-  const [elements, setElements] = useState([]);
-  const [contentInElements, setContentInElements] = useState([]);
-
-  const sendArticletoDb = () => {
-    request('POST', 'create-article', contentInElements);
-  };
+  const elements = useSelector(state => state.admin.creatingArticle.elements);
+  const previewContent = useSelector(state => state.admin.creatingArticle.previewElements);
 
   return (
     <main className="main">
@@ -19,7 +14,7 @@ const AdminCreateArticle = () => {
         <div className="main__inner">
           <aside className="main__create-article">
             <h2 className="main__create-title">
-              Create a article
+              Create an article
             </h2>
             <form className="form">
               {elements.map((item, i) => {
@@ -30,17 +25,13 @@ const AdminCreateArticle = () => {
                 )
               })}
             </form>
-            <PanelForAddtags
-              elements={elements}
-              setElements={setElements}
-              contentInElements={contentInElements}
-              setContentInElements={setContentInElements}
-              sendArticletoDb={sendArticletoDb}
-            />
+            <PanelForAddtags />
           </aside>
           <article className="main__preview-article">
-            <h2 className="main__create-title">Preview of the article</h2>
-            {contentInElements.map((item, i) => {
+            <h2 className="main__create-title">
+              Preview of the article
+            </h2>
+            {previewContent.map((item, i) => {
               return (
                 <Fragment key={i}>
                   {createElement(

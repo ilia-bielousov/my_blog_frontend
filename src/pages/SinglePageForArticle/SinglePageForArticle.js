@@ -6,7 +6,7 @@ import { fetchArticle } from "../../store/asyncAction/article";
 import createArticle from "../../utilities/utilities";
 import './pages.css';
 
-const Test = () => {
+const SinglePageForArticle = () => {
   const { id } = useParams();
   const { pathname } = useLocation();
   const dispatch = useDispatch();
@@ -22,16 +22,16 @@ const Test = () => {
         <h2 className="main__page-title">
           article Modeling #
         </h2>
-        {createArticle(article).map((item, i) => {
+        {article ? createArticle(article[0].content).map((item, i) => {
           return (
             <Fragment key={i}>
               {item}
             </Fragment>
           );
-        })}
+        }) : null }
       </div>
     </main>
   )
 }
 
-export default Test;
+export default SinglePageForArticle;
