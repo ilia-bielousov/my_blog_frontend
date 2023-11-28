@@ -1,13 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addPreviewContentAnArticle, changeBanAddElement } from "../../../../store/adminReducer";
+import { addPreviewContentAnArticle, addPreviewContentAnArticleAfterEdit, changeBanAddElement } from "../../../../store/adminReducer";
 import './style_component_form.css';
 
 const AddTag = (props) => {
   const dispatch = useDispatch();
   const [text, setText] = useState('');
   const [send, setSend] = useState(false);
+  const [editStatus, setEditStatus] = useState(false);
+  const [editPreviewElements, setEditPreviewElements] = useState([]);
   const IDforElements = useSelector(state => state.admin.creatingArticle.IdElement);
+  const [IdElement, setIdElement] = useState(IDforElements);
+  const previewElements = useSelector(state => state.admin.creatingArticle.previewElements);
 
   const content = {
     tag: props.tag,
@@ -15,11 +19,31 @@ const AddTag = (props) => {
     text,
     id: IDforElements
   };
-  // работаю над логикой
-  const confirmInputElement = () => {
-    dispatch(addPreviewContentAnArticle(content));
-    setSend(true);
+  
+  const confirmInputElement = (id = '') => {
+    if (editStatus) {
+      const t = editPreviewElements.map(elem => {
+        if (elem.id == id) {
+          return { ...elem, text}
+        }
+
+        return elem;
+      });
+
+      setEditPreviewElements(t);
+      dispatch(addPreviewContentAnArticleAfterEdit(t));
+      setEditStatus(false);
+    } else {
+      dispatch(addPreviewContentAnArticle(content));
+    }
+
     dispatch(changeBanAddElement(false));
+    setSend(true);
+  }
+
+  const editInputElement = () => {
+    setEditPreviewElements(previewElements);
+    setEditStatus(true);
   }
 
   const renderButtonsForTextInputs = () => {
@@ -28,16 +52,19 @@ const AddTag = (props) => {
         <button
           className="form__send"
           disabled={send}
-          onClick={() => confirmInputElement()}
+          onClick={() => confirmInputElement(IdElement)}
         >
           send {props.signButton}
         </button>
 
-        {/* неправиьлно работает логика обновления */}
         <button
           className="form__update-state"
           disabled={!send}
-          onClick={(e) => { e.preventDefault(); setSend(false); }}
+          onClick={(e) => { 
+            e.preventDefault(); 
+            editInputElement(); 
+            setSend(false); 
+          }}
         >
           edit {props.signButton}
         </button>
@@ -94,6 +121,9 @@ const AddTag = (props) => {
         return renderTextArea();
       }
       case 'h3': {
+        return renderInputText();
+      }
+      case 'h4': {
         return renderInputText();
       }
       case 'img': {

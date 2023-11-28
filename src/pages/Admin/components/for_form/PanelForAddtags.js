@@ -9,6 +9,7 @@ const PanelForAddtags = () => {
   const dispatch = useDispatch();
   const contentInElements = useSelector(state => state.admin.creatingArticle.previewElements);
   const IDforArticle = useSelector(state => state.admin.id);
+  const IDforElementOfArticle = useSelector(state => state.admin.creatingArticle.IdElement);
   const banAddElement = useSelector(state => state.admin.creatingArticle.banAddElement);
 
   const addElements = (component) => {
@@ -20,7 +21,6 @@ const PanelForAddtags = () => {
     dispatch(changeBanAddElement(true));
   }
 
-  // запретить элементы добавлять пока.
   return (
     <div className="panel">
       <button
@@ -37,11 +37,11 @@ const PanelForAddtags = () => {
           addIdElement();
         }}
       >
-        add title
+        Add the name of the Article
       </button>
 
       <button
-        disabled={banAddElement}
+        disabled={IDforElementOfArticle == 0 ? true : banAddElement}
         className="panel__item"
         onClick={() => {
           addElements(
@@ -54,11 +54,11 @@ const PanelForAddtags = () => {
           addIdElement();
         }}
       >
-        add text
+        Add a paragraph
       </button>
 
       <button
-        disabled={banAddElement}
+        disabled={IDforElementOfArticle == 0 ? true : banAddElement}
         className="panel__item"
         onClick={() => {
           addElements(
@@ -71,10 +71,28 @@ const PanelForAddtags = () => {
           addIdElement();
         }}
       >
-        add image
+        Add an image
       </button>
 
       <button
+        disabled={IDforElementOfArticle == 0 ? true : banAddElement}
+        className="panel__item"
+        onClick={() => {
+          addElements(
+            <AddTag
+              tag={'h4'}
+              classN={'main__subtitle'}
+              signLabel={'Input for your subtitle'}
+              signButton={'subtitle'}
+            />);
+          addIdElement();
+        }}
+      >
+        Add an subtitle 
+      </button>
+
+      <button
+        disabled={banAddElement}
         className="panel__item"
         onClick={() => { contentInElements.push(IDforArticle); request('POST', 'create-article', contentInElements) }}
       >

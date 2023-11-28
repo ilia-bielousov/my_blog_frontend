@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -93,7 +94,7 @@ const formCardInnerNameArticle = (register, errors, nextBtn) => {
         name="name"
         readOnly={nextBtn ? true : false}
       />
-      {errors.name ? <div style={{marginBottom: '10px', color: 'red'}}>поле название обязательное </div> : null}
+      {errors.name ? <div style={{ marginBottom: '10px', color: 'red' }}>поле название обязательное </div> : null}
       <label
         style={elementStyleLabel}
         htmlFor="name"
@@ -107,16 +108,16 @@ const formCardInnerNameArticle = (register, errors, nextBtn) => {
         name="description"
         readOnly={nextBtn ? true : false}
       />
-      {errors.description ? <div style={{marginBottom: '10px', color: 'red'}}>поле описание обязательное </div> : null}
+      {errors.description ? <div style={{ marginBottom: '10px', color: 'red' }}>поле описание обязательное </div> : null}
     </div>
   )
 }
 
-const formCardInnerImage = () => {
+const formCardInnerImage = (setCardImage) => {
   const elementStyleLabel = {
     display: 'block',
     marginBottom: '10px'
-  }
+  };
 
   return (
     <div className="form-card__inner">
@@ -125,7 +126,7 @@ const formCardInnerImage = () => {
       >
         Картина для карточки
       </label>
-      <input type="file" name="image" id="image" />
+      <input onChange={e => setCardImage(e.target.files[0])} type="file" name="image" id="image" />
     </div>
   )
 }
@@ -133,11 +134,11 @@ const formCardInnerImage = () => {
 const formCardInnerSubmit = (nextBtn) => {
   return (
     <div className="form-card__inner">
-      <input
+      <button
         type="submit"
         value='отправить данные'
         className="form-card__submit"
-        disabled={nextBtn ? true : false} />
+        disabled={nextBtn ? true : false}>submit</button>
       {nextBtn ?
         <Link
           to="../create-article"
@@ -155,6 +156,8 @@ const AdminCreateCard = () => {
   const dispatch = useDispatch();
   const choose = useSelector(state => state.admin.creatingCard.content.choose);
   const nextBtn = useSelector(state => state.admin.creatingCard.status);
+  const [cardImage, setCardImage] = useState(null);
+
   const {
     register,
     handleSubmit,
@@ -178,7 +181,6 @@ const AdminCreateCard = () => {
         .catch((err) => {
           console.log(err);
         });
-
     } else {
       alert('проверьте свои данные еще раз');
     }
@@ -203,7 +205,7 @@ const AdminCreateCard = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="main__create-card-form form-card">
               {formCardInnerCategory(inputChoose, nextBtn)}
               {formCardInnerNameArticle(register, errors, nextBtn)}
-              {formCardInnerImage()}
+              {formCardInnerImage(setCardImage)}
               {formCardInnerSubmit(nextBtn)}
             </form>
           </div>
