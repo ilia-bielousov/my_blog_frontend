@@ -25,9 +25,10 @@ const AddTag = (props) => {
       const t = editPreviewElements.map(elem => {
         if (elem.id == id) {
           return { ...elem, text}
+        } else {
+          return elem;
         }
 
-        return elem;
       });
 
       setEditPreviewElements(t);

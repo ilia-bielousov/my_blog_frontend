@@ -1,7 +1,7 @@
-async function request(method = 'GET', url, content) {
-  fetch(`http://localhost:4000/admin/${url}`, {
+async function request(method = 'GET', url, content = undefined) {
+  await fetch(`http://localhost:4000/${url}`, {
     method: method,
-    body: JSON.stringify(content),
+    body: content ? JSON.stringify(content) : null,
     headers: {
       'Content-type': 'application/json; charset=UTF-8'
     }

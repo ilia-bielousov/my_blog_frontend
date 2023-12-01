@@ -1,12 +1,13 @@
 import { createElement, Fragment } from "react";
 import { useSelector } from 'react-redux';
 import PanelForAddtags from "../components/for_form/PanelForAddtags";
-
+import ModalAfterCreatingArticle from './../components/ModalAfterCreatingArticle/ModalAfterCreatingArticle';
 import './AdminCreateArticle.css';
 
 const AdminCreateArticle = () => {
   const elements = useSelector(state => state.admin.creatingArticle.elements);
   const previewContent = useSelector(state => state.admin.creatingArticle.previewElements);
+  const statusCreatingArticle = useSelector(state => state.admin.statusSendArticle);
 
   return (
     <main className="main">
@@ -45,6 +46,7 @@ const AdminCreateArticle = () => {
           </article>
         </div>
       </div>
+      {statusCreatingArticle ? <ModalAfterCreatingArticle /> : null}
     </main>
   );
 };

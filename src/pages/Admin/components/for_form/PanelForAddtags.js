@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import AddTag from "./AddTag";
-import { addComponentToArticle, addIdForNewElement, changeBanAddElement } from "../../../../store/adminReducer";
+import { addComponentToArticle, addIdForNewElement, changeBanAddElement, changeStatusCreatingArticle} from "../../../../store/adminReducer";
 import { request } from './../../../../utilities/request';
 
 import './PanelForAddtags.css';
@@ -21,8 +21,16 @@ const PanelForAddtags = () => {
     dispatch(changeBanAddElement(true));
   }
 
+  const onSubmit = (e) => { 
+    e.preventDefault();
+
+    request('POST', 'admin/create-article', [...contentInElements, IDforArticle]);
+    
+    dispatch(changeStatusCreatingArticle(true));
+  }
+
   return (
-    <div className="panel">
+    <form className="panel">
       <button
         disabled={banAddElement}
         className="panel__item"
@@ -92,13 +100,14 @@ const PanelForAddtags = () => {
       </button>
 
       <button
+        type="submit"
         disabled={banAddElement}
         className="panel__item"
-        onClick={() => { contentInElements.push(IDforArticle); request('POST', 'create-article', contentInElements) }}
+        onClick={(e) => onSubmit(e)}
       >
         send article
       </button>
-    </div>
+    </form>
   );
 };
 

@@ -3,6 +3,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchArticle } from "../../store/asyncAction/article";
+import { request } from './../../utilities/request';
 import createArticle from "../../utilities/utilities";
 import './pages.css';
 
@@ -11,9 +12,10 @@ const SinglePageForArticle = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const article = useSelector(state => state.client.article);
-  
+
   useEffect(() => {
     dispatch(fetchArticle(id, pathname.split('/')[1]));
+    request('PATCH', pathname.slice(1), { id });
   }, []);
 
   return (

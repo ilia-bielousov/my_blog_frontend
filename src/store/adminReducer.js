@@ -1,6 +1,7 @@
 const defaultState = {
   id: '',
   diff: false,
+  statusSendArticle: false,
   creatingCard: {
     status: false,
     content: {
@@ -14,6 +15,10 @@ const defaultState = {
     previewElements: [],
     IdElement: 0,
     banAddElement: false
+  },
+  raportsArticles: {
+    cards: [],
+    articles: []
   }
 };
 
@@ -26,6 +31,11 @@ const ADD_PREVIEW_CONTENT_AN_ARTICLE = 'ADD_PREVIEW_CONTENT_AN_ARTICLE';
 const ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT = 'ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT';
 const ADD_ID_FOR_NEW_ELEMENT = 'ADD_ID_FOR_NEW_ELEMENT';
 const CHANGE_BAN_ADD_ELEMENT = 'CHANGE_BAN_ADD_ELEMENT';
+const CHANGE_STATUS_CREATING_ARTICLE = 'CHANGE_STATUS_CREATING_ARTICLE';
+
+//для просмотра всех карт и статьи
+const GET_ALL_CARDS = 'GET_ALL_CARDS';
+const GET_ALL_ARTICLES = 'GET_ALL_ARTICLES';
 
 // для изменений
 const OBSERVE_CHANGES = 'OBSERVE_CHANGES';
@@ -55,7 +65,14 @@ export const adminReducer = (state = defaultState, action) => {
       return { ...state, creatingArticle: { ...state.creatingArticle, IdElement: state.creatingArticle.IdElement + 1 } };
     case CHANGE_BAN_ADD_ELEMENT:
       return { ...state, creatingArticle: { ...state.creatingArticle, banAddElement: action.payload } };
-    //
+    case CHANGE_STATUS_CREATING_ARTICLE:
+      return { ...state, statusSendArticle: action.payload };
+    
+    // для просмотра всех карт и статьи
+    case GET_ALL_CARDS: 
+      return { ...state, raportsArticles: { ...state.raportsArticles, cards: [ ...action.payload ] } };
+    case GET_ALL_ARTICLES: 
+    return { ...state, raportsArticles: { ...state.raportsArticles, articles: [ ...action.payload ] } };
 
     // разное
     case OBSERVE_CHANGES:
@@ -76,3 +93,8 @@ export const addPreviewContentAnArticleAfterEdit = (payload) => ({ type: ADD_PRE
 export const observeChanges = (payload) => ({ type: OBSERVE_CHANGES, payload });
 export const addIdForNewElement = (payload) => ({ type: ADD_ID_FOR_NEW_ELEMENT, payload });
 export const changeBanAddElement = (payload) => ({ type: CHANGE_BAN_ADD_ELEMENT, payload });
+export const changeStatusCreatingArticle = (payload) => ({ type: CHANGE_STATUS_CREATING_ARTICLE, payload });
+
+// для всех статьи
+export const getAllCards = (payload) => ({ type: GET_ALL_CARDS, payload });
+export const getAllArticles = (payload) => ({ type: GET_ALL_ARTICLES, payload });

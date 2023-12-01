@@ -13,6 +13,7 @@ export const clientReducer = (state = defaultState, action) => {
     case GET_ARTICLE: {
       return { ...state, article: action.payload }
     }
+
     default: 
       return state;
   }

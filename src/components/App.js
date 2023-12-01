@@ -7,8 +7,9 @@ import PageTransition from './PageTransition/PageTransition';
 import SinglePageForArticle from '../pages/SinglePageForArticle/SinglePageForArticle';
 import AdminLayout from '../pages/Admin/AdminLayout/AdminLayout';
 import AdminHome from '../pages/Admin/AdminHome/AdminHome';
-import AdminCreateArticle from '../pages/Admin/AdminCreateArticle/AdminCreateArticle';
+import AdminArticles from '../pages/Admin/AdminArticles/AdminArticles';
 import AdminCreateCard from '../pages/Admin/AdminCreateCard/AdminCreateCard';
+import AdminCreateArticle from '../pages/Admin/AdminCreateArticle/AdminCreateArticle';
 import AdminEdit from '../pages/Admin/AdminEdit/AdminEdit';
 
 
@@ -60,6 +61,7 @@ const App = () => {
           <Route index element={
             <AdminHome />
           } />
+          <Route path='articles' element={<AdminArticles />} />
           <Route path='create-card' element={<AdminCreateCard />} />
           <Route path='create-article' element={<AdminCreateArticle />} />
           <Route path='edit-article' element={<AdminEdit />} />
