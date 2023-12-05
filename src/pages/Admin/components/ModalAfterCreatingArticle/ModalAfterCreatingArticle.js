@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
+
 import './ModalAfterCreatingArticle.css'; 
 
 const ModalAfterCreatingArticle = () => {
@@ -12,7 +13,7 @@ const ModalAfterCreatingArticle = () => {
   if (isModalOpen) {
     return <Navigate to='/admin' />
   }
-  // нужно обновить весь редакс, чтобы можно было снова писать статью
+
   return (
     <div className="modal-container">
       <div className="modal">

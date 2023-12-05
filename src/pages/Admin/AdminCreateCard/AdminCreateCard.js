@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 
-import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, setResponceId } from "../../../store/adminReducer";
+import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, changeStatusCreatingArticle, setResponceId } from "../../../store/adminReducer";
 
 import './AdminCreateCard.css';
 
@@ -133,12 +133,13 @@ const formCardInnerImage = (setCardImage) => {
 
 const formCardInnerSubmit = (nextBtn) => {
   return (
-    <div className="form-card__inner">
-      <button
+    // <div className="form-card__inner">
+    <>
+      <input
         type="submit"
         value='отправить данные'
         className="form-card__submit"
-        disabled={nextBtn ? true : false}>submit</button>
+        disabled={nextBtn ? true : false} />
       {nextBtn ?
         <Link
           to="../create-article"
@@ -148,7 +149,8 @@ const formCardInnerSubmit = (nextBtn) => {
           перейти далее
         </Link> :
         null}
-    </div>
+    {/* </div> */}
+    </>
   )
 }
 
@@ -158,17 +160,24 @@ const AdminCreateCard = () => {
   const nextBtn = useSelector(state => state.admin.creatingCard.status);
   const [cardImage, setCardImage] = useState(null);
 
+  useEffect(() => {
+    dispatch(changeStatusCreatingArticle(false));
+  }, [])
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async function (data) {
+  async function onSubmit(data) {
     dispatch(inputNameDescriptionCard(data));
+    const formData = new FormData();
+    formData.append("name", "value"); // я не понимаю проблемы. почему formData пустая
 
     if (window.confirm('вы уверены, что хотите продолжить?') && choose.length != 0) {
       dispatch(statusCreatingCard(true));
+      console.log(formData);
       await fetch(`http://localhost:4000/admin/create-card`, {
         method: 'POST',
         body: JSON.stringify({ choose, ...data }),
@@ -181,6 +190,7 @@ const AdminCreateCard = () => {
         .catch((err) => {
           console.log(err);
         });
+
     } else {
       alert('проверьте свои данные еще раз');
     }
@@ -202,7 +212,10 @@ const AdminCreateCard = () => {
             <h2 className="main__create-card-title">
               Создание карточки для статьи
             </h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="main__create-card-form form-card">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="main__create-card-form form-card"
+            >
               {formCardInnerCategory(inputChoose, nextBtn)}
               {formCardInnerNameArticle(register, errors, nextBtn)}
               {formCardInnerImage(setCardImage)}
