@@ -114,7 +114,7 @@ const formCardInnerNameArticle = (register, errors, nextBtn) => {
 }
 
 const formCardInnerImage = (setCardImage) => {
-  const elementStyleLabel = {
+  const elementStyleLabel = { // переписать. 
     display: 'block',
     marginBottom: '10px'
   };
@@ -132,7 +132,7 @@ const formCardInnerImage = (setCardImage) => {
 }
 
 const formCardInnerSubmit = (nextBtn) => {
-  return (
+  return ( 
     // <div className="form-card__inner">
     <>
       <input

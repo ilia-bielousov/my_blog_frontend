@@ -16,7 +16,7 @@
 .card:hover {
   transform: translateY(-5px);
   border: none;
-  border-bottom: 5px solid #2196fe;
+  border-bottom: 3px solid #2196fe;
 }
 
 .card__text {
