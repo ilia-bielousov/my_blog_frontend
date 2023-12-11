@@ -1,4 +1,4 @@
-import Card from "../components/Card/Card";
+import Card from "../components/Card";
 
 import programming from './../assets/images/programming1.jpeg';
 import arduino from './../assets/images/arduino1.png';
@@ -24,20 +24,18 @@ const menuContent = [
 
 const Home = () => {
   return (
-    <main className="main__content">
-      <div className="container">
-        <div className="cards">
-          {menuContent.map((card, i) => {
-            return (
-              <Card
-                key={i}
-                description={card.description}
-                choose={card.name}
-                img={card.img}
-              />
-            )
-          })}
-        </div>
+    <main className="flex flex-col justify-center flex-1">
+      <div className="flex content-center justify-center gap-8 max-xl:flex-col max-xl:items-center px-24">
+        {menuContent.map((card, i) => {
+          return (
+            <Card
+              key={i}
+              description={card.description}
+              choose={card.name}
+              img={card.img}
+            />
+          )
+        })}
       </div>
     </main>
   )

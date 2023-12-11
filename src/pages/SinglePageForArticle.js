@@ -2,10 +2,9 @@ import { useEffect, Fragment } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchArticle } from "../../store/asyncAction/article";
-import { request } from './../../utilities/request';
-import createArticle from "../../utilities/utilities";
-import './pages.css';
+import { fetchArticle } from "../store/asyncAction/article";
+import { request } from '../utilities/request';
+import createArticle from "../utilities/utilities";
 
 const SinglePageForArticle = () => {
   const { id } = useParams();
@@ -19,18 +18,15 @@ const SinglePageForArticle = () => {
   }, []);
 
   return (
-    <main className="main__content">
-      <div className="container">
-        <h2 className="main__page-title">
-          article Modeling #
-        </h2>
+    <main className="flex-1">
+      <div className="w-1/2 mx-auto ">
         {article ? createArticle(article[0].content).map((item, i) => {
           return (
             <Fragment key={i}>
               {item}
             </Fragment>
           );
-        }) : null }
+        }) : null}
       </div>
     </main>
   )

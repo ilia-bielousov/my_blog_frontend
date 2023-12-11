@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Content from "../../components/Content/Content";
-import { fetchCards } from "../../store/asyncAction/cards";
+import Content from "../components/Content";
+import { fetchCards } from "../store/asyncAction/cards";
 
 const PageForCards = () => {
   const dispatch = useDispatch();

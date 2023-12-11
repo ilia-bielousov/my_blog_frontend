@@ -1,16 +1,14 @@
 import { useLocation } from "react-router-dom";
-import Card from "../Card/Card";
-import './Content.css';
+import Card from "./Card";
 
 const Content = ({ data }) => {
   const { pathname } = useLocation();
 
   return (
-    <main className='main__content'>
-      <div className="container">
-        <div className='cards'>
-          {data.map((card, i) => {
-            if (card.choose === pathname.slice(1, pathname.length-1))
+    <main className='flex flex-col justify-center flex-1'>
+      <div className='flex content-center justify-center gap-8 max-lg:flex-col max-lg:items-center px-24'>
+        {data.map((card, i) => {
+          if (card.choose === pathname.slice(1, pathname.length - 1))
             return (
               <Card
                 key={i}
@@ -20,8 +18,7 @@ const Content = ({ data }) => {
                 choose={card.choose}
               />
             )
-          })}
-        </div>
+        })}
       </div>
     </main>
   )

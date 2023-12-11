@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPreviewContentAnArticle, addPreviewContentAnArticleAfterEdit, changeBanAddElement } from "../../../../store/adminReducer";
-import './style_component_form.css';
 
 const AddTag = (props) => {
   const dispatch = useDispatch();
@@ -10,7 +9,7 @@ const AddTag = (props) => {
   const [editStatus, setEditStatus] = useState(false);
   const [editPreviewElements, setEditPreviewElements] = useState([]);
   const IDforElements = useSelector(state => state.admin.creatingArticle.IdElement);
-  const [IdElement, setIdElement] = useState(IDforElements);
+  const [IdElement,] = useState(IDforElements);
   const previewElements = useSelector(state => state.admin.creatingArticle.previewElements);
 
   const content = {
@@ -19,12 +18,12 @@ const AddTag = (props) => {
     text,
     id: IDforElements
   };
-  
+
   const confirmInputElement = (id = '') => {
     if (editStatus) {
       const t = editPreviewElements.map(elem => {
-        if (elem.id == id) {
-          return { ...elem, text}
+        if (elem.id === id) {
+          return { ...elem, text }
         } else {
           return elem;
         }
@@ -49,25 +48,25 @@ const AddTag = (props) => {
 
   const renderButtonsForTextInputs = () => {
     return (
-      <div className="form__buttons-inner">
+      <div className="flex gap-3">
         <button
-          className="form__send"
+          className="w-40 p-3 rounded-xl transition bg-blue-300 hover:bg-blue-500 disabled:bg-slate-800"
           disabled={send}
           onClick={() => confirmInputElement(IdElement)}
         >
-          send {props.signButton}
+          подтвердить {props.signButton}
         </button>
 
         <button
-          className="form__update-state"
+          className="w-40 p-3 rounded-xl transition bg-blue-300 hover:bg-blue-500 disabled:bg-slate-800"
           disabled={!send}
-          onClick={(e) => { 
-            e.preventDefault(); 
-            editInputElement(); 
-            setSend(false); 
+          onClick={(e) => {
+            e.preventDefault();
+            editInputElement();
+            setSend(false);
           }}
         >
-          edit {props.signButton}
+          редактировать {props.signButton}
         </button>
       </div>
     )
@@ -77,9 +76,9 @@ const AddTag = (props) => {
     return (
       <>
         <input
-          className="form__input-title"
+          className="block w-80 mb-4 py-2 px-4 border-2 rounded-xl "
           type="text"
-          placeholder="input your text"
+          placeholder="Введите ..."
           readOnly={send ? true : false}
           onChange={(e) => changeText(e)}
         />
@@ -92,9 +91,9 @@ const AddTag = (props) => {
     return (
       <>
         <textarea
-          className="form__input-text"
+          className="p-3 w-96 h-72 border-2 rounded-xl resize-none mb-4"
           type="text"
-          placeholder="input your text"
+          placeholder="Введите текст ..."
           readOnly={send ? true : false}
           onChange={(e) => changeText(e)}
         />
@@ -121,6 +120,9 @@ const AddTag = (props) => {
       case 'p': {
         return renderTextArea();
       }
+      case 'h2': {
+        return renderInputText();
+      }
       case 'h3': {
         return renderInputText();
       }
@@ -140,7 +142,7 @@ const AddTag = (props) => {
 
   return (
     <>
-      <label className="form__sign">
+      <label className="block mb-2 text-lg text-center">
         {props.signLabel}
       </label>
       {determine()}

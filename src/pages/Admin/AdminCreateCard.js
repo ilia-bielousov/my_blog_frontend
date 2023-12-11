@@ -3,145 +3,124 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 
-import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, changeStatusCreatingArticle, setResponceId } from "../../../store/adminReducer";
-
-import './AdminCreateCard.css';
+import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, changeStatusCreatingArticle, setResponceId } from "../../store/adminReducer";
 
 const formCardInnerCategory = (inputChoose, nextBtn) => {
-
   return (
-    <div className="form-card__inner">
-      <label className="form-card__info">
+    <>
+      <label className="block mb-2 text-xl">
         Сначала нужно выбрать, для какой секции будет написана статья.
       </label>
       <input
         onClick={(e) => inputChoose(e)}
-        className="form-card__input-radio"
+        className="mr-1"
         type="radio"
         id="programming"
         name="choose"
         value="programming"
-        disabled={nextBtn ? true : false}
+        disabled={nextBtn}
       />
-      <label htmlFor="programming">
-        Programming
+      <label
+        className="mr-3 text-lg"
+        htmlFor="programming">
+        Программирование
       </label>
       <input
         onClick={(e) => inputChoose(e)}
-        className="form-card__input-radio"
+        className="mr-1"
         type="radio"
         id="projects"
         name="choose"
         value="projects"
-        disabled={nextBtn ? true : false}
+        disabled={nextBtn}
       />
-      <label htmlFor="projects">
-        Arduino
+      <label
+        className="mr-3 text-lg"
+        htmlFor="projects">
+        Ардуино
       </label>
       <input
+        className="mr-1"
         onClick={(e) => inputChoose(e)}
         type="radio" id="modeling"
         name="choose"
         value="modeling"
-        className="form-card__input-radio"
-        disabled={nextBtn ? true : false}
+        disabled={nextBtn}
       />
-      <label htmlFor="modeling">
-        Modeling
+      <label
+        className="mb-3 text-lg"
+        htmlFor="modeling">
+        Моделирование
       </label>
-    </div>
+      <br />
+    </>
   )
 }
 
 const formCardInnerNameArticle = (register, errors, nextBtn) => {
-  // styles
-  const elementStyleLabel = {
-    display: 'block',
-    marginBottom: '10px'
-  };
-  const elementStyleInput = {
-    display: 'block',
-    width: '450px',
-    marginBottom: '15px',
-    padding: '5px',
-    border: '1px solid #000',
-    borderRadius: '5px',
-    outline: 'none',
-  };
-  const elementStyleTextArea = {
-    width: '450px',
-    height: '150px',
-    padding: '10px',
-    border: '1px solid #000',
-    borderRadius: '5px',
-    resize: 'none'
-  };
-  //
-
   return (
-    <div className="form-card__inner">
+    <>
       <label
-        style={elementStyleLabel}
+        className="block my-2 text-lg"
         htmlFor="name"
       >
         Придумайте название статьи:
       </label>
       <input
+        className="w-80 p-1 px-3 border-2 rounded-xl outline-none"
         {...register('name', { required: true })}
-        style={elementStyleInput}
         type="text"
         id="name"
         name="name"
-        readOnly={nextBtn ? true : false}
+        readOnly={nextBtn}
       />
-      {errors.name ? <div style={{ marginBottom: '10px', color: 'red' }}>поле название обязательное </div> : null}
+      <br />
+      {errors.name ? <div className="text-rose-500">поле название обязательное. </div> : null}
       <label
-        style={elementStyleLabel}
-        htmlFor="name"
+        className="block mt-2 text-lg"
+        htmlFor="description"
       >
         Короткое описание статьи:
       </label>
       <textarea
+        className="p-2 border-2 rounded-xl w-80 h-36 outline-none resize-none"
         {...register('description', { required: true })}
-        style={elementStyleTextArea}
         id="description"
         name="description"
-        readOnly={nextBtn ? true : false}
+        readOnly={nextBtn}
       />
-      {errors.description ? <div style={{ marginBottom: '10px', color: 'red' }}>поле описание обязательное </div> : null}
-    </div>
+      <br />
+      {errors.description ? <div className="text-rose-500">поле описание обязательное.</div> : null}
+    </>
   )
 }
 
 const formCardInnerImage = (setCardImage) => {
-  const elementStyleLabel = { // переписать. 
-    display: 'block',
-    marginBottom: '10px'
-  };
-
   return (
-    <div className="form-card__inner">
-      <label
-        style={elementStyleLabel}
-      >
+    <>
+      <label className="block text-lg">
         Картина для карточки
       </label>
-      <input onChange={e => setCardImage(e.target.files[0])} type="file" name="image" id="image" />
-    </div>
+      <input onChange={e => setCardImage(e.target.files[0])}
+        className="block mb-2"
+        type="file"
+        name="image"
+        id="image"
+      />
+    </>
   )
 }
 
 const formCardInnerSubmit = (nextBtn) => {
-  return ( 
-    // <div className="form-card__inner">
+  return (
     <>
-      <input
+      <button
+        className="w-48 p-3 mb-3 rounded-xl transition bg-sky-300 hover:bg-sky-500 active:bg-sky-600 text-blue cursor-pointer disabled:cursor-auto disabled:bg-sky-800"
         type="submit"
-        value='отправить данные'
-        className="form-card__submit"
-        disabled={nextBtn ? true : false} />
+        disabled={nextBtn}>отправить данные</button>
       {nextBtn ?
         <Link
+          className="block w-48 p-3 rounded-xl text-center bg-lime-300 hover:bg-lime-400 active:bg-lime-500 text-lime-950"
           to="../create-article"
           relative="admin"
           key={'create-article'}
@@ -149,7 +128,6 @@ const formCardInnerSubmit = (nextBtn) => {
           перейти далее
         </Link> :
         null}
-    {/* </div> */}
     </>
   )
 }
@@ -205,25 +183,21 @@ const AdminCreateCard = () => {
   });
 
   return (
-    <main className="main">
-      <div className="container__admin">
-        <article className="main__admin-article">
-          <div className="main__create-card">
-            <h2 className="main__create-card-title">
-              Создание карточки для статьи
-            </h2>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="main__create-card-form form-card"
-            >
-              {formCardInnerCategory(inputChoose, nextBtn)}
-              {formCardInnerNameArticle(register, errors, nextBtn)}
-              {formCardInnerImage(setCardImage)}
-              {formCardInnerSubmit(nextBtn)}
-            </form>
-          </div>
-        </article>
-      </div>
+    <main className="flex-1 pl-72">
+      <article className="p-5">
+        <h2 className="text-2xl mb-2">
+          Создание карточки для статьи
+        </h2>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className=""
+        >
+          {formCardInnerCategory(inputChoose, nextBtn)}
+          {formCardInnerNameArticle(register, errors, nextBtn)}
+          {formCardInnerImage(setCardImage)}
+          {formCardInnerSubmit(nextBtn)}
+        </form>
+      </article>
     </main>
   );
 };

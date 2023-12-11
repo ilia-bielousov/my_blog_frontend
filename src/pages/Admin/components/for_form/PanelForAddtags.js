@@ -1,9 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import AddTag from "./AddTag";
-import { addComponentToArticle, addIdForNewElement, changeBanAddElement, changeStatusCreatingArticle} from "../../../../store/adminReducer";
+import { addComponentToArticle, addIdForNewElement, changeBanAddElement, changeStatusCreatingArticle } from "../../../../store/adminReducer";
 import { request } from './../../../../utilities/request';
-
-import './PanelForAddtags.css';
 
 const PanelForAddtags = () => {
   const dispatch = useDispatch();
@@ -21,92 +19,122 @@ const PanelForAddtags = () => {
     dispatch(changeBanAddElement(true));
   }
 
-  const onSubmit = (e) => { 
+  const onSubmit = (e) => {
     e.preventDefault();
 
     request('POST', 'admin/create-article', [...contentInElements, IDforArticle]);
-    
+
     dispatch(changeStatusCreatingArticle(true));
   }
 
   return (
-    <form className="panel">
-      <button
-        disabled={banAddElement}
-        className="panel__item"
-        onClick={() => {
-          addElements(
-            <AddTag
-              tag={'h3'}
-              classN={'main__title'}
-              signLabel={'Input for your title'}
-              signButton={'title'}
-            />);
-          addIdElement();
-        }}
-      >
-        Add the name of the Article
-      </button>
+    // возможно потом, это можно будет сделать как drag and drop
+    <form className="flex flex-col w-3/4 gap-5 p-3 border rounded-xl">
+      {/* для заголовков */}
+      <div className="flex justify-between items-center">
+        <span className="text-xl">Название заголовков</span>
+        <div className="flex gap-3">
+          <button
+            disabled={banAddElement}
+            className="p-3 rounded-xl transition bg-indigo-300 hover:bg-indigo-400 cursor-pointer"
+            onClick={() => {
+              addElements(
+                <AddTag
+                  tag={'h2'}
+                  classN={'text-4xl mb-2'}
+                  signLabel={'Введите название статьи. <h2>'}
+                  signButton={'название'}
+                />);
+              addIdElement();
+            }}
+          >
+            статьи
+          </button>
+          <button
+            disabled={IDforElementOfArticle === 0 ? true : banAddElement}
+            className="p-3 rounded-xl transition bg-indigo-300 hover:bg-indigo-400 cursor-pointer disabled:cursor-auto disabled:bg-slate-800"
+            onClick={() => {
+              addElements(
+                <AddTag
+                  tag={'h3'}
+                  classN={'text-2xl mb-2'}
+                  signLabel={'Введите название параграфа. <h3>'}
+                  signButton={'параграф'}
+                />);
+              addIdElement();
+            }}
+          >
+            параграфа
+          </button>
+          <button
+            disabled={IDforElementOfArticle === 0 ? true : banAddElement}
+            className="p-3 rounded-xl transition bg-indigo-300 hover:bg-indigo-400 cursor-pointer disabled:cursor-auto disabled:bg-slate-800"
+            onClick={() => {
+              addElements(
+                <AddTag
+                  tag={'h4'}
+                  classN={'text-xl mb-2'}
+                  signLabel={'Введите название подпараграфа. <h4>'}
+                  signButton={'подпараграф'}
+                />);
+              addIdElement();
+            }}
+          >
+            подпараграфа
+          </button>
+        </div>
+      </div>
 
-      <button
-        disabled={IDforElementOfArticle == 0 ? true : banAddElement}
-        className="panel__item"
-        onClick={() => {
-          addElements(
-            <AddTag
-              tag={'p'}
-              classN={'main__text'}
-              signLabel={'Input for your text'}
-              signButton={'text'}
-            />)
-          addIdElement();
-        }}
-      >
-        Add a paragraph
-      </button>
+      <div className="flex justify-between items-center">
+        <span className="text-xl">Добавить тектс</span>
+        <button
+          disabled={IDforElementOfArticle === 0 ? true : banAddElement}
+          className="p-3 rounded-xl transition bg-indigo-300 hover:bg-indigo-400 cursor-pointer disabled:cursor-auto disabled:bg-slate-800"
+          onClick={() => {
+            addElements(
+              <AddTag
+                tag={'p'}
+                classN={'text-lg text-justify indent-12 mb-2'}
+                signLabel={'Введите название параграфа. <p>'}
+                signButton={'текст'}
+              />)
+            addIdElement();
+          }}
+        >
+          параграф
+        </button>
+      </div>
 
-      <button
-        disabled={IDforElementOfArticle == 0 ? true : banAddElement}
-        className="panel__item"
-        onClick={() => {
-          addElements(
-            <AddTag
-              tag={'img'}
-              classN={''}
-              signLabel={''}
-              signButton={'your image'}
-            />);
-          addIdElement();
-        }}
-      >
-        Add an image
-      </button>
+      <div className="flex justify-between items-center">
+        <span className="text-xl">Картинку</span>
+        <button
+          disabled={IDforElementOfArticle === 0 ? true : banAddElement}
+          className="p-3 rounded-xl transition bg-indigo-300 hover:bg-indigo-400 cursor-pointer disabled:cursor-auto disabled:bg-slate-800"
+          onClick={() => {
+            addElements(
+              <AddTag
+                tag={'img'}
+                classN={''}
+                signLabel={''}
+                signButton={'картинка'}
+              />);
+            addIdElement();
+          }}
+        >
+          Add an image
+        </button>
+      </div>
 
-      <button
-        disabled={IDforElementOfArticle == 0 ? true : banAddElement}
-        className="panel__item"
-        onClick={() => {
-          addElements(
-            <AddTag
-              tag={'h4'}
-              classN={'main__subtitle'}
-              signLabel={'Input for your subtitle'}
-              signButton={'subtitle'}
-            />);
-          addIdElement();
-        }}
-      >
-        Add an subtitle 
-      </button>
-
-      <button
-        type="submit"
-        disabled={banAddElement}
-        className="panel__item"
-        onClick={(e) => onSubmit(e)}
-      >
-        send article
-      </button>
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          disabled={banAddElement}
+          className="w-48 rounded-xl p-4 transition bg-lime-300 hover:bg-lime-400 cursor-pointer"
+          onClick={(e) => onSubmit(e)}
+        >
+          Добавить статью
+        </button>
+      </div>
     </form>
   );
 };
