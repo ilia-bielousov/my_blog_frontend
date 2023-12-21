@@ -10,7 +10,7 @@ const PageForCards = () => {
 
   useEffect(() => {
     dispatch(fetchCards());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

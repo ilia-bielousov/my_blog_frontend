@@ -1,8 +1,8 @@
 import { createElement, Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { statusCreatingCard, resetComponentToArticle, resetPreviewContentAnArticle, changeBanAddElement } from "../../store/adminReducer";
-import PanelForAddtags from "./components/for_form/PanelForAddtags";
-import ModalAfterCreatingArticle from './components/ModalAfterCreatingArticle/ModalAfterCreatingArticle';
+import PanelForAddtags from "./components/PanelForAddtags";
+import ModalAfterCreatingArticle from './components/ModalAfterCreatingArticle';
 
 const AdminCreateArticle = () => {
   const dispatch = useDispatch();

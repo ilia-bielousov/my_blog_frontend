@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import AddTag from "./AddTag";
-import { addComponentToArticle, addIdForNewElement, changeBanAddElement, changeStatusCreatingArticle } from "../../../../store/adminReducer";
-import { request } from './../../../../utilities/request';
+import { addComponentToArticle, addIdForNewElement, changeBanAddElement, changeStatusCreatingArticle } from "../../../store/adminReducer";
+import { request } from '../../../utilities/request';
 
 const PanelForAddtags = () => {
   const dispatch = useDispatch();
@@ -35,8 +35,8 @@ const PanelForAddtags = () => {
         <span className="text-xl">Название заголовков</span>
         <div className="flex gap-3">
           <button
-            disabled={banAddElement}
-            className="p-3 rounded-xl transition bg-indigo-300 hover:bg-indigo-400 cursor-pointer"
+            disabled={IDforElementOfArticle === 0 ? false : true}
+            className="p-3 rounded-xl transition bg-indigo-300 hover:bg-indigo-400 cursor-pointer disabled:cursor-auto disabled:bg-slate-800"
             onClick={() => {
               addElements(
                 <AddTag

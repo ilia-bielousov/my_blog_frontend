@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addPreviewContentAnArticle, addPreviewContentAnArticleAfterEdit, changeBanAddElement } from "../../../../store/adminReducer";
+import { addPreviewContentAnArticle, addPreviewContentAnArticleAfterEdit, changeBanAddElement } from "../../../store/adminReducer";
 
 const AddTag = (props) => {
   const dispatch = useDispatch();

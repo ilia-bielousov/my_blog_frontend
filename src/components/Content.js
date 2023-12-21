@@ -16,6 +16,7 @@ const Content = ({ data }) => {
                 name={card.name}
                 description={card.description}
                 choose={card.choose}
+                image={card.image}
               />
             )
         })}

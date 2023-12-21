@@ -14,10 +14,10 @@ export const clientReducer = (state = defaultState, action) => {
       return { ...state, article: action.payload }
     }
 
-    default: 
+    default:
       return state;
   }
 }
 
-export const getCardsAction = (payload) => ({  type: GET_CARDS, payload })
+export const getCardsAction = (payload) => ({ type: GET_CARDS, payload })
 export const getArticleAction = (payload) => ({ type: GET_ARTICLE, payload });

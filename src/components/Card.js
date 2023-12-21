@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 
-export default function Card({ choose, name, description, id, img }) {
+export default function Card({ choose, name, description, id, image }) {
 
   return (
     <div className="w-96 border rounded-2xl p-5 shadow-md hover:shadow-xl transition cursor-pointer hover:-translate-y-1">
       <Link to={`/${choose}/${id ? id : ''}`} className="flex flex-col gap-4">
-        <img src={img ? img : "https://images.pexels.com/photos/442559/pexels-photo-442559.jpeg?auto=compress&cs=tinysrgb"} alt={choose}
-          className="" />
+        <img src={image} alt={choose}
+          className="object-cover h-64" />
         <h2 className="text-3xl font-bold first-letter:uppercase">
           {name ? name : choose}
         </h2>

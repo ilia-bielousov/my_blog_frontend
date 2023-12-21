@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import axios from 'axios';
 
-import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, changeStatusCreatingArticle, setResponceId } from "../../store/adminReducer";
+import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, changeStatusCreatingArticle, setResponceId, statusUploadImage } from "../../store/adminReducer";
 
 const formCardInnerCategory = (inputChoose, nextBtn) => {
   return (
@@ -97,17 +98,14 @@ const formCardInnerNameArticle = (register, errors, nextBtn) => {
 
 const formCardInnerImage = (setCardImage) => {
   return (
-    <>
-      <label className="block text-lg">
-        Картина для карточки
-      </label>
-      <input onChange={e => setCardImage(e.target.files[0])}
+    <div className="p-3 border rounded-xl w-80 mb-2">
+      <input onChange={(e) => setCardImage(e.target.files[0])}
         className="block mb-2"
         type="file"
         name="image"
         id="image"
       />
-    </>
+    </div >
   )
 }
 
@@ -135,12 +133,13 @@ const formCardInnerSubmit = (nextBtn) => {
 const AdminCreateCard = () => {
   const dispatch = useDispatch();
   const choose = useSelector(state => state.admin.creatingCard.content.choose);
-  const nextBtn = useSelector(state => state.admin.creatingCard.status);
-  const [cardImage, setCardImage] = useState(null);
+  const nextBtn = useSelector(state => state.admin.creatingCard.statusCreatingCard);
+  const [file, setFile] = useState('');
+  const [data, getFile] = useState({ name: "", path: "" });
 
   useEffect(() => {
     dispatch(changeStatusCreatingArticle(false));
-  }, [])
+  }, []);
 
   const {
     register,
@@ -150,25 +149,23 @@ const AdminCreateCard = () => {
 
   async function onSubmit(data) {
     dispatch(inputNameDescriptionCard(data));
-    const formData = new FormData();
-    formData.append("name", "value"); // я не понимаю проблемы. почему formData пустая
 
-    if (window.confirm('вы уверены, что хотите продолжить?') && choose.length != 0) {
-      dispatch(statusCreatingCard(true));
-      console.log(formData);
-      await fetch(`http://localhost:4000/admin/create-card`, {
-        method: 'POST',
-        body: JSON.stringify({ choose, ...data }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8'
-        }
-      })
-        .then(res => res.json())
-        .then(data => dispatch(setResponceId(data)))
-        .catch((err) => {
-          console.log(err);
-        });
+    if (window.confirm('вы уверены, что хотите продолжить?') && choose.length !== 0) {
+      const formData = new FormData();
+      formData.append('file', file);
 
+      await axios.post('http://localhost:4000/admin/upload', formData)
+        .then(res => {
+          dispatch(statusUploadImage(true));
+
+          axios.post('http://localhost:4000/admin/create-card', { choose, ...data, image: `http://localhost:4000${res.data.path}` })
+            .then(res => {
+              dispatch(statusCreatingCard(true));
+              dispatch(setResponceId(res.data));
+            })
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
     } else {
       alert('проверьте свои данные еще раз');
     }
@@ -188,15 +185,16 @@ const AdminCreateCard = () => {
         <h2 className="text-2xl mb-2">
           Создание карточки для статьи
         </h2>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className=""
-        >
-          {formCardInnerCategory(inputChoose, nextBtn)}
-          {formCardInnerNameArticle(register, errors, nextBtn)}
-          {formCardInnerImage(setCardImage)}
-          {formCardInnerSubmit(nextBtn)}
-        </form>
+        <div className="flex items-center">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            {formCardInnerCategory(inputChoose, nextBtn)}
+            {formCardInnerNameArticle(register, errors, nextBtn)}
+            {formCardInnerImage(setFile)}
+            {formCardInnerSubmit(nextBtn)}
+          </form>
+        </div>
       </article>
     </main>
   );

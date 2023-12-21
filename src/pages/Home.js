@@ -8,17 +8,17 @@ const menuContent = [
   {
     name: 'programming',
     description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
-    img: programming
+    image: programming
   },
   {
     name: 'projects',
     description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
-    img: arduino
+    image: arduino
   },
   {
     name: 'modeling',
     description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
-    img: modeling
+    image: modeling
   },
 ]
 
@@ -32,7 +32,7 @@ const Home = () => {
               key={i}
               description={card.description}
               choose={card.name}
-              img={card.img}
+              image={card.image}
             />
           )
         })}
