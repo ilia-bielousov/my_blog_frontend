@@ -3,20 +3,37 @@ const AdminHome = () => {
 
   console.log(getToken);
 
+  const renderText = () => {
+    return (
+      <>
+        <h2 className='text-3xl font-bold mb-3'>
+          Здравствуйте!
+        </h2>
+        <p className="text-xl text-justify indent-8">
+          Вы находитесь в админ-панели блога. Здесь вы можете управлять всеми аспектами блога, включая создание новых статей, редактирование существующих статей и просмотр количества просмотров статей.
+        </p>
+        <p className="text-xl indent-8 mb-5">
+          Чтобы начать работу, выберите пункт меню из списка слева.
+        </p>
+        <p className="text-2xl font-bold">
+          Желаем вам приятного использования админ-панели!
+        </p>
+      </>
+    )
+  }
+
   return (
     <main className="flex-1 pl-72">
-      <article className="p-5">
+      <article className="max-w-3xl p-5">
         {getToken ?
-          <p className="text-xl">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus officia magni hic doloremque, soluta debitis iure necessitatibus accusantium, earum id esse voluptatum cumque minima! Vero est expedita eius a similique error atque molestias ipsam quos delectus illo quo rem, mollitia sequi sit in cum autem, perspiciatis quia consequatur ipsa ab. Animi dolores tempore cum magni aut quae molestias vitae commodi incidunt optio consequatur, nam distinctio culpa minima ipsa, modi natus fugit. Molestiae, molestias minima necessitatibus eos excepturi aliquam iure tempora laboriosam quisquam quidem a sit praesentium blanditiis distinctio, quo nisi corporis. Beatae earum natus aspernatur dicta sapiente ab alias placeat.
-          </p>
+          (renderText())
           :
           <p>
             выаодвалвыоалвдаолдв
           </p>
         }
       </article>
-    </main>
+    </main >
   );
 };
 

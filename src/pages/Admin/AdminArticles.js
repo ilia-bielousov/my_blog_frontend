@@ -36,7 +36,7 @@ const AdminArticles = () => {
   return (
     <main className="flex-1 pl-72">
       <article className="p-5">
-        <h2 className='text-4xl mb-10'>
+        <h2 className='text-3xl font-bold mb-10'>
           Статистика
         </h2>
         <div className='articles p-3'>

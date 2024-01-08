@@ -41,7 +41,7 @@ const PanelForAddtags = () => {
               addElements(
                 <AddTag
                   tag={'h2'}
-                  classN={'text-4xl mb-2'}
+                  classN={'text-4xl mb-2 font-bold'}
                   signLabel={'Введите название статьи. <h2>'}
                   signButton={'название'}
                 />);

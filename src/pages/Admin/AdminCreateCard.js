@@ -173,14 +173,14 @@ const AdminCreateCard = () => {
     dispatch(inputChooseCard(e.target.value));
   }
 
-  window.addEventListener('beforeunload', function (event) {
-    event.preventDefault();
-  });
+  // window.addEventListener('beforeunload', function (event) {
+  //   event.preventDefault();
+  // });
 
   return (
     <main className="flex-1 pl-72">
       <article className="p-5">
-        <h2 className="text-2xl mb-2">
+        <h2 className="text-3xl font-bold mb-2">
           Создание карточки для статьи
         </h2>
         <div className="flex items-center">
