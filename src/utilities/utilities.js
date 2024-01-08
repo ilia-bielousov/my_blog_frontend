@@ -6,8 +6,8 @@ const createArticle = (content) => {
   return t.map(item => {
     const element = createElement(
       item[1].tag,
-      { className: item[1].className, src: (item[1].src ? item[1].src : null) },
-      item[1].text,
+      { className: item[1].className, src: (item[1].image ? item[1].image : null), alt: (item[1].alt ? item[1].alt : null) },
+      item[1].text ? item[1].text : null,
     );
 
     return (

@@ -1,4 +1,5 @@
-import { createElement, Fragment, useEffect } from "react";
+import { createElement, Fragment, useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { statusCreatingCard, resetComponentToArticle, resetPreviewContentAnArticle, changeBanAddElement } from "../../store/adminReducer";
 import PanelForAddtags from "./components/PanelForAddtags";
@@ -6,17 +7,28 @@ import ModalAfterCreatingArticle from './components/ModalAfterCreatingArticle';
 
 const AdminCreateArticle = () => {
   const dispatch = useDispatch();
+  const [redirect, setRedirect] = useState(false);
   const elements = useSelector(state => state.admin.creatingArticle.elements);
   const previewContent = useSelector(state => state.admin.creatingArticle.previewElements);
   const statusCreatingArticle = useSelector(state => state.admin.statusSendArticle);
-
+  const idArticle = useSelector(state => state.admin.id);
+  // посмотреть какой redux я не использую, короче проследить как че работает.
   useEffect(() => {
-    dispatch(statusCreatingCard(false));
-    dispatch(resetComponentToArticle());
-    dispatch(resetPreviewContentAnArticle());
-    dispatch(changeBanAddElement(false));
+    if (idArticle) {
+      dispatch(statusCreatingCard(false));
+      dispatch(resetComponentToArticle());
+      dispatch(resetPreviewContentAnArticle());
+      dispatch(changeBanAddElement(false));
+    } else {
+      alert('Сначала нужно создать карточку, только потом статью')
+      setRedirect(true);
+    }
     // нужно проверить, если обновили страницу и нет айди в редаксе, найти карточку и удалить ее в монго
   }, [dispatch]);
+
+  if (redirect) {
+    return <Navigate to='/admin' />;
+  }
 
   return (
     <main className="flex flex-1 pl-72">
@@ -46,7 +58,7 @@ const AdminCreateArticle = () => {
             <Fragment key={i}>
               {createElement(
                 item.tag,
-                { className: item.className },
+                { className: item.className, src: item.image, alt: item.alt },
                 item.text
               )}
             </Fragment>

@@ -15,6 +15,7 @@ import AdminEdit from '../pages/Admin/AdminEdit';
 import './App.css';
 
 const App = () => {
+  // пока нет rwd, ну не везде, но нужно еще доработать.
   return (
     <div className="App flex flex-col flex-1">
       <Routes>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import { addPreviewContentAnArticle, addPreviewContentAnArticleAfterEdit, changeBanAddElement } from "../../../store/adminReducer";
 
 const AddTag = (props) => {
@@ -11,11 +12,11 @@ const AddTag = (props) => {
   const IDforElements = useSelector(state => state.admin.creatingArticle.IdElement);
   const [IdElement,] = useState(IDforElements);
   const previewElements = useSelector(state => state.admin.creatingArticle.previewElements);
+  const [file, setFile] = useState('');
 
-  const content = {
+  let content = {
     tag: props.tag,
     className: props.classN,
-    text,
     id: IDforElements
   };
 
@@ -34,6 +35,10 @@ const AddTag = (props) => {
       dispatch(addPreviewContentAnArticleAfterEdit(t));
       setEditStatus(false);
     } else {
+      if (props.tag !== 'img') {
+        content = { ...content, text };
+      }
+
       dispatch(addPreviewContentAnArticle(content));
     }
 
@@ -103,16 +108,37 @@ const AddTag = (props) => {
   }
 
   const renderInputForImage = () => {
+    const sendImage = async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      await axios.post('http://localhost:4000/admin/upload', formData)
+        .then(res => {
+          content = { ...content, alt: res.data.name, image: `http://localhost:4000${res.data.path}` };
+
+          confirmInputElement(IdElement);
+        })
+        .catch(err => console.log(err));
+    }
+
     return (
-      <input
-        type="file"
-        className="test"
-      />
+      <div className="p-5 border rounded-xl">
+        <input
+          type="file"
+          className="test"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
+        <button onClick={(e) => sendImage(e)} className="w-40 p-3 rounded-xl transition bg-blue-300 hover:bg-blue-500 disabled:bg-slate-800">подтвердить</button>
+      </div>
     )
   }
 
   const changeText = (e) => {
     setText(e.target.value);
+
+    content = { ...content, text };
   }
 
   const determine = () => {
@@ -151,3 +177,5 @@ const AddTag = (props) => {
 }
 
 export default AddTag;
+
+

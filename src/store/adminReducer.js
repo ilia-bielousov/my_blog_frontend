@@ -4,7 +4,6 @@ const defaultState = {
   statusSendArticle: false,
   creatingCard: {
     statusCreatingCard: false,
-    statusUploadImage: false,
     content: {
       choose: '',
       name: '',
@@ -25,7 +24,6 @@ const defaultState = {
 
 const INPUT_CHOOSE_CARD = 'INPUT_CHOOSE_CARD';
 const STATUS_CREATING_CARD = 'STATUS_CREATING_CARD';
-const STATUS_UPLOAD_IMAGE = 'STATUS_UPLOAD_IMAGE';
 const INPUT_NAME_DESCRIPTION_CARD = 'INPUT_NAME_DESCRIPTION_CARD';
 const SET_RESPONCE_ID = 'SET_RESPONCE_ID';
 const ADD_COMPONENT_TO_ARTICLE = 'ADD_COMPONENT_TO_ARTICLE';
@@ -53,9 +51,6 @@ export const adminReducer = (state = defaultState, action) => {
       return { ...state, creatingCard: { ...state.creatingCard, content: { ...state.creatingCard.content, ...action.payload } } };
     case STATUS_CREATING_CARD: {
       return { ...state, creatingCard: { ...state.creatingCard, statusCreatingCard: action.payload } };
-    }
-    case STATUS_UPLOAD_IMAGE: {
-      return { ...state, creatingCard: { ...state.creatingCard, statusUploadImage: action.payload } };
     }
     case SET_RESPONCE_ID:
       return { ...state, id: action.payload };
@@ -98,7 +93,6 @@ export const adminReducer = (state = defaultState, action) => {
 export const inputChooseCard = (payload) => ({ type: INPUT_CHOOSE_CARD, payload });
 export const inputNameDescriptionCard = (payload) => ({ type: INPUT_NAME_DESCRIPTION_CARD, payload });
 export const statusCreatingCard = (payload) => ({ type: STATUS_CREATING_CARD, payload });
-export const statusUploadImage = (payload) => ({ type: STATUS_UPLOAD_IMAGE, payload });
 export const setResponceId = (payload) => ({ type: SET_RESPONCE_ID, payload });
 export const addComponentToArticle = (payload) => ({ type: ADD_COMPONENT_TO_ARTICLE, payload });
 export const addPreviewContentAnArticle = (payload) => ({ type: ADD_PREVIEW_CONTENT_AN_ARTICLE, payload });

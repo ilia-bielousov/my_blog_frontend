@@ -114,7 +114,7 @@ const PanelForAddtags = () => {
             addElements(
               <AddTag
                 tag={'img'}
-                classN={''}
+                classN={'mx-auto p-3'}
                 signLabel={''}
                 signButton={'картинка'}
               />);

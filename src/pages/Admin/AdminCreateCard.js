@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 
-import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, changeStatusCreatingArticle, setResponceId, statusUploadImage } from "../../store/adminReducer";
+import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, changeStatusCreatingArticle, setResponceId } from "../../store/adminReducer";
 
 const formCardInnerCategory = (inputChoose, nextBtn) => {
   return (
@@ -135,7 +135,6 @@ const AdminCreateCard = () => {
   const choose = useSelector(state => state.admin.creatingCard.content.choose);
   const nextBtn = useSelector(state => state.admin.creatingCard.statusCreatingCard);
   const [file, setFile] = useState('');
-  const [data, getFile] = useState({ name: "", path: "" });
 
   useEffect(() => {
     dispatch(changeStatusCreatingArticle(false));
@@ -156,7 +155,6 @@ const AdminCreateCard = () => {
 
       await axios.post('http://localhost:4000/admin/upload', formData)
         .then(res => {
-          dispatch(statusUploadImage(true));
 
           axios.post('http://localhost:4000/admin/create-card', { choose, ...data, image: `http://localhost:4000${res.data.path}` })
             .then(res => {

@@ -8,7 +8,7 @@ const Content = ({ data }) => {
     <main className='flex flex-col justify-center flex-1'>
       <div className='flex content-center justify-center gap-8 max-lg:flex-col max-lg:items-center px-24'>
         {data.map((card, i) => {
-          if (card.choose === pathname.slice(1, pathname.length - 1))
+          if (card.choose === pathname.slice(1, pathname.length - 1)) {
             return (
               <Card
                 key={i}
@@ -19,6 +19,9 @@ const Content = ({ data }) => {
                 image={card.image}
               />
             )
+          } else {
+            return null;
+          }
         })}
       </div>
     </main>
