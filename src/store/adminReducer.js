@@ -14,7 +14,8 @@ const defaultState = {
     elements: [],
     previewElements: [],
     IdElement: 0,
-    banAddElement: false
+    banAddElement: false,
+    currentTagButton: '',
   },
   raportsArticles: {
     cards: [],
@@ -28,6 +29,7 @@ const INPUT_NAME_DESCRIPTION_CARD = 'INPUT_NAME_DESCRIPTION_CARD';
 const SET_RESPONCE_ID = 'SET_RESPONCE_ID';
 const ADD_COMPONENT_TO_ARTICLE = 'ADD_COMPONENT_TO_ARTICLE';
 const ADD_PREVIEW_CONTENT_AN_ARTICLE = 'ADD_PREVIEW_CONTENT_AN_ARTICLE';
+const CURRENT_TAG_BUTTON = 'CURRENT_TAG_BUTTON';
 const ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT = 'ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT';
 const ADD_ID_FOR_NEW_ELEMENT = 'ADD_ID_FOR_NEW_ELEMENT';
 const RESET_COMPONENT_TO_ARTICLE = 'RESET_COMPONENT_TO_ARTICLE';
@@ -61,6 +63,8 @@ export const adminReducer = (state = defaultState, action) => {
       return { ...state, creatingArticle: { ...state.creatingArticle, elements: [...state.creatingArticle.elements, action.payload] } };
     case ADD_PREVIEW_CONTENT_AN_ARTICLE:
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: [...state.creatingArticle.previewElements, action.payload] } };
+    case CURRENT_TAG_BUTTON:
+      return { ...state, creatingArticle: { ...state.creatingArticle, currentTagButton: action.payload } };
     case ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT:
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: [...action.payload] } };
     case ADD_ID_FOR_NEW_ELEMENT:
@@ -96,6 +100,7 @@ export const statusCreatingCard = (payload) => ({ type: STATUS_CREATING_CARD, pa
 export const setResponceId = (payload) => ({ type: SET_RESPONCE_ID, payload });
 export const addComponentToArticle = (payload) => ({ type: ADD_COMPONENT_TO_ARTICLE, payload });
 export const addPreviewContentAnArticle = (payload) => ({ type: ADD_PREVIEW_CONTENT_AN_ARTICLE, payload });
+export const addCurrentTagButton = (payload) => ({ type: CURRENT_TAG_BUTTON, payload });
 export const addPreviewContentAnArticleAfterEdit = (payload) => ({ type: ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT, payload });
 export const observeChanges = (payload) => ({ type: OBSERVE_CHANGES, payload });
 export const addIdForNewElement = (payload) => ({ type: ADD_ID_FOR_NEW_ELEMENT, payload });
