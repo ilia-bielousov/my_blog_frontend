@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NewTag from "./NewTag";
 
@@ -19,23 +19,23 @@ const AreaNewTags = () => {
     e.preventDefault();
 
     if (currentTagButton) {
-      dispatch(addIdForNewElement());
-
       dispatch(addComponentToArticle(
         <NewTag
           tag={currentTagButton}
-          text='Введите свой текст'
+          IDforElementOfArticle={IDforElementOfArticle}
         />
       ));
 
       dispatch(addPreviewContentAnArticle(
         {
           tag: currentTagButton,
-          // классы
+          classNames: '',
           text: '',
           id: IDforElementOfArticle
         }
       ));
+
+      dispatch(addIdForNewElement());
     } else {
       alert('вы не взяли элемент, чтобы перетащить');
     }
@@ -45,7 +45,7 @@ const AreaNewTags = () => {
     <div
       onDragOver={(e) => dragOverSquareStyle(e)}
       onDrop={(e) => dropHandler(e)}
-      className="square w-full h-64 p-5 border-dashed border-blue-600 border-2">
+      className="square w-full min-h-96 p-8 border-dashed border-blue-600 border-2">
       {tags.map((item, i) => {
         return (
           <Fragment key={i}>

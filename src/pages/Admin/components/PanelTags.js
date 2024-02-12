@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { addCurrentTagButton } from '../../../store/adminReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { addCurrentTagButton, changeStatusCreatingArticle, addCurrentStyleClassText } from '../../../store/adminReducer';
+
+import { request } from '../../../utilities/request';
 
 // images
 import arrow from './../../../assets/images/arrow-history.svg';
@@ -69,6 +71,9 @@ const tagsRender = [{
 const PanelTags = () => {
   const dispatch = useDispatch();
 
+  const content = useSelector(state => state.admin.creatingArticle.previewElements);
+  const IDforArticle = useSelector(state => state.admin.id);
+
   const [transform, setTransform] = useState({ x: 0, y: 0 });
   const [cursorOffset, setCursorOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -103,8 +108,8 @@ const PanelTags = () => {
 
   const handleMouseDown = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const offsetX = e.clientX - rect.left + 300;
-    const offsetY = e.clientY - rect.top + 324;
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
 
     setCursorOffset({ x: offsetX, y: offsetY });
     setIsDragging(true);
@@ -117,21 +122,31 @@ const PanelTags = () => {
 
   const dragStartHandler = (e) => {
     dispatch(addCurrentTagButton(e.target.getAttribute('data-tag')));
-
-    // setCurrentTagButton(e.target.getAttribute('data-tag'));
   }
 
   const sendArticle = (e) => {
     e.preventDefault();
+    console.log(content);
+
+    request('POST', 'admin/create-article', [...content, IDforArticle]);
+
+    dispatch(changeStatusCreatingArticle(true));
 
     console.log(e);
   }
 
-  // добавить стили для кнопок с картинками
+  const changeClassText = (e) => {
+    dispatch(addCurrentStyleClassText(e.target.value));
+  }
+
   return (
     <div className="cursor-grab w-1/2 absolute"
       style={{
-        transform: `translate(${transform.x}px, ${transform.y}px)`,
+
+        // тут баг большой, надо исправлять.
+        // transform: `translate(${transform.x}px, ${transform.y}px)`,
+        top: `${transform.y}px`,
+        left: `${transform.x}px`,
         transition: isDragging ? 'none' : 'transform 0.2s ease', // Add transition for smooth movement
       }}
       onMouseDown={handleMouseDown}
@@ -146,7 +161,7 @@ const PanelTags = () => {
           Panel My Blog
         </h3>
         <div className="inline-flex flex-grow pl-4 text-ba" draggable={false}>
-          <select defaultValue={'default'} className='text-slate-950 p-1 rounded-xl w-36 outline-none'>
+          <select onChange={changeClassText} defaultValue={'default'} className='text-slate-950 p-1 rounded-xl w-36 outline-none'>
             <optgroup label='text size'>
               <option value='default'>text base</option>
               <option value="text-xl">text lg</option>
@@ -154,10 +169,10 @@ const PanelTags = () => {
               <option value="text-2xl">text 2xl</option>
             </optgroup>
             <optgroup label='text style'>
-              <option value="text-xl">normal</option>
-              <option value="text-2xl">italic</option>
-              <option value="text-3xl">semi bold</option>
-              <option value="text-3xl">bold</option>
+              <option value="font-normal">normal</option>
+              <option value="italic">italic</option>
+              <option value="font-semibold">semi bold</option>
+              <option value="font-bold">bold</option>
             </optgroup>
           </select>
         </div>

@@ -5,7 +5,9 @@ import { statusCreatingCard, resetComponentToArticle, resetPreviewContentAnArtic
 import PanelForAddtags from "./components/PanelForAddtags";
 
 import ModalAfterCreatingArticle from './components/ModalAfterCreatingArticle';
-import MyNewArticle from "./components/MyNewArticle";
+// import MyNewArticle from "./components/MyNewArticle";
+import AreaNewTags from "./components/AreaNewTags";
+import PanelTags from "./components/PanelTags";
 
 
 
@@ -39,16 +41,17 @@ const AdminCreateArticle = () => {
   // }
 
   return (
-    <main className="flex flex-1 pl-72">
-      <aside className="w-2/3 flex-1 p-3 justify-center">
-        <h2 className="text-3xl font-bold mb-5 text-center">
-          Создание статьи
-        </h2>
+    <>
+      <main className="flex flex-1 pl-72">
+        <aside className="w-2/3 flex-1 p-3 justify-center">
+          <h2 className="text-3xl font-bold mb-5 text-center">
+            Создание статьи
+          </h2>
 
-        <MyNewArticle />
+          <AreaNewTags />
 
-        {/* старая версия */}
-        {/* <div className="flex flex-1 flex-col gap-5 mb-10 items-center">
+          {/* старая версия */}
+          {/* <div className="flex flex-1 flex-col gap-5 mb-10 items-center">
           {elements.map((item, i) => {
             return (
               <form className="form__item" key={i}>
@@ -57,11 +60,11 @@ const AdminCreateArticle = () => {
             )
           })}
         </div> */}
-        {/* <div className="flex justify-center">
+          {/* <div className="flex justify-center">
           <PanelForAddtags />
         </div> */}
-      </aside>
-      {/* <article className="flex-1 p-3">
+        </aside>
+        {/* <article className="flex-1 p-3">
         <h2 className="text-3xl font-bold mb-4 text-center">
           Предварительный просмотр статьи
         </h2>
@@ -77,9 +80,11 @@ const AdminCreateArticle = () => {
           )
         })}
       </article> */}
-      {/* модальное окно после успешного создания статьи */}
-      {statusCreatingArticle ? <ModalAfterCreatingArticle /> : null}
-    </main>
+        {/* модальное окно после успешного создания статьи */}
+        {statusCreatingArticle ? <ModalAfterCreatingArticle /> : null}
+      </main>
+      <PanelTags />
+    </>
   );
 };
 

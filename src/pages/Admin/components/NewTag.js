@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 import picture from './../../../assets/images/picture.svg';
 
-const NewTag = ({ tag, text }) => {
+const NewTag = ({ tag, IDforElementOfArticle }) => {
+  const content = useSelector(state => state.admin.creatingArticle.previewElements);
+  const classes = useSelector(state => state.admin.creatingArticle.currentStyleClassText);
   const tagRef = useRef(null);
   const [file, setFile] = useState('');
 
@@ -15,44 +18,67 @@ const NewTag = ({ tag, text }) => {
   const onKeyDown = (e) => {
     if (e.key === 'Enter' && tag !== 'ul') {
       tagRef.current.blur();
-    } else {
-      // console.log(tagRef.current.outerText) // здесь нужно решить проблему, если удалили текст, то стэйт не обновляется
-      // setTextInTag(`${tagRef.current.outerText}${e.key === 1 ? e.key : ''}`);
+      content[IDforElementOfArticle].text = e.target.value;
+      content[IDforElementOfArticle].className = classes;
     }
   };
-
 
   const determine = () => {
     switch (tag) {
       case 'h1': {
         return (
           <div className="">
-            <input onKeyDown={onKeyDown} ref={tagRef} className="w-full p-2 outline-blue-700 mb-2" type="text" placeholder={text} />
+            <input
+              ref={tagRef}
+              className="w-full p-2 outline-blue-700 mb-2"
+              type="text"
+              onKeyDown={onKeyDown}
+              placeholder='Введите свой текст'
+            // нужно добавить value и как-то туда записывать текст или ссылку на картинку и тд
+            />
           </div>
         )
       }
       case 'h2': {
         return (
           <div className="">
-            <input onKeyDown={onKeyDown} ref={tagRef} className="w-full p-2 outline-blue-700 mb-2" type="text" placeholder={text} />
+            <input
+              ref={tagRef}
+              className="w-full p-2 outline-blue-700 mb-2"
+              type="text"
+              onKeyDown={onKeyDown}
+              placeholder='Введите свой текст'
+            />
           </div>
         )
       }
       case 'h3': {
         return (
           <div className="">
-            <input onKeyDown={onKeyDown} ref={tagRef} className="w-full p-2 outline-blue-700 mb-2" type="text" placeholder={text} />
+            <input
+              ref={tagRef}
+              className="w-full p-2 outline-blue-700 mb-2"
+              type="text"
+              onKeyDown={onKeyDown}
+              placeholder='Введите свой текст'
+            />
           </div>
         )
       }
       case 'ul': {
         return (
           <div className="">
-            <input onKeyDown={onKeyDown} ref={tagRef} className="w-full p-2 outline-none" type="text" placeholder={text} />
+            <input
+              ref={tagRef}
+              className="w-full p-2 outline-blue-700 mb-2"
+              type="text"
+              onKeyDown={onKeyDown}
+              placeholder='Введите свой текст'
+            />
             {/* тут нужно поработать со списком (возможно еще с ссыками) */}
             <div className="">
               <li>
-                <input onKeyDown={onKeyDown} className="p-2 outline-none" type="text" placeholder={text} />
+                <input onKeyDown={onKeyDown} className="p-2 outline-none" type="text" placeholder='Введите свой текст' />
               </li>
             </div>
           </div>
@@ -61,7 +87,13 @@ const NewTag = ({ tag, text }) => {
       case 'p': {
         return (
           <div className="">
-            <textarea ref={tagRef} className="w-full p-2 outline-blue-700 resize-none mb-2 h-48" type="text" placeholder={text} />
+            <textarea
+              onKeyDown={onKeyDown}
+              ref={tagRef}
+              className="w-full p-2 outline-blue-700 resize-none mb-2 h-48"
+              type="text"
+              placeholder='Введите свой текст'
+            />
           </div>
         )
       }
@@ -74,8 +106,9 @@ const NewTag = ({ tag, text }) => {
 
           await axios.post('http://localhost:4000/admin/upload', formData)
             .then(res => {
-              // content = { ...content, alt: res.data.name, image: `http://localhost:4000${res.data.path}` };
-              console.log(res);
+              content[IDforElementOfArticle] = { ...content[IDforElementOfArticle], alt: res.data.name, image: `http://localhost:4000${res.data.path}`, id: IDforElementOfArticle }
+
+              // console.log(res);
             })
             .catch(err => console.log(err));
         }
@@ -88,11 +121,10 @@ const NewTag = ({ tag, text }) => {
                 className="w-full h-full absolute inset-0 opacity-0 cursor-pointer"
                 onChange={e => setFile(e.target.files[0])}
               />
-              {/* <div className="text-white py-2 px-4 rounded-md flex justify-center h-full items-center"> */}
               <img src={picture} alt="capt" className="w-8" />
             </div>
             <button
-              className="inline-block p-2 rounded-md bg-blue-700 text-white"
+              className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
               onClick={(e) => sendImage(e)}
             >
               confirm
