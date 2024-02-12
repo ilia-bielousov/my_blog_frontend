@@ -113,12 +113,12 @@ const formCardInnerSubmit = (nextBtn) => {
   return (
     <>
       <button
-        className="w-48 p-3 mb-3 rounded-xl transition bg-sky-300 hover:bg-sky-500 active:bg-sky-600 text-blue cursor-pointer disabled:cursor-auto disabled:bg-sky-800"
+        className="w-48 p-3 mb-3 rounded-xl transition text-slate bg-blue-400 hover:bg-blue-500 active:bg-blue-600 text-blue cursor-pointer disabled:cursor-auto disabled:bg-blue-800"
         type="submit"
         disabled={nextBtn}>отправить данные</button>
       {nextBtn ?
         <Link
-          className="block w-48 p-3 rounded-xl text-center bg-lime-300 hover:bg-lime-400 active:bg-lime-500 text-lime-950"
+          className="block w-48 p-3 rounded-xl text-center bg-green-300 hover:bg-green-400 active:bg-green-500 text-green-950"
           to="../create-article"
           relative="admin"
           key={'create-article'}

@@ -10,11 +10,15 @@ const PageForCards = () => {
 
   useEffect(() => {
     dispatch(fetchCards());
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
-      {cards ? <Content data={cards} /> : null}
+      {cards ?
+        <Content data={cards} />
+        :
+        null
+      }
     </>
   )
 }

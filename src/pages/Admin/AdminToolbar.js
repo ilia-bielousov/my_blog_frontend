@@ -8,7 +8,7 @@ import edit from './../../assets/images/edit.svg';
 
 const AdminToolbar = () => {
   return (
-    <nav className="fixed z-10 left-0 top-0 h-full w-72 shadow-xl">
+    <nav className="fixed z-10 left-0 top-0 h-full w-72 shadow-xl z-10">
       <ul className='flex flex-col'>
         <li className='p-2 transition hover:bg-slate-300'>
           <Link

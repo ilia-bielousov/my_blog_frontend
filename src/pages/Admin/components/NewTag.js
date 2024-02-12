@@ -7,8 +7,11 @@ import picture from './../../../assets/images/picture.svg';
 const NewTag = ({ tag, IDforElementOfArticle }) => {
   const content = useSelector(state => state.admin.creatingArticle.previewElements);
   const classes = useSelector(state => state.admin.creatingArticle.currentStyleClassText);
+
   const tagRef = useRef(null);
+
   const [file, setFile] = useState('');
+  const [sourceImg, setSourceImg] = useState(null);
 
   // для фокуса после создания.
   useEffect(() => {
@@ -19,7 +22,13 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
     if (e.key === 'Enter' && tag !== 'ul') {
       tagRef.current.blur();
       content[IDforElementOfArticle].text = e.target.value;
-      content[IDforElementOfArticle].className = classes;
+      if (tag === 'p') {
+        content[IDforElementOfArticle].className = `text-justify indent-12 mb-1.5 ${classes}`;
+      } else if (tag === 'h1' || tag === 'h2' || tag === 'h3') {
+        content[IDforElementOfArticle].className = `mb-1.5 ${classes}`;
+      }
+    } else if (tag === 'code') {
+      content[IDforElementOfArticle].className = `font-mono ${classes}`;
     }
   };
 
@@ -103,38 +112,48 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
 
           const formData = new FormData();
           formData.append('file', file);
+          const sourceImg = null;
 
           await axios.post('http://localhost:4000/admin/upload', formData)
             .then(res => {
-              content[IDforElementOfArticle] = { ...content[IDforElementOfArticle], alt: res.data.name, image: `http://localhost:4000${res.data.path}`, id: IDforElementOfArticle }
-
+              content[IDforElementOfArticle] = { ...content[IDforElementOfArticle], alt: res.data.name, image: `http://localhost:4000${res.data.path}`, id: IDforElementOfArticle, className: 'mx-auto p-3' }
+              setSourceImg(`http://localhost:4000${res.data.path}`);
               // console.log(res);
             })
             .catch(err => console.log(err));
         }
 
         return (
-          <div className="flex flex-col items-center p-2 max-w-xs mx-auto">
-            <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 p-3 mb-2 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
-              <input
-                type="file"
-                className="w-full h-full absolute inset-0 opacity-0 cursor-pointer"
-                onChange={e => setFile(e.target.files[0])}
-              />
-              <img src={picture} alt="capt" className="w-8" />
-            </div>
-            <button
-              className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
-              onClick={(e) => sendImage(e)}
-            >
-              confirm
-            </button>
-          </div>
-        )
+          !sourceImg ?
+            <div className="flex flex-col items-center p-2 max-w-xs mx-auto">
+              <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 p-3 mb-2 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
+                <input
+                  type="file"
+                  className="w-full h-full absolute inset-0 opacity-0 cursor-pointer"
+                  onChange={e => setFile(e.target.files[0])}
+                />
+                <img src={picture} alt="capt" className="w-8" />
+              </div>
+              <button
+                className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
+                onClick={(e) => sendImage(e)}
+              >
+                confirm
+              </button>
+            </div> :
+            <div> // нужно тут доработать
+              <img src={sourceImg} alt="test" />
+            </div>)
       }
       case 'code': {
         return (
-          <code ref={tagRef} className=''></code>
+          <textarea
+            onKeyDown={onKeyDown}
+            ref={tagRef}
+            className="w-full p-2 outline-blue-700 resize-none mb-2 h-60"
+            type="text"
+            placeholder='Введите свой текст'
+          />
         )
       }
 

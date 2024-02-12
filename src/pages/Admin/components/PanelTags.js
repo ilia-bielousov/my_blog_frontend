@@ -126,13 +126,10 @@ const PanelTags = () => {
 
   const sendArticle = (e) => {
     e.preventDefault();
-    console.log(content);
 
     request('POST', 'admin/create-article', [...content, IDforArticle]);
 
     dispatch(changeStatusCreatingArticle(true));
-
-    console.log(e);
   }
 
   const changeClassText = (e) => {
@@ -140,7 +137,7 @@ const PanelTags = () => {
   }
 
   return (
-    <div className="cursor-grab w-1/2 absolute"
+    <div className="cursor-grab w-1/2 absolute z-20"
       style={{
 
         // тут баг большой, надо исправлять.
@@ -161,6 +158,7 @@ const PanelTags = () => {
           Panel My Blog
         </h3>
         <div className="inline-flex flex-grow pl-4 text-ba" draggable={false}>
+          {/* нужно еще переделать этот селектор */}
           <select onChange={changeClassText} defaultValue={'default'} className='text-slate-950 p-1 rounded-xl w-36 outline-none'>
             <optgroup label='text size'>
               <option value='default'>text base</option>
