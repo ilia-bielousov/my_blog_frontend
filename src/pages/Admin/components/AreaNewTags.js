@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NewTag from "./NewTag";
 
@@ -29,7 +29,6 @@ const AreaNewTags = () => {
       dispatch(addPreviewContentAnArticle(
         {
           tag: currentTagButton,
-          classNames: '',
           text: '',
           id: IDforElementOfArticle
         }

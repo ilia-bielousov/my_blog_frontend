@@ -52,7 +52,7 @@ const tagsRender = [{
 },
 {
   title: 'добавить видео',
-  dataTag: 'пропуск',
+  dataTag: 'iframe',
   src: video,
   alt: 'video',
 },
@@ -108,8 +108,8 @@ const PanelTags = () => {
 
   const handleMouseDown = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const offsetX = e.clientX - rect.left;
-    const offsetY = e.clientY - rect.top;
+    let offsetX = e.clientX - rect.left;
+    let offsetY = e.clientY - rect.top;
 
     setCursorOffset({ x: offsetX, y: offsetY });
     setIsDragging(true);
@@ -132,12 +132,8 @@ const PanelTags = () => {
     dispatch(changeStatusCreatingArticle(true));
   }
 
-  const changeClassText = (e) => {
-    dispatch(addCurrentStyleClassText(e.target.value));
-  }
-
   return (
-    <div className="cursor-grab w-1/2 absolute z-20"
+    <div className="cursor-grab w-1/3 absolute z-20"
       style={{
 
         // тут баг большой, надо исправлять.
@@ -159,20 +155,6 @@ const PanelTags = () => {
         </h3>
         <div className="inline-flex flex-grow pl-4 text-ba" draggable={false}>
           {/* нужно еще переделать этот селектор */}
-          <select onChange={changeClassText} defaultValue={'default'} className='text-slate-950 p-1 rounded-xl w-36 outline-none'>
-            <optgroup label='text size'>
-              <option value='default'>text base</option>
-              <option value="text-xl">text lg</option>
-              <option value="text-xl">text xl</option>
-              <option value="text-2xl">text 2xl</option>
-            </optgroup>
-            <optgroup label='text style'>
-              <option value="font-normal">normal</option>
-              <option value="italic">italic</option>
-              <option value="font-semibold">semi bold</option>
-              <option value="font-bold">bold</option>
-            </optgroup>
-          </select>
         </div>
         <div className="flex gap-2 mr-2" draggable={false}>
           <img src={arrow} alt="arrow back" className="block w-8 p-1 cursor-pointer" draggable={false} />

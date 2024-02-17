@@ -16,6 +16,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
   // для фокуса после создания.
   useEffect(() => {
     if (tag !== 'img') tagRef.current.focus();
+    console.log(classes);
   }, []);
 
   const onKeyDown = (e) => {
@@ -23,12 +24,16 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
       tagRef.current.blur();
       content[IDforElementOfArticle].text = e.target.value;
       if (tag === 'p') {
-        content[IDforElementOfArticle].className = `text-justify indent-12 mb-1.5 ${classes}`;
-      } else if (tag === 'h1' || tag === 'h2' || tag === 'h3') {
-        content[IDforElementOfArticle].className = `mb-1.5 ${classes}`;
+        content[IDforElementOfArticle].className = `text-justify indent-12 mb-1.5`;
+      } else if (tag === 'h1') {
+        content[IDforElementOfArticle].className = `text-3xl font-bold mb-1.5`;
+      } else if (tag === 'h2') {
+        content[IDforElementOfArticle].className = `text-2xl font-bold mb-1.5`;
+      } else if (tag === 'h3') {
+        content[IDforElementOfArticle].className = `text-xl mb-1.5`;
       }
     } else if (tag === 'code') {
-      content[IDforElementOfArticle].className = `font-mono ${classes}`;
+      content[IDforElementOfArticle].className = `font-mono`;
     }
   };
 
@@ -36,47 +41,40 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
     switch (tag) {
       case 'h1': {
         return (
-          <div className="">
-            <input
-              ref={tagRef}
-              className="w-full p-2 outline-blue-700 mb-2"
-              type="text"
-              onKeyDown={onKeyDown}
-              placeholder='Введите свой текст'
-            // нужно добавить value и как-то туда записывать текст или ссылку на картинку и тд
-            />
-          </div>
+          <input // возможно еще тут переписать, добавить редактирование
+            ref={tagRef}
+            className="w-full p-2 outline-blue-700 mb-2"
+            type="text"
+            onKeyDown={onKeyDown}
+            placeholder='Введите свой текст'
+          />
         )
       }
       case 'h2': {
         return (
-          <div className="">
-            <input
-              ref={tagRef}
-              className="w-full p-2 outline-blue-700 mb-2"
-              type="text"
-              onKeyDown={onKeyDown}
-              placeholder='Введите свой текст'
-            />
-          </div>
+          <input
+            ref={tagRef}
+            className="w-full p-2 outline-blue-700 mb-2"
+            type="text"
+            onKeyDown={onKeyDown}
+            placeholder='Введите свой текст'
+          />
         )
       }
       case 'h3': {
         return (
-          <div className="">
-            <input
-              ref={tagRef}
-              className="w-full p-2 outline-blue-700 mb-2"
-              type="text"
-              onKeyDown={onKeyDown}
-              placeholder='Введите свой текст'
-            />
-          </div>
+          <input
+            ref={tagRef}
+            className="w-full p-2 outline-blue-700 mb-2"
+            type="text"
+            onKeyDown={onKeyDown}
+            placeholder='Введите свой текст'
+          />
         )
       }
       case 'ul': {
         return (
-          <div className="">
+          <ul className="">
             <input
               ref={tagRef}
               className="w-full p-2 outline-blue-700 mb-2"
@@ -85,67 +83,13 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
               placeholder='Введите свой текст'
             />
             {/* тут нужно поработать со списком (возможно еще с ссыками) */}
-            <div className="">
-              <li>
-                <input onKeyDown={onKeyDown} className="p-2 outline-none" type="text" placeholder='Введите свой текст' />
-              </li>
-            </div>
-          </div>
+            <li>
+              <input onKeyDown={onKeyDown} className="p-2 outline-none" type="text" placeholder='Введите свой текст' />
+            </li>
+          </ul>
         )
       }
       case 'p': {
-        return (
-          <div className="">
-            <textarea
-              onKeyDown={onKeyDown}
-              ref={tagRef}
-              className="w-full p-2 outline-blue-700 resize-none mb-2 h-48"
-              type="text"
-              placeholder='Введите свой текст'
-            />
-          </div>
-        )
-      }
-      case 'img': {
-        const sendImage = async (e) => {
-          e.preventDefault();
-
-          const formData = new FormData();
-          formData.append('file', file);
-          const sourceImg = null;
-
-          await axios.post('http://localhost:4000/admin/upload', formData)
-            .then(res => {
-              content[IDforElementOfArticle] = { ...content[IDforElementOfArticle], alt: res.data.name, image: `http://localhost:4000${res.data.path}`, id: IDforElementOfArticle, className: 'mx-auto p-3' }
-              setSourceImg(`http://localhost:4000${res.data.path}`);
-              // console.log(res);
-            })
-            .catch(err => console.log(err));
-        }
-
-        return (
-          !sourceImg ?
-            <div className="flex flex-col items-center p-2 max-w-xs mx-auto">
-              <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 p-3 mb-2 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
-                <input
-                  type="file"
-                  className="w-full h-full absolute inset-0 opacity-0 cursor-pointer"
-                  onChange={e => setFile(e.target.files[0])}
-                />
-                <img src={picture} alt="capt" className="w-8" />
-              </div>
-              <button
-                className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
-                onClick={(e) => sendImage(e)}
-              >
-                confirm
-              </button>
-            </div> :
-            <div> // нужно тут доработать
-              <img src={sourceImg} alt="test" />
-            </div>)
-      }
-      case 'code': {
         return (
           <textarea
             onKeyDown={onKeyDown}
@@ -154,6 +98,78 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
             type="text"
             placeholder='Введите свой текст'
           />
+        )
+      }
+      case 'img': { // добавить подпись для картинки
+        const sendImage = async (e) => {
+          e.preventDefault();
+
+          const formData = new FormData();
+          formData.append('file', file);
+
+          await axios.post('http://localhost:4000/admin/upload', formData)
+            .then(res => {
+              content[IDforElementOfArticle] = { ...content[IDforElementOfArticle], alt: res.data.name, image: `http://localhost:4000${res.data.path}`, id: IDforElementOfArticle, className: 'mx-auto p-3' }
+              setSourceImg(`http://localhost:4000${res.data.path}`);
+            })
+            .catch(err => console.log(err));
+        }
+
+        return (
+          <>
+            {(!sourceImg ?
+              <div className="flex flex-col items-center p-2 max-w-xs mx-auto">
+                <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 p-3 mb-2 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
+                  <input
+                    type="file"
+                    name="image"
+                    id="image"
+                    className="w-full h-full absolute inset-0 opacity-0 cursor-pointer"
+                    onChange={e => setFile(e.target.files[0])}
+                  />
+                  <img src={picture} alt="capt" className="w-8" />
+                </div>
+                <button
+                  className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
+                  onClick={(e) => sendImage(e)}
+                >
+                  confirm
+                </button>
+              </div> :
+              <div className="mx-auto">
+                <img className="mx-auto p-3" src={sourceImg} alt="test" />
+              </div>)}
+          </>
+        )
+      }
+      case 'iframe': {
+        return (
+          <input
+            ref={tagRef}
+            className="w-full p-2 outline-blue-700 mb-2"
+            type="text"
+            onKeyDown={onKeyDown}
+            placeholder='Введите свой текст'
+          />
+        )
+      }
+
+      case 'code': {
+        return (
+          <>
+            <textarea
+              onKeyDown={onKeyDown}
+              ref={tagRef}
+              className="w-full p-2 outline-blue-700 resize-none mb-2 h-60"
+              type="text"
+              placeholder='скопируйте свой код и вставьте сюда'
+            />
+            <input
+              type="text"
+              className="w-full p-2 outline-blue-700 mb-2"
+              placeholder="напишите язык на каком написан код (javascript, c/c++, python etc."
+            />
+          </>
         )
       }
 

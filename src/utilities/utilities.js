@@ -1,4 +1,6 @@
-import { createElement } from "react";
+import { Fragment, createElement } from "react";
+import CodeExample from "../components/CodeExample";
+
 
 const createArticle = (content) => {
   const t = Object.entries(content);
@@ -9,13 +11,7 @@ const createArticle = (content) => {
       switch (item[1].tag) {
         case 'code':
           return (
-            <pre className="bg-slate-100 p-5 my-3">
-              {createElement(
-                item[1].tag,
-                { className: item[1].className },
-                item[1].text,
-              )}
-            </pre>
+            <CodeExample language={'c'} code={item[1].text} />
           );
         case 'img': {
           return (
@@ -28,11 +24,17 @@ const createArticle = (content) => {
             // возможно тут, можно добавить еще подпись, пока подумаю
           )
         }
+        case 'iframe': { // тут закончил, пока не понятно как добавлять видео
+          return (
+            <div className="mx-auto min-w-72 px-2 mb-3 max-w-7xl">
+              {createElement('div', { className: 'w-full', dangerouslySetInnerHTML: { __html: item[1].text } })}
+            </div>
+          )
+        }
         default: {
           return createElement(
             item[1].tag,
-            { className: item[1].className },
-            item[1].text ? item[1].text : null,
+            { className: item[1].className, dangerouslySetInnerHTML: { __html: item[1].text } }
           );
         }
       }

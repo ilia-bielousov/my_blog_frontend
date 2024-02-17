@@ -1,4 +1,3 @@
-
 const AdminEdit = () => {
   return (
     <main className="flex-1 pl-72">
@@ -7,7 +6,6 @@ const AdminEdit = () => {
           Редактировать статью
         </h2>
         <div className="">
-          пока не придумал как сделать.
         </div>
       </article>
     </main>
