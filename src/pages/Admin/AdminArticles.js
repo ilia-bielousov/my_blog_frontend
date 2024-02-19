@@ -23,10 +23,16 @@ const AdminArticles = () => {
         });
 
         return (
-          <li className='mb-1 text-xl' key={key}>
-            <span className='font-semibold'>Название статьи:</span> <span>{card.name}, </span>
-            <span className='font-semibold'>Описание статьи:</span> <span>{card.description}, </span>
-            <span className='font-semibold'>количество просмотров:</span> <span>{t}.</span>
+          <li className='mb-1 text-xl flex flex-col p-2' key={key}>
+            <div className='flex justify-between gap-5'>
+              <span className='font-semibold flex-1'>Название статьи:</span> <span className='flex-1'>{card.name} </span>
+            </div>
+            <div className='flex justify-between gap-5'>
+              <span className='font-semibold flex-1'>Описание статьи:</span> <span className='flex-1'>{card.description} </span>
+            </div>
+            <div className='flex justify-between gap-5'>
+              <span className='font-semibold flex-1'>количество просмотров:</span> <span className='flex-1'>{t}.</span>
+            </div>
           </li>
         )
       }
@@ -39,25 +45,25 @@ const AdminArticles = () => {
         <h2 className='text-3xl font-bold mb-10'>
           Статистика
         </h2>
-        <div className='articles p-3'>
-          <div className="programming mb-3">
-            <h3 className='text-3xl mb-2'>
+        <div className='articles p-3 flex'>
+          <div className="programming p-2 flex-1">
+            <h3 className='text-3xl mb-2 text-center'>
               Программирование
             </h3>
             <ol className='list-decimal'>
               {renderRaports("programming")}
             </ol>
           </div>
-          <div className="projects mb-3">
-            <h3 className='text-3xl mb-2'>
+          <div className="projects flex-1">
+            <h3 className='text-3xl mb-2 text-center'>
               Ардуино
             </h3>
             <ol className='list-decimal'>
               {renderRaports("projects")}
             </ol>
           </div>
-          <div className="modeling">
-            <h3 className='text-3xl mb-2'>
+          <div className="modeling flex-1">
+            <h3 className='text-3xl text-center'>
               Моделирование
             </h3>
             <ol className='list-decimal'>

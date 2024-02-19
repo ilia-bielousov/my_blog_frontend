@@ -6,7 +6,6 @@ import picture from './../../../assets/images/picture.svg';
 
 const NewTag = ({ tag, IDforElementOfArticle }) => {
   const content = useSelector(state => state.admin.creatingArticle.previewElements);
-  const classes = useSelector(state => state.admin.creatingArticle.currentStyleClassText);
 
   const tagRef = useRef(null);
 
@@ -15,29 +14,43 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
 
   // для фокуса после создания.
   useEffect(() => {
-    if (tag !== 'img') tagRef.current.focus();
-    console.log(classes);
+    if (tag !== 'img') {
+      tagRef.current.focus();
+    }
+
+    if (tag === 'code') {
+      tagRef.current.children[0].focus();
+    }
   }, []);
 
   const onKeyDown = (e) => {
-    if (e.key === 'Enter' && tag !== 'ul') {
+    if (e.key === 'Enter' && tag !== 'ul' && tag !== 'code') {
       tagRef.current.blur();
       content[IDforElementOfArticle].text = e.target.value;
+
       if (tag === 'p') {
-        content[IDforElementOfArticle].className = `text-justify indent-12 mb-1.5`;
+        content[IDforElementOfArticle].className = `text-justify indent-12 mb-3`;
       } else if (tag === 'h1') {
-        content[IDforElementOfArticle].className = `text-3xl font-bold mb-1.5`;
+        content[IDforElementOfArticle].className = `text-3xl font-bold mb-5`;
       } else if (tag === 'h2') {
-        content[IDforElementOfArticle].className = `text-2xl font-bold mb-1.5`;
+        content[IDforElementOfArticle].className = `text-2xl font-bold mb-4`;
       } else if (tag === 'h3') {
-        content[IDforElementOfArticle].className = `text-xl mb-1.5`;
+        content[IDforElementOfArticle].className = `text-xl mb-3`;
       }
-    } else if (tag === 'code') {
-      content[IDforElementOfArticle].className = `font-mono`;
+    } else if (tag === 'ul' && e.key === 'Control') {
+      tagRef.current.blur();
+      content[IDforElementOfArticle].list = e.target.value;
+    } else if (e.key === 'Enter' && tag === 'code') {
+      content[IDforElementOfArticle].text = tagRef.current.children[0].value;
+      content[IDforElementOfArticle].language = tagRef.current.children[1].value;
+
+      tagRef.current.children[0].blur();
+      tagRef.current.children[1].blur();
     }
   };
 
   const determine = () => {
+    // возможно добавить цитату
     switch (tag) {
       case 'h1': {
         return (
@@ -47,6 +60,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
+          // value={value ? value : null}
           />
         )
       }
@@ -74,19 +88,13 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
       }
       case 'ul': {
         return (
-          <ul className="">
-            <input
-              ref={tagRef}
-              className="w-full p-2 outline-blue-700 mb-2"
-              type="text"
-              onKeyDown={onKeyDown}
-              placeholder='Введите свой текст'
-            />
-            {/* тут нужно поработать со списком (возможно еще с ссыками) */}
-            <li>
-              <input onKeyDown={onKeyDown} className="p-2 outline-none" type="text" placeholder='Введите свой текст' />
-            </li>
-          </ul>
+          <textarea
+            onKeyDown={onKeyDown}
+            ref={tagRef}
+            className="w-full p-2 outline-blue-700 resize-none mb-2 h-60"
+            type="text"
+            placeholder='Введите свой текст'
+          />
         )
       }
       case 'p': {
@@ -137,7 +145,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
                 </button>
               </div> :
               <div className="mx-auto">
-                <img className="mx-auto p-3" src={sourceImg} alt="test" />
+                <img className="mx-auto p-3 mb-1.5" src={sourceImg} alt="test" />
               </div>)}
           </>
         )
@@ -153,28 +161,28 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
           />
         )
       }
-
       case 'code': {
         return (
-          <>
+          // проблема в tagRef когда я записываю язык на котором написано
+          <div className=""
+            ref={tagRef}>
             <textarea
               onKeyDown={onKeyDown}
-              ref={tagRef}
               className="w-full p-2 outline-blue-700 resize-none mb-2 h-60"
               type="text"
               placeholder='скопируйте свой код и вставьте сюда'
             />
             <input
+              onKeyDown={onKeyDown}
               type="text"
               className="w-full p-2 outline-blue-700 mb-2"
-              placeholder="напишите язык на каком написан код (javascript, c/c++, python etc."
+              placeholder="напишите язык на каком написан код (javascript, c/c++, python etc.)"
             />
-          </>
+          </div>
         )
       }
-
       default: {
-
+        return undefined;
       }
     }
   }

@@ -153,13 +153,13 @@ const PanelTags = () => {
         <h3 className="p-2 italic text-xl">
           Panel My Blog
         </h3>
-        <div className="inline-flex flex-grow pl-4 text-ba" draggable={false}>
-          {/* нужно еще переделать этот селектор */}
-        </div>
-        <div className="flex gap-2 mr-2" draggable={false}>
+        {/* <div className="inline-flex flex-grow pl-4 text-ba" draggable={false}> */}
+        {/* нужно еще переделать этот селектор */}
+        {/* </div> */}
+        {/* <div className="flex gap-2 mr-2" draggable={false}> пока не знаю насколлько нужны эти стрелочки
           <img src={arrow} alt="arrow back" className="block w-8 p-1 cursor-pointer" draggable={false} />
           <img src={arrow} alt="arrow forward" className="block w-8 p-1 transform scale-x-[-1] cursor-pointer" draggable={false} />
-        </div>
+        </div> */}
         <button
 
           type="submit"

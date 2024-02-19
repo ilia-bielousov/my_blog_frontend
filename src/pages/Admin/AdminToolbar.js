@@ -9,13 +9,13 @@ import edit from './../../assets/images/edit.svg';
 
 const AdminToolbar = () => {
   return (
-    <nav className="fixed z-10 left-0 top-0 h-full w-72 shadow-xl z-10">
+    <nav className="fixed left-0 top-0 h-full w-72 shadow-xl z-10">
       <ul className='flex flex-col'>
-        <li className='p-2 transition hover:bg-slate-300'>
+        <li className='transition hover:bg-slate-300'>
           <Link
             to="../admin"
             title="Home"
-            className="flex"
+            className="flex p-2"
             relative="admin"
             key={'admin'}
           >
@@ -23,33 +23,33 @@ const AdminToolbar = () => {
             <span className="text-xl">Домашняя страница</span>
           </Link>
         </li>
-        <li className='p-2 transition hover:bg-slate-300'>
+        <li className='transition hover:bg-slate-300'>
           <Link
             to="create-card"
             title="create an card"
-            className="flex"
+            className="flex p-2"
             key={'create-card'}
           >
             <img className='mr-4' src={create} alt="create" />
             <span className="text-xl">Создание статьи</span>
           </Link>
         </li>
-        <li className='p-2 transition hover:bg-slate-300'>
+        <li className='transition hover:bg-slate-300'>
           <Link
             to="edit-article"
             title="edit an article"
-            className="flex"
+            className="flex p-2"
             key={'edit-article'}
           >
             <img className='mr-4' src={edit} alt="edit" />
             <span className="text-xl">Редактировае статьи</span>
           </Link>
         </li>
-        <li className='p-2 transition hover:bg-slate-300'>
+        <li className='transition hover:bg-slate-300'>
           <Link
             to="articles"
             title="articles"
-            className="flex"
+            className="flex p-2"
             key={'articles'}
           >
             <img className='mr-4' src={article} alt="article" />

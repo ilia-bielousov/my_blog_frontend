@@ -6,6 +6,7 @@ const AdminEdit = () => {
           Редактировать статью
         </h2>
         <div className="">
+          пока не придумал
         </div>
       </article>
     </main>
