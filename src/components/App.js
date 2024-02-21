@@ -11,6 +11,7 @@ import AdminArticles from '../pages/Admin/AdminArticles';
 import AdminCreateCard from '../pages/Admin/AdminCreateCard';
 import AdminCreateArticle from '../pages/Admin/AdminCreateArticle';
 import AdminEdit from '../pages/Admin/AdminEdit';
+import AdminEditSingleArticle from '../pages/Admin/AdminEditSingleArticle';
 
 import './App.css';
 
@@ -64,6 +65,7 @@ const App = () => {
           <Route path='create-card' element={<AdminCreateCard />} />
           <Route path='create-article' element={<AdminCreateArticle />} />
           <Route path='edit-article' element={<AdminEdit />} />
+          <Route path='edit-article/:id' element={<AdminEditSingleArticle />} />
         </Route>
       </Routes>
     </div>

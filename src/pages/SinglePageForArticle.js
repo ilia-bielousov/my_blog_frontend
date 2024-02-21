@@ -14,7 +14,6 @@ const SinglePageForArticle = () => {
   const article = useSelector(state => state.client.article);
 
   useEffect(() => {
-    // console.log(id);
     dispatch(removeStateArticle());
     dispatch(fetchArticle(id, pathname.split('/')[1]));
     // request('PATCH', pathname.slice(1), { id }); для статистики, пока без него

@@ -113,12 +113,12 @@ const formCardInnerSubmit = (nextBtn) => {
   return (
     <>
       <button
-        className="w-48 p-3 mb-3 rounded-xl transition text-slate bg-blue-400 hover:bg-blue-500 active:bg-blue-600 text-blue cursor-pointer disabled:cursor-auto disabled:bg-blue-800"
+        className="w-48 p-3 mb-3 border-2 rounded-xl transition hover:bg-blue-200 hover:border-blue-200 active:bg-blue-500 active:border-blue-500 cursor-pointer disabled:cursor-auto disabled:bg-blue-800"
         type="submit"
         disabled={nextBtn}>отправить данные</button>
       {nextBtn ?
         <Link
-          className="block w-48 p-3 rounded-xl text-center bg-green-300 hover:bg-green-400 active:bg-green-500 text-green-950"
+          className="block w-48 p-3 rounded-xl text-center transition border-2 hover:border-green-200 hover:bg-green-200 active:border-green-500 active:bg-green-500 text-green-950"
           to="../create-article"
           relative="admin"
           key={'create-article'}
@@ -149,7 +149,7 @@ const AdminCreateCard = () => {
   async function onSubmit(data) {
     dispatch(inputNameDescriptionCard(data));
 
-    if (window.confirm('вы уверены, что хотите продолжить?') && choose.length !== 0) {
+    if (window.confirm('вы уверены, что хотите продолжить?') && choose.length !== 0 && file) {
       const formData = new FormData();
       formData.append('file', file);
 
@@ -165,7 +165,13 @@ const AdminCreateCard = () => {
         })
         .catch(err => console.log(err));
     } else {
-      alert('проверьте свои данные еще раз');
+      if (choose.length <= 0) {
+        alert('вы не выбрали раздел');
+      }
+
+      if (file === '') {
+        alert('вы не добавили картинку');
+      }
     }
   };
 

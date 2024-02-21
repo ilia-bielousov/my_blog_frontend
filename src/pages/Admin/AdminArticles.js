@@ -23,15 +23,15 @@ const AdminArticles = () => {
         });
 
         return (
-          <li className='mb-1 text-xl flex flex-col p-2' key={key}>
-            <div className='flex justify-between gap-5'>
-              <span className='font-semibold flex-1'>Название статьи:</span> <span className='flex-1'>{card.name} </span>
+          <li className='mb-1 text-xl flex flex-col p-2 border-2' key={key}>
+            <div className='flex justify-between mb-5'>
+              <span className='font-semibold flex-1'>Название статьи:</span> <span className='flex-1 text-end'>{card.name} </span>
             </div>
-            <div className='flex justify-between gap-5'>
+            <div className='flex flex-col justify-between mb-5'>
               <span className='font-semibold flex-1'>Описание статьи:</span> <span className='flex-1'>{card.description} </span>
             </div>
-            <div className='flex justify-between gap-5'>
-              <span className='font-semibold flex-1'>количество просмотров:</span> <span className='flex-1'>{t}.</span>
+            <div className='flex justify-between mb-5'>
+              <span className='font-semibold flex-1'>количество просмотров:</span> <span className='flex-1 text-end font-bold'>{t}.</span>
             </div>
           </li>
         )
@@ -45,8 +45,8 @@ const AdminArticles = () => {
         <h2 className='text-3xl font-bold mb-10'>
           Статистика
         </h2>
-        <div className='articles p-3 flex'>
-          <div className="programming p-2 flex-1">
+        <div className='articles p-3 flex gap-5 '>
+          <div className="programming flex-1">
             <h3 className='text-3xl mb-2 text-center'>
               Программирование
             </h3>
@@ -63,7 +63,7 @@ const AdminArticles = () => {
             </ol>
           </div>
           <div className="modeling flex-1">
-            <h3 className='text-3xl text-center'>
+            <h3 className='text-3xl mb-2 text-center'>
               Моделирование
             </h3>
             <ol className='list-decimal'>
