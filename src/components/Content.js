@@ -17,6 +17,7 @@ const Content = ({ data }) => {
                 description={card.description}
                 choose={card.choose}
                 image={card.image}
+                pseudoName={card.pseudoName}
               />
             )
           } else {

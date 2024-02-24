@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { removeStateArticle } from "../store/clientReducer";
 import { fetchArticle } from "../store/asyncAction/article";
-import { request } from '../utilities/request';
 import createArticle from "../utilities/utilities";
 
 const SinglePageForArticle = () => {

@@ -20,7 +20,7 @@ const AdminEdit = () => {
     return allCards.map((card, key) => {
       if (card.choose === block) {
         return (
-          <Link to={`/admin/edit-article/${card._id}`} key={key} className="flex-1 p-3 border-2 rounded-xl mb-3 max-w-xs cursor-pointer transition hover:shadow-md hover:bg-slate-100">
+          <Link to={`/admin/edit-article/${card.pseudoName}`} key={key} className="flex-1 p-3 border-2 rounded-xl mb-3 max-w-xs cursor-pointer transition hover:shadow-md hover:bg-slate-100">
             <h3 className="text-xl font-semibold">
               {card.name}
             </h3>

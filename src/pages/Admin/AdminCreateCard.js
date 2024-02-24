@@ -130,6 +130,17 @@ const formCardInnerSubmit = (nextBtn) => {
   )
 }
 
+const transliterate = (text) => {
+  const transliterationMap = {
+    а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', е: 'e', ё: 'e', ж: 'zh', з: 'z',
+    и: 'i', й: 'y', к: 'k', л: 'l', м: 'm', н: 'n', о: 'o', п: 'p', р: 'r',
+    с: 's', т: 't', у: 'u', ф: 'f', х: 'kh', ц: 'ts', ч: 'ch', ш: 'sh', щ: 'sch',
+    ъ: '', ы: 'y', ь: '', э: 'e', ю: 'yu', я: 'ya',
+  };
+
+  return text.split('').map(char => transliterationMap[char] || char).join('');
+};
+
 const AdminCreateCard = () => {
   const dispatch = useDispatch();
   const choose = useSelector(state => state.admin.creatingCard.content.choose);
@@ -147,6 +158,7 @@ const AdminCreateCard = () => {
   } = useForm();
 
   async function onSubmit(data) {
+    console.log(data);
     dispatch(inputNameDescriptionCard(data));
 
     if (window.confirm('вы уверены, что хотите продолжить?') && choose.length !== 0 && file) {
@@ -155,8 +167,7 @@ const AdminCreateCard = () => {
 
       await axios.post('http://localhost:4000/admin/upload', formData)
         .then(res => {
-
-          axios.post('http://localhost:4000/admin/create-card', { choose, ...data, image: `http://localhost:4000${res.data.path}` })
+          axios.post('http://localhost:4000/admin/create-card', { choose, ...data, image: `http://localhost:4000${res.data.path}`, pseudoName: transliterate(data.name.replace(/ /g, '_')) })
             .then(res => {
               dispatch(statusCreatingCard(true));
               dispatch(setResponceId(res.data));
