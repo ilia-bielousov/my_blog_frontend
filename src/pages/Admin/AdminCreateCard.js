@@ -158,7 +158,6 @@ const AdminCreateCard = () => {
   } = useForm();
 
   async function onSubmit(data) {
-    console.log(data);
     dispatch(inputNameDescriptionCard(data));
 
     if (window.confirm('вы уверены, что хотите продолжить?') && choose.length !== 0 && file) {

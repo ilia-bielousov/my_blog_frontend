@@ -22,7 +22,7 @@ const SinglePageForArticle = () => {
     <main className="flex-1">
       <div className="w-9/12 mx-auto flex flex-1 justify-between gap-5">
         <article className="w-9/12">
-          {article ? createArticle(article[0].content).map((item, i) => {
+          {article ? createArticle(article.content).map((item, i) => {
             return (
               <Fragment key={i}>
                 {item}

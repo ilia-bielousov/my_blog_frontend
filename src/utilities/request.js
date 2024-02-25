@@ -6,11 +6,10 @@ async function request(method = 'GET', url, content = undefined) {
       'Content-type': 'application/json; charset=UTF-8'
     }
   })
-  .then(res => res.json())
-  // .then(data => console.log(data))
-  .catch((err) => {
-    console.log(err);
-  })
+    .then(res => res.json())
+    .catch((err) => {
+      console.log(err);
+    })
 }
 
 export { request };

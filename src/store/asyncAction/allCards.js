@@ -5,7 +5,6 @@ export const fetchForAllCards = () => {
     fetch(`http://localhost:4000/admin/getAllCards`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         dispatch(getAllCards(data));
       });
   }

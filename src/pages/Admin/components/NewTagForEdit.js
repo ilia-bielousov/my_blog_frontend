@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const NewTagForEdit = (props) => {
-
   const [textContent, setTextContent] = useState('');
-  const { tag, text, id, className, list, language, statusEditArticle, test } = props;
+  const tagRef = useRef();
+  const { tag, text, id, className, list, language, article } = props;
 
   const changeText = (e) => {
     setTextContent(() => {
@@ -26,14 +26,29 @@ const NewTagForEdit = (props) => {
     });
   }
 
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter' && tag !== 'ul' && tag !== 'code') {
+      tagRef.current.blur();
+    } else if (tag === 'ul' && e.key === 'Control') {
+      tagRef.current.blur();
+    } else if (e.key === 'Enter' && tag === 'code') {
+      tagRef.current.children[0].blur();
+      tagRef.current.children[1].blur();
+    }
+
+    article.content = article.content.map(tag => {
+      if (tag.id === id) {
+        return textContent
+      } else {
+        return tag
+      }
+    })
+  }
+
   useEffect(() => {
     setTextContent({ tag, text, id, className, list, language });
   }, [props]);
 
-  useEffect(() => {
-    console.log('test');
-
-  }, [statusEditArticle])
 
   const determine = () => {
     // возможно добавить цитату
@@ -42,7 +57,9 @@ const NewTagForEdit = (props) => {
         case 'h1': {
           return (
             <input // возможно еще тут переписать, добавить редактирование
+              onKeyDown={onKeyDown}
               onChange={changeText}
+              ref={tagRef}
               className="w-full p-2 outline-blue-700 mb-2 border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
@@ -54,6 +71,8 @@ const NewTagForEdit = (props) => {
           return (
             <input
               onChange={changeText}
+              onKeyDown={onKeyDown}
+              ref={tagRef}
               className="w-full p-2 outline-blue-700 mb-2 border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
@@ -65,6 +84,8 @@ const NewTagForEdit = (props) => {
           return (
             <input
               onChange={changeText}
+              onKeyDown={onKeyDown}
+              ref={tagRef}
               className="w-full p-2 outline-blue-700 mb-2 border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
@@ -76,6 +97,8 @@ const NewTagForEdit = (props) => {
           return (
             <textarea
               onChange={changeText}
+              onKeyDown={onKeyDown}
+              ref={tagRef}
               className="w-full p-2 outline-blue-700 resize-none mb-2 h-60 border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
@@ -87,6 +110,8 @@ const NewTagForEdit = (props) => {
           return (
             <textarea
               onChange={changeText}
+              onKeyDown={onKeyDown}
+              ref={tagRef}
               className="w-full p-2 outline-blue-700 resize-none mb-2 h-60 border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
@@ -142,6 +167,8 @@ const NewTagForEdit = (props) => {
           return (
             <input
               onChange={changeText}
+              onKeyDown={onKeyDown}
+              ref={tagRef}
               className="w-full p-2 outline-blue-700 mb-2 border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
@@ -154,6 +181,8 @@ const NewTagForEdit = (props) => {
             <div className="">
               <textarea
                 onChange={changeText}
+                onKeyDown={onKeyDown}
+                ref={tagRef}
                 className="w-full p-2 outline-blue-700 resize-none mb-2 h-60 border-2 rounded-xl"
                 type="text"
                 placeholder='скопируйте свой код и вставьте сюда'
@@ -161,6 +190,8 @@ const NewTagForEdit = (props) => {
               />
               <input
                 onChange={changeText}
+                onKeyDown={onKeyDown}
+                ref={tagRef}
                 name="language"
                 type="text"
                 className="w-full p-2 outline-blue-700 mb-2 border-2 rounded-xl"

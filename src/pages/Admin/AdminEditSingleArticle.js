@@ -1,30 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import axios from 'axios';
 
 import { fetchArticle } from "../../store/asyncAction/article";
 
 import NewTagForEdit from "./components/NewTagForEdit";
+import PanelTags from "./components/PanelTags";
 
 
 const AdminEditSingleArticle = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const article = useSelector(state => state.client.article);
-  const [statusEditArticle, setStatusEditArticle] = useState(false);
 
   useEffect(() => {
     dispatch(fetchArticle(id, 'admin/edit-article'));
   }, []);
 
-  const test = (e) => {
-    console.log(e.target);
-  }
-
   const sendEditArticle = (e) => {
     e.preventDefault();
 
-    setStatusEditArticle(true);
+    axios.patch(`http://localhost:4000/admin/edit-article`, article)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.log(err));
   }
 
   return (
@@ -34,7 +35,7 @@ const AdminEditSingleArticle = () => {
           Редактирование статьи
         </h1>
         <form onSubmit={sendEditArticle}>
-          {article ? article[0].content.map((item, key) => {
+          {article ? article.content.map((item, key) => {
             return (
               <NewTagForEdit
                 key={key}
@@ -44,8 +45,7 @@ const AdminEditSingleArticle = () => {
                 id={item.id}
                 list={item.list}
                 language={item.language}
-                statusEditArticle={statusEditArticle}
-                test={test}
+                article={article}
               />
             )
           }) : null}
@@ -56,6 +56,7 @@ const AdminEditSingleArticle = () => {
           />
         </form>
       </article>
+      {/* <PanelTags /> чуть позже еще и с добавлением поработаю */}
     </main >
   );
 };
