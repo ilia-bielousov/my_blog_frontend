@@ -44,7 +44,7 @@ const AdminEditSingleArticle = () => {
       <>
         <p className="mb-3">Статья успешно отредактирована, нажмите на кнопку, чтобы выйти.</p>
         <input
-          onClick={() => setRedirect(true)}
+          onClick={() => setRedirect(true)} // переписать, нахер нужен этот редирект
           className="block mx-auto p-2 border rounded-lg transition hover:bg-slate-100 cursor-pointer active:bg-slate-200"
           type="submit"
           value="тыкать сюда"

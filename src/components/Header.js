@@ -10,7 +10,7 @@ const Header = () => {
         <img
           alt="arrow"
           src={arrow}
-          className="absolute h-full z-10 left-3 hover:-translate-x-1 w-14 cursor-pointer transition"
+          className="absolute h-full z-10 left-0 hover:-translate-x-1 w-18 cursor-pointer transition px-3"
           onClick={() => navigate(-1)}
         />
       </div>

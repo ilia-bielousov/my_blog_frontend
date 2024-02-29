@@ -25,6 +25,8 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
 
   const onKeyDown = (e) => {
     if (e.key === 'Enter' && tag !== 'ul' && tag !== 'code') {
+      console.log(e.target);
+      console.log(content);
       tagRef.current.blur();
       content[IDforElementOfArticle].text = e.target.value;
 
@@ -56,7 +58,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
         return (
           <input // возможно еще тут переписать, добавить редактирование
             ref={tagRef}
-            className="w-full p-2 outline-blue-700 mb-2"
+            className="w-full p-2 outline-blue-700"
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
@@ -68,7 +70,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
         return (
           <input
             ref={tagRef}
-            className="w-full p-2 outline-blue-700 mb-2"
+            className="w-full p-2 outline-blue-700"
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
@@ -79,7 +81,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
         return (
           <input
             ref={tagRef}
-            className="w-full p-2 outline-blue-700 mb-2"
+            className="w-full p-2 outline-blue-700"
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
@@ -91,7 +93,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
           <textarea
             onKeyDown={onKeyDown}
             ref={tagRef}
-            className="w-full p-2 outline-blue-700 resize-none mb-2 h-60"
+            className="w-full p-2 outline-blue-700 resize-none h-60"
             type="text"
             placeholder='Введите свой текст'
           />
@@ -102,7 +104,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
           <textarea
             onKeyDown={onKeyDown}
             ref={tagRef}
-            className="w-full p-2 outline-blue-700 resize-none mb-2 h-60"
+            className="w-full p-2 outline-blue-700 resize-none h-60"
             type="text"
             placeholder='Введите свой текст'
           />
@@ -127,7 +129,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
           <>
             {(!sourceImg ?
               <div className="flex flex-col items-center p-2 max-w-xs mx-auto">
-                <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 p-3 mb-2 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
+                <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 mb-2 p-3 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
                   <input
                     type="file"
                     name="image"
@@ -145,7 +147,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
                 </button>
               </div> :
               <div className="mx-auto">
-                <img className="mx-auto p-3 mb-1.5" src={sourceImg} alt="test" />
+                <img className="mx-auto p-3" src={sourceImg} alt="test" />
               </div>)}
           </>
         )
@@ -154,7 +156,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
         return (
           <input
             ref={tagRef}
-            className="w-full p-2 outline-blue-700 mb-2"
+            className="w-full p-2 outline-blue-700"
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
@@ -164,7 +166,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
       case 'code': {
         return (
           // проблема в tagRef когда я записываю язык на котором написано
-          <div className=""
+          <div className="w-full"
             ref={tagRef}>
             <textarea
               onKeyDown={onKeyDown}
@@ -175,7 +177,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
             <input
               onKeyDown={onKeyDown}
               type="text"
-              className="w-full p-2 outline-blue-700 mb-2"
+              className="w-full p-2 outline-blue-700"
               placeholder="напишите язык на каком написан код (javascript, c/c++, python etc.)"
             />
           </div>

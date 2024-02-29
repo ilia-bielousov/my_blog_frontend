@@ -5,6 +5,7 @@ import Home from '../pages/Home';
 import PageForCards from '../pages/PageForCards';
 import PageTransition from './PageTransition';
 import SinglePageForArticle from '../pages/SinglePageForArticle';
+import ErrorClient from '../pages/ErrorClient';
 import AdminLayout from '../pages/Admin/AdminLayout';
 import AdminHome from '../pages/Admin/AdminHome';
 import AdminArticles from '../pages/Admin/AdminArticles';
@@ -29,6 +30,11 @@ const App = () => {
           <Route path='programming' element={
             <PageTransition>
               <PageForCards />
+            </PageTransition>
+          } />
+          <Route path='*' element={
+            <PageTransition>
+              <ErrorClient />
             </PageTransition>
           } />
           <Route path='programming/:id' element={

@@ -1,25 +1,22 @@
-import { createElement, Fragment, useEffect, useRef, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { statusCreatingCard, resetComponentToArticle, resetPreviewContentAnArticle, changeBanAddElement, addIdForNewElement } from "../../store/adminReducer";
-import PanelForAddtags from "./components/PanelForAddtags";
+import { statusCreatingCard, resetComponentToArticle, resetPreviewContentAnArticle, changeBanAddElement } from "../../store/adminReducer";
 
-import ModalAfterCreatingArticle from './components/ModalAfterCreatingArticle';
 // import MyNewArticle from "./components/MyNewArticle";
 import AreaNewTags from "./components/AreaNewTags";
 import PanelTags from "./components/PanelTags";
+import Modal from "./components/Modal";
 
 
 
 const AdminCreateArticle = () => {
   const dispatch = useDispatch();
   const [redirect, setRedirect] = useState(false);
+  const [modalActive, setModalActive] = useState({ status: null, error: false, loading: false });
 
-  const elements = useSelector(state => state.admin.creatingArticle.elements);
-  const previewContent = useSelector(state => state.admin.creatingArticle.previewElements);
   const statusCreatingArticle = useSelector(state => state.admin.statusSendArticle);
   const idArticle = useSelector(state => state.admin.id);
-  const IDforElementOfArticle = useSelector(state => state.admin.creatingArticle.IdElement);
 
   // посмотреть какой redux я не использую, короче проследить как че работает.
   useEffect(() => {
@@ -35,10 +32,79 @@ const AdminCreateArticle = () => {
     // нужно проверить, если обновили страницу и нет айди в редаксе, найти карточку и удалить ее в монго
   }, [dispatch]);
 
+
+  // 
+  // если вышли, то делать запрос, что мы вышли и удалять карточку.
+
   // если не админ (тобишь я), то перенаправить (сделано дебильно)
   // if (redirect) {
   //   return <Navigate to='/admin' />;
   // }
+
+  const renderModal = () => {
+    return (
+      <>
+        {modalActive.loading ?
+          <div className="flex h-full justify-center items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="4em" height="4em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity={0.25}></path><path fill="currentColor" d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"></animateTransform></path></svg>
+          </div>
+          :
+          <>
+            <p className="text-center">
+              Статья успешно создана, тыкните на кнопку, чтобы продолжить.
+            </p>
+            <div className="flex justify-center">
+              <Link
+                to="/admin"
+                key={'admin'}
+                type="submit"
+                className="p-2 border rounded-md transition hover:bg-slate-100 active:bg-slate-200 cursor-pointer"
+                onClick={() => {
+                  setModalActive({ open: false, error: false })
+                }
+                }
+              >
+                Тыкать сюда
+              </Link>
+            </div>
+          </>
+        }
+      </>
+    )
+  }
+
+  const renderModalError = () => {
+    return (
+      <>
+        {
+          modalActive.loading ?
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity={0.25}></path><path fill="currentColor" d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"></animateTransform></path></svg>
+            :
+            <>
+              <p className="text-center">
+                Что-то пошло не так ... попробуйте еще раз.
+              </p>
+              <div className="flex justify-center">
+                <Link
+                  to="../create-card"
+                  relative="admin"
+                  key={'create-card'}
+                  type="submit"
+                  className="p-2 border rounded-md transition hover:bg-slate-100 active:bg-slate-200 cursor-pointer"
+                  onClick={() => {
+                    // здесь нужно делать запрос и удалять карточку, что создали ранее
+                    setModalActive({ open: false, error: false })
+                  }
+                  }
+                >
+                  Тыкать сюда
+                </Link>
+              </div>
+            </>
+        }
+      </>
+    )
+  }
 
   return (
     <>
@@ -47,43 +113,21 @@ const AdminCreateArticle = () => {
           <h2 className="text-3xl font-bold mb-5 text-center">
             Создание статьи
           </h2>
-
           <AreaNewTags />
-
-          {/* старая версия */}
-          {/* <div className="flex flex-1 flex-col gap-5 mb-10 items-center">
-          {elements.map((item, i) => {
-            return (
-              <form className="form__item" key={i}>
-                {item}
-              </form>
-            )
-          })}
-        </div> */}
-          {/* <div className="flex justify-center">
-          <PanelForAddtags />
-        </div> */}
         </aside>
-        {/* <article className="flex-1 p-3">
-        <h2 className="text-3xl font-bold mb-4 text-center">
-          Предварительный просмотр статьи
-        </h2>
-        {previewContent.map((item, i) => {
-          return (
-            <Fragment key={i}>
-              {createElement(
-                item.tag,
-                { className: item.className, src: item.image, alt: item.alt },
-                item.text
-              )}
-            </Fragment>
-          )
-        })}
-      </article> */}
-        {/* модальное окно после успешного создания статьи */}
-        {statusCreatingArticle ? <ModalAfterCreatingArticle /> : null}
       </main>
-      <PanelTags />
+      <PanelTags
+        setModalActive={setModalActive}
+      />
+      <>
+        {modalActive.open ?
+          <Modal
+          >
+            {!modalActive.error ? renderModal() : renderModalError()}
+          </Modal> :
+          null
+        }
+      </>
     </>
   );
 };

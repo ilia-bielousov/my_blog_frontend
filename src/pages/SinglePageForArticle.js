@@ -18,17 +18,39 @@ const SinglePageForArticle = () => {
     // request('PATCH', pathname.slice(1), { id }); для статистики, пока без него
   }, []);
 
-  return (
-    <main className="flex-1">
-      <div className="w-9/12 mx-auto flex flex-1 justify-between gap-5">
-        <article className="w-9/12">
-          {article ? createArticle(article.content).map((item, i) => {
+  // создать сетку из грида, 4 колонки наверное
+
+  const renderArticle = () => {
+    if (article.status === 404) {
+      {/* добавить стили и оформить как-то красиво*/ }
+      return (
+        <div>
+          такой страницы не существует
+        </div>
+      )
+    } else {
+      return (
+        <>
+          {createArticle(article.content).map((item, i) => {
             return (
               <Fragment key={i}>
                 {item}
               </Fragment>
             );
-          }) :
+          })
+          }
+        </>
+      )
+    }
+  }
+
+  return (
+    <main className="flex-1">
+      <div className="w-9/12 mx-auto flex flex-1 justify-between gap-5">
+        <article className="w-9/12">
+          {article ?
+            renderArticle()
+            :
             // спиннер 
             <div role="status" className="flex justify-center p-5">
               <svg aria-hidden="true" className="w-24 h-24 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -6,6 +6,7 @@ export const fetchArticle = (id, url) => {
       .then(res => res.json())
       .then(data => {
         dispatch(getArticleAction(data));
-      });
+      })
+      .catch(err => console.log(err))
   }
 }

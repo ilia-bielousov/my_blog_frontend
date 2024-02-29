@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addCurrentTagButton, changeStatusCreatingArticle, addCurrentStyleClassText } from '../../../store/adminReducer';
 
 import { request } from '../../../utilities/request';
+import axios from 'axios';
 
 // images
-import arrow from './../../../assets/images/arrow-history.svg';
 import list from './../../../assets/images/list.svg';
 import paragraph from './../../../assets/images/paragraph.svg';
 import picture from './../../../assets/images/picture.svg';
@@ -68,7 +68,7 @@ const tagsRender = [{
 },
 ];
 
-const PanelTags = () => {
+const PanelTags = ({ setModalActive }) => {
   const dispatch = useDispatch();
 
   const content = useSelector(state => state.admin.creatingArticle.previewElements);
@@ -124,10 +124,21 @@ const PanelTags = () => {
     dispatch(addCurrentTagButton(e.target.getAttribute('data-tag')));
   }
 
-  const sendArticle = (e) => {
+  const sendArticle = async (e) => {
     e.preventDefault();
+    setModalActive({ open: true, loading: true, error: false })
 
-    request('POST', 'admin/create-article', [...content, IDforArticle]);
+    await axios.post('http://localhost:4000/admin/create-article', [...content, IDforArticle])
+      .then(res => {
+        if (res.data.status === 200) {
+          setModalActive({ open: true, loading: false, error: false });
+        }
+      })
+      .catch(err => {
+        if (err.response.data.status === 500) {
+          setModalActive({ open: true, loading: false, error: true });
+        }
+      });
 
     dispatch(changeStatusCreatingArticle(true));
   }
@@ -135,7 +146,6 @@ const PanelTags = () => {
   return (
     <div className="cursor-grab w-1/3 absolute z-20"
       style={{
-
         // тут баг большой, надо исправлять.
         // transform: `translate(${transform.x}px, ${transform.y}px)`,
         top: `${transform.y}px`,
@@ -153,15 +163,7 @@ const PanelTags = () => {
         <h3 className="p-2 italic text-xl">
           Panel My Blog
         </h3>
-        {/* <div className="inline-flex flex-grow pl-4 text-ba" draggable={false}> */}
-        {/* нужно еще переделать этот селектор */}
-        {/* </div> */}
-        {/* <div className="flex gap-2 mr-2" draggable={false}> пока не знаю насколлько нужны эти стрелочки
-          <img src={arrow} alt="arrow back" className="block w-8 p-1 cursor-pointer" draggable={false} />
-          <img src={arrow} alt="arrow forward" className="block w-8 p-1 transform scale-x-[-1] cursor-pointer" draggable={false} />
-        </div> */}
         <button
-
           type="submit"
           className="p-2 bg-white text-slate-600 rounded-xl font-bold active:bg-slate-200"
         >
