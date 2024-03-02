@@ -11,6 +11,7 @@ const AdminArticles = () => {
   useEffect(() => {
     dispatch(fetchForAllCards());
     dispatch(fetchForAllArticle());
+
   }, []); // как-то неправильно работает аналитика
 
   const renderRaports = (block) => {

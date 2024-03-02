@@ -42,9 +42,9 @@ const AdminEditSingleArticle = () => {
   const renderModal = () => {
     return (
       <>
-        <p className="mb-3">Статья успешно отредактирована, нажмите на кнопку, чтобы выйти.</p>
+        <p className="mb-3">Статья успешно отредактирована, тыкните на кнопку, чтобы вас перенаправить.</p>
         <input
-          onClick={() => setRedirect(true)} // переписать, нахер нужен этот редирект
+          onClick={() => setRedirect(true)}
           className="block mx-auto p-2 border rounded-lg transition hover:bg-slate-100 cursor-pointer active:bg-slate-200"
           type="submit"
           value="тыкать сюда"

@@ -1,6 +1,7 @@
 import { useEffect, Fragment } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import axios from "axios";
 
 import { removeStateArticle } from "../store/clientReducer";
 import { fetchArticle } from "../store/asyncAction/article";
@@ -15,17 +16,20 @@ const SinglePageForArticle = () => {
   useEffect(() => {
     dispatch(removeStateArticle());
     dispatch(fetchArticle(id, pathname.split('/')[1]));
-    // request('PATCH', pathname.slice(1), { id }); для статистики, пока без него
-  }, []);
 
-  // создать сетку из грида, 4 колонки наверное
+    axios.patch(`http://localhost:4000${pathname}`, { id })
+      .then(() => { })
+      .catch(() => { });
+  }, []);
 
   const renderArticle = () => {
     if (article.status === 404) {
-      {/* добавить стили и оформить как-то красиво*/ }
       return (
-        <div>
-          такой страницы не существует
+        <div className="flex h-full flex-col justify-center items-center">
+          <span className="text-8xl font-medium mb-4">404</span>
+          <p className="text-2xl">
+            Такой статьи не существует.
+          </p>
         </div>
       )
     } else {
@@ -45,9 +49,9 @@ const SinglePageForArticle = () => {
   }
 
   return (
-    <main className="flex-1">
-      <div className="w-9/12 mx-auto flex flex-1 justify-between gap-5">
-        <article className="w-9/12">
+    <main className="flex flex-1">
+      <div className="w-9/12 flex flex-1 justify-between gap-5">
+        <article className="w-9/12 flex-1 pl-32">
           {article ?
             renderArticle()
             :
@@ -60,9 +64,13 @@ const SinglePageForArticle = () => {
             </div>
           }
         </article>
-        <aside className="w-3/12">
-          здесь добавить другие статьи из рубрики
-        </aside>
+        {article && article.status !== 404 ?
+          <aside className="w-3/12">
+            здесь добавить другие статьи из рубрики
+          </aside>
+          :
+          null
+        }
       </div>
     </main>
   )

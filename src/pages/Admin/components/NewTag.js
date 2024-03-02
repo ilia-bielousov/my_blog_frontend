@@ -12,7 +12,6 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
   const [file, setFile] = useState('');
   const [sourceImg, setSourceImg] = useState(null);
 
-  // для фокуса после создания.
   useEffect(() => {
     if (tag !== 'img') {
       tagRef.current.focus();

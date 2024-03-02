@@ -51,12 +51,11 @@ const NewTagForEdit = (props) => {
 
 
   const determine = () => {
-    // возможно добавить цитату
     if (textContent) {
       switch (textContent.tag) {
         case 'h1': {
           return (
-            <input // возможно еще тут переписать, добавить редактирование
+            <input
               onKeyDown={onKeyDown}
               onChange={changeText}
               ref={tagRef}

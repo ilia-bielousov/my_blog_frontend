@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCurrentTagButton, changeStatusCreatingArticle, addCurrentStyleClassText } from '../../../store/adminReducer';
+import { addCurrentTagButton, changeStatusCreatingArticle } from '../../../store/adminReducer';
 
-import { request } from '../../../utilities/request';
 import axios from 'axios';
 
 // images
@@ -75,22 +74,18 @@ const PanelTags = ({ setModalActive }) => {
   const IDforArticle = useSelector(state => state.admin.id);
 
   const [transform, setTransform] = useState({ x: 0, y: 0 });
-  const [cursorOffset, setCursorOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-
       if (e.target.getAttribute('data-tag') || e.target.getAttribute('data-space'))
         setIsDragging(false);
-      else
-        if (isDragging) {
-          // проблема, что можем выйти за рамки приложения, исправлю потом
-          setTransform({
-            x: e.clientX - cursorOffset.x,
-            y: e.clientY - cursorOffset.y,
-          });
-        }
+      else if (isDragging) {
+        setTransform((prevPosition) => ({
+          x: Math.min(window.innerWidth - 466, Math.max(0, prevPosition.x + e.movementX)),
+          y: Math.min(window.innerHeight - 128, Math.max(0, prevPosition.y + e.movementY)),
+        }));
+      }
     };
 
     const handleMouseUp = () => {
@@ -104,14 +99,13 @@ const PanelTags = ({ setModalActive }) => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging, cursorOffset]);
+  }, [isDragging]);
 
   const handleMouseDown = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     let offsetX = e.clientX - rect.left;
     let offsetY = e.clientY - rect.top;
 
-    setCursorOffset({ x: offsetX, y: offsetY });
     setIsDragging(true);
 
     setTransform(() => ({
@@ -144,7 +138,7 @@ const PanelTags = ({ setModalActive }) => {
   }
 
   return (
-    <div className="cursor-grab w-1/3 absolute z-20"
+    <div className="cursor-grab w-[450px] absolute z-20"
       style={{
         // тут баг большой, надо исправлять.
         // transform: `translate(${transform.x}px, ${transform.y}px)`,

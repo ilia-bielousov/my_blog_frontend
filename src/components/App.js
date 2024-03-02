@@ -5,7 +5,7 @@ import Home from '../pages/Home';
 import PageForCards from '../pages/PageForCards';
 import PageTransition from './PageTransition';
 import SinglePageForArticle from '../pages/SinglePageForArticle';
-import ErrorClient from '../pages/ErrorClient';
+import Client404 from '../pages/Client404';
 import AdminLayout from '../pages/Admin/AdminLayout';
 import AdminHome from '../pages/Admin/AdminHome';
 import AdminArticles from '../pages/Admin/AdminArticles';
@@ -27,14 +27,14 @@ const App = () => {
               <Home />
             </PageTransition>
           } />
+          <Route path='*' element={
+            <PageTransition>
+              <Client404 />
+            </PageTransition>
+          } />
           <Route path='programming' element={
             <PageTransition>
               <PageForCards />
-            </PageTransition>
-          } />
-          <Route path='*' element={
-            <PageTransition>
-              <ErrorClient />
             </PageTransition>
           } />
           <Route path='programming/:id' element={
@@ -58,6 +58,16 @@ const App = () => {
             </PageTransition>
           } />
           <Route path='modeling/:id' element={
+            <PageTransition>
+              <SinglePageForArticle />
+            </PageTransition>
+          } />
+          <Route path='art' element={
+            <PageTransition>
+              <PageForCards />
+            </PageTransition>
+          } />
+          <Route path='art/:id' element={
             <PageTransition>
               <SinglePageForArticle />
             </PageTransition>

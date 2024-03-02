@@ -1,4 +1,3 @@
-
 const Modal = ({ children }) => {
   return (
     <div

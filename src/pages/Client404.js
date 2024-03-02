@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const ErrorClient = () => {
+const Client404 = () => {
   return (
     <main className="flex flex-col justify-center flex-1">
       <div className="flex flex-col items-center justify-center gap-2 px-24">
@@ -18,4 +18,4 @@ const ErrorClient = () => {
   );
 };
 
-export default ErrorClient;
+export default Client404;

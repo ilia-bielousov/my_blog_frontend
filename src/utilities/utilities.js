@@ -6,7 +6,6 @@ const createArticle = (content) => {
   const t = Object.entries(content);
 
   return t.map(item => {
-
     const renderElement = () => {
       switch (item[1].tag) {
         case 'code':
