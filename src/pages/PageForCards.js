@@ -1,23 +1,44 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from 'react-router-dom';
 
 import Content from "../components/Content";
-import { fetchCards } from "../store/asyncAction/cards";
+import Modal from "../components/Modal";
+import { fetchCards } from "../store/asyncAction/cardsClient";
+
+import { updateStatusError } from "../store/clientReducer";
 
 const PageForCards = () => {
   const dispatch = useDispatch();
-  const cards = useSelector(state => state.client.cards)
+  const cards = useSelector(state => state.client.cards);
+  // нужно создавать отдельный редакс для каждой ошибки
+  const error = useSelector(state => state.client.error);
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    dispatch(fetchCards());
+    dispatch(updateStatusError());
+    dispatch(fetchCards(pathname));
   }, []);
 
   return (
     <>
-      {cards ?
+      {cards && !error ?
         <Content data={cards} />
         :
-        null
+        <>
+          <main className="flex-1" />
+          <Modal>
+            <p className="text-center">
+              Что-то пошло не так ... попробуйте еще раз.
+            </p>
+            <input
+              type="submit"
+              value="попробовать еще раз"
+              className="block mx-auto p-2 border rounded-md transition hover:bg-slate-100 active:bg-slate-200 cursor-pointer"
+              onClick={() => window.location.reload()}
+            />
+          </Modal>
+        </>
       }
     </>
   )

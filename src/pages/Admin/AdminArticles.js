@@ -1,18 +1,39 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchForAllCards } from '../../store/asyncAction/allCards';
-import { fetchForAllArticle } from '../../store/asyncAction/allArticles';
+import { Navigate } from 'react-router-dom';
+import { fetchForAllCards } from '../../store/asyncAction/cardsAdmin';
+import { fetchForAllArticle } from '../../store/asyncAction/articlesAdmin';
+
+const categories = [
+  {
+    name: 'Программирование',
+    block: 'programming'
+  },
+  {
+    name: 'Ардуино',
+    block: 'projects'
+  },
+  {
+    name: 'Моделирование',
+    block: 'modeling'
+  },
+];
 
 const AdminArticles = () => {
   const dispatch = useDispatch();
   const allCards = useSelector(state => state.admin.raportsArticles.cards);
   const allArticles = useSelector(state => state.admin.raportsArticles.articles);
+  const [token,] = useState(localStorage.getItem('admin'));
 
   useEffect(() => {
     dispatch(fetchForAllCards());
     dispatch(fetchForAllArticle());
+  }, []);
 
-  }, []); // как-то неправильно работает аналитика
+  if (!token) {
+    alert('У вас нет доступа, чтобы создавать/редактировать статьи.')
+    return <Navigate to='/' />
+  }
 
   const renderRaports = (block) => {
     return allCards.map((card, key) => {
@@ -47,33 +68,22 @@ const AdminArticles = () => {
           Статистика
         </h2>
         <div className='articles p-3 flex gap-5 '>
-          <div className="programming flex-1">
-            <h3 className='text-3xl mb-2 text-center'>
-              Программирование
-            </h3>
-            <ol className='list-decimal'>
-              {renderRaports("programming")}
-            </ol>
-          </div>
-          <div className="projects flex-1">
-            <h3 className='text-3xl mb-2 text-center'>
-              Ардуино
-            </h3>
-            <ol className='list-decimal'>
-              {renderRaports("projects")}
-            </ol>
-          </div>
-          <div className="modeling flex-1">
-            <h3 className='text-3xl mb-2 text-center'>
-              Моделирование
-            </h3>
-            <ol className='list-decimal'>
-              {renderRaports("modeling")}
-            </ol>
-          </div>
+          {categories.map((item, key) => {
+            return (
+              <div key={key}
+                className="programming flex-1">
+                <h3 className='text-3xl mb-2 text-center'>
+                  {item.name}
+                </h3>
+                <ol className='list-decimal'>
+                  {renderRaports(item.block)}
+                </ol>
+              </div>
+            )
+          })}
         </div>
       </article>
-    </main>
+    </main >
   );
 };
 

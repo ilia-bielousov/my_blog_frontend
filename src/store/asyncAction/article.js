@@ -1,12 +1,16 @@
-import { getArticleAction } from "../clientReducer";
+import { getArticleAction, statusError } from "../clientReducer";
 
 export const fetchArticle = (id, url) => {
   return function (dispatch) {
     fetch(`http://localhost:4000/${url}/${id}`)
       .then(res => res.json())
       .then(data => {
+        // console.log(data);
+        // if (data.status !== 404)
         dispatch(getArticleAction(data));
+        // else
+        // throw new Error();
       })
-      .catch(err => console.log(err))
+      .catch(err => dispatch(statusError()));
   }
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 
-import Modal from "./components/Modal";
+import Modal from "../../components/Modal";
 
 import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, changeStatusCreatingArticle, setResponceId } from "../../store/adminReducer";
 
@@ -12,7 +12,7 @@ const formCardInnerCategory = (inputChoose, statusCreating) => {
   return (
     <>
       <label className="block mb-2 text-xl">
-        Сначала нужно выбрать, для какой секции будет написана статья.
+        Нужно выбрать, для какого раздела будет написана статья.
       </label>
       <input
         onClick={(e) => inputChoose(e)}
@@ -67,7 +67,7 @@ const formCardInnerNameArticle = (register, errors, statusCreating) => {
         className="block my-2 text-lg"
         htmlFor="name"
       >
-        Придумайте название статьи:
+        Придумайте название статьи (максимум 30 символов).
       </label>
       <input
         className="w-80 p-1 px-3 border-2 rounded-xl outline-none focus:border-blue-700"
@@ -85,7 +85,7 @@ const formCardInnerNameArticle = (register, errors, statusCreating) => {
         className="block mt-2 text-lg"
         htmlFor="description"
       >
-        Короткое описание статьи:
+        Короткое описание статьи (максимум 180 символов).
       </label>
       <textarea
         className="p-2 border-2 rounded-xl w-80 h-36 outline-none focus:border-blue-700 resize-none"
@@ -143,6 +143,7 @@ const AdminCreateCard = () => {
   const statusCreating = useSelector(state => state.admin.creatingCard.statusCreating);
   const [modalActive, setModalActive] = useState({ status: null, error: false, loading: false });
   const [file, setFile] = useState('');
+  const [token,] = useState(localStorage.getItem('admin'));
 
   useEffect(() => {
     dispatch(changeStatusCreatingArticle(false));
@@ -153,6 +154,11 @@ const AdminCreateCard = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  if (!token) {
+    alert('У вас нет доступа, чтобы создавать/редактировать статьи.')
+    return <Navigate to='/' />
+  }
 
   const renderModal = () => {
     return (
@@ -264,7 +270,7 @@ const AdminCreateCard = () => {
       <main className="flex-1 pl-72">
         <article className="p-5">
           <h2 className="text-3xl font-bold mb-2">
-            Создание карточки для статьи
+            Для того, чтобы создать статью, сначала нужно создать презентационную карточку.
           </h2>
           <div className="flex items-center">
             <form

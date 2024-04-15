@@ -6,8 +6,7 @@ import { statusCreatingCard, resetComponentToArticle, resetPreviewContentAnArtic
 // import MyNewArticle from "./components/MyNewArticle";
 import AreaNewTags from "./components/AreaNewTags";
 import PanelTags from "./components/PanelTags";
-import Modal from "./components/Modal";
-
+import Modal from "../../components/Modal";
 
 
 const AdminCreateArticle = () => {
@@ -17,6 +16,7 @@ const AdminCreateArticle = () => {
 
   const statusCreatingArticle = useSelector(state => state.admin.statusSendArticle);
   const idArticle = useSelector(state => state.admin.id);
+  const [token,] = useState(localStorage.getItem('admin'))
 
   // посмотреть какой redux я не использую, короче проследить как че работает.
   useEffect(() => {
@@ -32,14 +32,12 @@ const AdminCreateArticle = () => {
     // нужно проверить, если обновили страницу и нет айди в редаксе, найти карточку и удалить ее в монго
   }, [dispatch]);
 
-
-  // 
   // если вышли, то делать запрос, что мы вышли и удалять карточку.
 
-  // если не админ (тобишь я), то перенаправить (сделано дебильно)
-  // if (redirect) {
-  //   return <Navigate to='/admin' />;
-  // }
+  if (!token) {
+    alert('У вас нет доступа, чтобы создавать/редактировать статьи.')
+    return <Navigate to='/' />
+  }
 
   const renderModal = () => {
     return (

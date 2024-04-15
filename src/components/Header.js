@@ -15,14 +15,14 @@ const Header = () => {
         />
       </div>
       <header className="ml-24 py-6">
-        <h1 className="text-4xl font-bold">
+        <span className="text-4xl font-bold">
           <Link
             to='./'
             key='/'
           >
             My blog
           </Link>
-        </h1>
+        </span>
       </header>
     </>
   );

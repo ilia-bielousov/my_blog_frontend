@@ -5,3 +5,11 @@
 .panel__btn {
   @apply w-12 h-12 p-2 mr-1 bg-blue-700 hover:bg-blue-800 transition rounded-xl text-white text-xl;
 }
+
+.input__newTag {
+  @apply w-full p-2 outline-blue-700;
+}
+
+.input__newTag-resize {
+  @apply resize mb-2 h-60;
+}

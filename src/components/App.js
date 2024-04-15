@@ -13,11 +13,11 @@ import AdminCreateCard from '../pages/Admin/AdminCreateCard';
 import AdminCreateArticle from '../pages/Admin/AdminCreateArticle';
 import AdminEdit from '../pages/Admin/AdminEdit';
 import AdminEditSingleArticle from '../pages/Admin/AdminEditSingleArticle';
+import Admin404 from '../pages/Admin/Admin404';
 
 import './App.css';
 
 const App = () => {
-  // пока нет rwd, ну не везде, но нужно еще доработать.
   return (
     <div className="App flex flex-col flex-1">
       <Routes>
@@ -62,16 +62,6 @@ const App = () => {
               <SinglePageForArticle />
             </PageTransition>
           } />
-          <Route path='art' element={
-            <PageTransition>
-              <PageForCards />
-            </PageTransition>
-          } />
-          <Route path='art/:id' element={
-            <PageTransition>
-              <SinglePageForArticle />
-            </PageTransition>
-          } />
         </Route>
         <Route path='/admin/*' element={<AdminLayout />}>
           <Route index element={
@@ -82,6 +72,7 @@ const App = () => {
           <Route path='create-article' element={<AdminCreateArticle />} />
           <Route path='edit-article' element={<AdminEdit />} />
           <Route path='edit-article/:id' element={<AdminEditSingleArticle />} />
+          <Route path='*' element={<Admin404 />} />
         </Route>
       </Routes>
     </div>

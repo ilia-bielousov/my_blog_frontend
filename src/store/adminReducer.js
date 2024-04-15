@@ -1,3 +1,5 @@
+import { creatingArticle } from './adminCreatingArticle.js';
+
 const defaultState = {
   id: '',
   diff: false,
@@ -10,14 +12,15 @@ const defaultState = {
       description: '',
     }
   },
-  creatingArticle: {
-    elements: [],
-    previewElements: [],
-    IdElement: 0,
-    banAddElement: false,
-    currentTagButton: '',
-    currentStyleClassText: ''
-  },
+  // creatingArticle: {
+  //   elements: [],
+  //   previewElements: [],
+  //   IdElement: 0,
+  //   banAddElement: false,
+  //   currentTagButton: '',
+  //   currentStyleClassText: ''
+  // },
+  creatingArticle: creatingArticle,
   raportsArticles: {
     cards: [],
     articles: []
@@ -31,7 +34,6 @@ const SET_RESPONCE_ID = 'SET_RESPONCE_ID';
 const ADD_COMPONENT_TO_ARTICLE = 'ADD_COMPONENT_TO_ARTICLE';
 const ADD_PREVIEW_CONTENT_AN_ARTICLE = 'ADD_PREVIEW_CONTENT_AN_ARTICLE';
 const DELETE_PREVIEW_CONTENT_FROM_ARTICLE = 'DELETE_PREVIEW_CONTENT_FROM_ARTICLE';
-const CURRENT_STYLE_CLASS_TEXT = 'CURRENT_STYLE_CLASS_TEXT';
 const CURRENT_TAG_BUTTON = 'CURRENT_TAG_BUTTON';
 const ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT = 'ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT';
 const ADD_ID_FOR_NEW_ELEMENT = 'ADD_ID_FOR_NEW_ELEMENT';
@@ -70,7 +72,7 @@ export const adminReducer = (state = defaultState, action) => {
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: [...state.creatingArticle.previewElements, action.payload] } };
     case DELETE_PREVIEW_CONTENT_FROM_ARTICLE: {
       const t = state.creatingArticle.previewElements;
-      const updateT = t.filter((_, index) => index !== action.payload);
+      const updateT = t.filter((item, key) => action.payload !== key);
 
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: [...updateT] } };
     }
@@ -78,7 +80,11 @@ export const adminReducer = (state = defaultState, action) => {
       const t = state.creatingArticle.previewElements;
 
       const updateT = t.map(item => {
-        return { ...item, id: item.id - 1 }
+        if (item.id > action.payload) {
+          return { ...item, id: item.id - 1 }
+        } else {
+          return item;
+        }
       });
 
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: [...updateT] } };
@@ -87,8 +93,6 @@ export const adminReducer = (state = defaultState, action) => {
       return { ...state, creatingArticle: { ...state.creatingArticle, currentTagButton: action.payload } };
     case ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT:
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: [...action.payload] } };
-    case CURRENT_STYLE_CLASS_TEXT:
-      return { ...state, creatingArticle: { ...state.creatingArticle, currentStyleClassText: action.payload } };
     case ADD_ID_FOR_NEW_ELEMENT:
       return { ...state, creatingArticle: { ...state.creatingArticle, IdElement: state.creatingArticle.IdElement + 1 } };
     case MINUS_ID_FOR_NEW_ELEMENT:
@@ -126,7 +130,6 @@ export const addComponentToArticle = (payload) => ({ type: ADD_COMPONENT_TO_ARTI
 export const deletePreviewContentFromArticle = (payload) => ({ type: DELETE_PREVIEW_CONTENT_FROM_ARTICLE, payload });
 export const changeIdAllPreviewElements = (payload) => ({ type: CHANGE_ID_ALL_PREVIEW_ELEMENTS, payload });
 export const addPreviewContentAnArticle = (payload) => ({ type: ADD_PREVIEW_CONTENT_AN_ARTICLE, payload });
-export const addCurrentStyleClassText = (payload) => ({ type: CURRENT_STYLE_CLASS_TEXT, payload });
 export const addCurrentTagButton = (payload) => ({ type: CURRENT_TAG_BUTTON, payload });
 export const addPreviewContentAnArticleAfterEdit = (payload) => ({ type: ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT, payload });
 export const observeChanges = (payload) => ({ type: OBSERVE_CHANGES, payload });

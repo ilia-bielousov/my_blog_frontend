@@ -4,7 +4,7 @@ import axios from "axios";
 
 import picture from './../../../assets/images/picture.svg';
 
-const NewTag = ({ tag, IDforElementOfArticle }) => {
+const NewTag = ({ tag, IDforElementOfArticle, textContent }) => {
   const content = useSelector(state => state.admin.creatingArticle.previewElements);
 
   const tagRef = useRef(null);
@@ -24,8 +24,6 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
 
   const onKeyDown = (e) => {
     if (e.key === 'Enter' && tag !== 'ul' && tag !== 'code') {
-      console.log(e.target);
-      console.log(content);
       tagRef.current.blur();
       content[IDforElementOfArticle].text = e.target.value;
 
@@ -57,7 +55,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
         return (
           <input // возможно еще тут переписать, добавить редактирование
             ref={tagRef}
-            className="w-full p-2 outline-blue-700"
+            className="input__newTag"
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
@@ -69,7 +67,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
         return (
           <input
             ref={tagRef}
-            className="w-full p-2 outline-blue-700"
+            className="input__newTag"
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
@@ -80,7 +78,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
         return (
           <input
             ref={tagRef}
-            className="w-full p-2 outline-blue-700"
+            className="input__newTag"
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
@@ -92,7 +90,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
           <textarea
             onKeyDown={onKeyDown}
             ref={tagRef}
-            className="w-full p-2 outline-blue-700 resize-none h-60"
+            className="input__newTag input__newTag-resize"
             type="text"
             placeholder='Введите свой текст'
           />
@@ -103,7 +101,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
           <textarea
             onKeyDown={onKeyDown}
             ref={tagRef}
-            className="w-full p-2 outline-blue-700 resize-none h-60"
+            className="input__newTag input__newTag-resize"
             type="text"
             placeholder='Введите свой текст'
           />
@@ -155,7 +153,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
         return (
           <input
             ref={tagRef}
-            className="w-full p-2 outline-blue-700"
+            className="input__newTag"
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
@@ -169,14 +167,14 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
             ref={tagRef}>
             <textarea
               onKeyDown={onKeyDown}
-              className="w-full p-2 outline-blue-700 resize-none mb-2 h-60"
+              className="input__newTag input__newTag-resize mb-2"
               type="text"
               placeholder='скопируйте свой код и вставьте сюда'
             />
             <input
               onKeyDown={onKeyDown}
               type="text"
-              className="w-full p-2 outline-blue-700"
+              className="input__newTag"
               placeholder="напишите язык на каком написан код (javascript, c/c++, python etc.)"
             />
           </div>

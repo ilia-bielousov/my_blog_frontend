@@ -1,19 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
-import { fetchForAllCards } from '../../store/asyncAction/allCards';
-import { fetchForAllArticle } from '../../store/asyncAction/allArticles';
+import { fetchForAllCards } from '../../store/asyncAction/cardsAdmin';
 
 
 const AdminEdit = () => {
   const dispatch = useDispatch();
   const allCards = useSelector(state => state.admin.raportsArticles.cards);
+  const [token,] = useState(localStorage.getItem('admin'));
 
   useEffect(() => {
     dispatch(fetchForAllCards());
-    dispatch(fetchForAllArticle());
   }, []);
+
+  if (!token) {
+    alert('У вас нет доступа, чтобы создавать/редактировать статьи.')
+    return <Navigate to='/' />
+  }
 
   const renderCol = (block) => {
     return allCards.map((card, key) => {
