@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+
+import { updateReviewContentAnArticle } from "../../../store/adminActions";
 
 import picture from './../../../assets/images/picture.svg';
 
-const NewTag = ({ tag, IDforElementOfArticle, textContent }) => {
+const NewTag = ({ tag, IDforElementOfArticle }) => {
+  const dispatch = useDispatch();
   const content = useSelector(state => state.admin.creatingArticle.previewElements);
 
   const tagRef = useRef(null);
@@ -25,7 +28,6 @@ const NewTag = ({ tag, IDforElementOfArticle, textContent }) => {
   const onKeyDown = (e) => {
     if (e.key === 'Enter' && tag !== 'ul' && tag !== 'code') {
       tagRef.current.blur();
-      content[IDforElementOfArticle].text = e.target.value;
 
       if (tag === 'p') {
         content[IDforElementOfArticle].className = `text-justify indent-12 mb-3`;
@@ -36,6 +38,7 @@ const NewTag = ({ tag, IDforElementOfArticle, textContent }) => {
       } else if (tag === 'h3') {
         content[IDforElementOfArticle].className = `text-xl mb-3`;
       }
+
     } else if (tag === 'ul' && e.key === 'Control') {
       tagRef.current.blur();
       content[IDforElementOfArticle].list = e.target.value;
@@ -46,6 +49,10 @@ const NewTag = ({ tag, IDforElementOfArticle, textContent }) => {
       tagRef.current.children[0].blur();
       tagRef.current.children[1].blur();
     }
+
+    content[IDforElementOfArticle].text = e.target.value;
+
+    dispatch(updateReviewContentAnArticle(content));
   };
 
   const determine = () => {

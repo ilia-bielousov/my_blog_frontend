@@ -1,52 +1,17 @@
+import * as types from './adminActionTypes.js';
 import { creatingArticle } from './adminCreatingArticle.js';
+import { creatingCard } from './adminCreatingCard.js';
+import { raportsArticle } from './adminRaportsArticles.js';
 
 const defaultState = {
   id: '',
   diff: false,
-  statusSendArticle: false,
-  creatingCard: {
-    statusCreatingCard: false,
-    content: {
-      choose: '',
-      name: '',
-      description: '',
-    }
-  },
-  // creatingArticle: {
-  //   elements: [],
-  //   previewElements: [],
-  //   IdElement: 0,
-  //   banAddElement: false,
-  //   currentTagButton: '',
-  //   currentStyleClassText: ''
-  // },
+  statusCreatingArticle: false,
+  statusCreatingCard: false,
+  creatingCard: creatingCard,
   creatingArticle: creatingArticle,
-  raportsArticles: {
-    cards: [],
-    articles: []
-  }
+  raportsArticles: raportsArticle,
 };
-
-const INPUT_CHOOSE_CARD = 'INPUT_CHOOSE_CARD';
-const STATUS_CREATING_CARD = 'STATUS_CREATING_CARD';
-const INPUT_NAME_DESCRIPTION_CARD = 'INPUT_NAME_DESCRIPTION_CARD';
-const SET_RESPONCE_ID = 'SET_RESPONCE_ID';
-const ADD_COMPONENT_TO_ARTICLE = 'ADD_COMPONENT_TO_ARTICLE';
-const ADD_PREVIEW_CONTENT_AN_ARTICLE = 'ADD_PREVIEW_CONTENT_AN_ARTICLE';
-const DELETE_PREVIEW_CONTENT_FROM_ARTICLE = 'DELETE_PREVIEW_CONTENT_FROM_ARTICLE';
-const CURRENT_TAG_BUTTON = 'CURRENT_TAG_BUTTON';
-const ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT = 'ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT';
-const ADD_ID_FOR_NEW_ELEMENT = 'ADD_ID_FOR_NEW_ELEMENT';
-const MINUS_ID_FOR_NEW_ELEMENT = 'MINUS_ID_FOR_NEW_ELEMENT';
-const CHANGE_ID_ALL_PREVIEW_ELEMENTS = 'CHANGE_ID_ALL_PREVIEW_ELEMENTS';
-const RESET_COMPONENT_TO_ARTICLE = 'RESET_COMPONENT_TO_ARTICLE';
-const RESET_PREVIEW_CONTENT_AN_ARTICLE = 'RESET_PREVIEW_CONTENT_AN_ARTICLE';
-const CHANGE_BAN_ADD_ELEMENT = 'CHANGE_BAN_ADD_ELEMENT';
-const CHANGE_STATUS_CREATING_ARTICLE = 'CHANGE_STATUS_CREATING_ARTICLE';
-
-//для просмотра всех карт и статьи
-const GET_ALL_CARDS = 'GET_ALL_CARDS';
-const GET_ALL_ARTICLES = 'GET_ALL_ARTICLES';
 
 // для изменений
 const OBSERVE_CHANGES = 'OBSERVE_CHANGES';
@@ -54,29 +19,29 @@ const OBSERVE_CHANGES = 'OBSERVE_CHANGES';
 export const adminReducer = (state = defaultState, action) => {
   switch (action.type) {
     // для карточки
-    case INPUT_CHOOSE_CARD:
-      return { ...state, creatingCard: { ...state.creatingCard, content: { ...state.creatingCard.content, choose: action.payload } } };
-    case INPUT_NAME_DESCRIPTION_CARD:
-      return { ...state, creatingCard: { ...state.creatingCard, content: { ...state.creatingCard.content, ...action.payload } } };
-    case STATUS_CREATING_CARD: {
-      return { ...state, creatingCard: { ...state.creatingCard, statusCreatingCard: action.payload } };
+    case types.INPUT_CHOOSE_CARD:
+      return { ...state, creatingCard: { ...state.creatingCard, choose: action.payload } };
+    case types.INPUT_NAME_DESCRIPTION_CARD:
+      return { ...state, creatingCard: { ...state.creatingCard, ...action.payload } };
+    case types.STATUS_CREATING_CARD: {
+      return { ...state, statusCreatingCard: action.payload };
     }
-    case SET_RESPONCE_ID:
+    case types.SET_RESPONCE_ID:
       return { ...state, id: action.payload };
     //
 
     // для статьи
-    case ADD_COMPONENT_TO_ARTICLE:
+    case types.ADD_COMPONENT_TO_ARTICLE:
       return { ...state, creatingArticle: { ...state.creatingArticle, elements: [...state.creatingArticle.elements, action.payload] } };
-    case ADD_PREVIEW_CONTENT_AN_ARTICLE:
+    case types.ADD_PREVIEW_CONTENT_AN_ARTICLE:
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: [...state.creatingArticle.previewElements, action.payload] } };
-    case DELETE_PREVIEW_CONTENT_FROM_ARTICLE: {
+    case types.DELETE_PREVIEW_CONTENT_FROM_ARTICLE: {
       const t = state.creatingArticle.previewElements;
       const updateT = t.filter((item, key) => action.payload !== key);
 
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: [...updateT] } };
     }
-    case CHANGE_ID_ALL_PREVIEW_ELEMENTS: {
+    case types.CHANGE_ID_ALL_PREVIEW_ELEMENTS: {
       const t = state.creatingArticle.previewElements;
 
       const updateT = t.map(item => {
@@ -89,28 +54,46 @@ export const adminReducer = (state = defaultState, action) => {
 
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: [...updateT] } };
     }
-    case CURRENT_TAG_BUTTON:
+    case types.UPDATE_PREVIEW_CONTENT_AN_ARTICLE: {
+      return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: action.payload } };
+    }
+    case types.FILTER_PREVIEW_CONTENT_AN_ARTICLE: {
+      const t = state.creatingArticle.previewElements;
+
+      const indexT = t.findIndex((block) => block.id === parseInt(action.payload[0]));
+      const itemT = t[indexT];
+
+      const t1 = t.filter((block) => block.id !== parseInt(action.payload[0]));
+
+      t1.splice(action.payload[1], 0, itemT);
+      return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: t1 } };
+    }
+
+
+
+    case types.CURRENT_TAG_BUTTON:
       return { ...state, creatingArticle: { ...state.creatingArticle, currentTagButton: action.payload } };
-    case ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT:
+    case types.ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT:
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: [...action.payload] } };
-    case ADD_ID_FOR_NEW_ELEMENT:
+    case types.ADD_ID_FOR_NEW_ELEMENT:
       return { ...state, creatingArticle: { ...state.creatingArticle, IdElement: state.creatingArticle.IdElement + 1 } };
-    case MINUS_ID_FOR_NEW_ELEMENT:
+    case types.MINUS_ID_FOR_NEW_ELEMENT:
       return { ...state, creatingArticle: { ...state.creatingArticle, IdElement: state.creatingArticle.IdElement - 1 } };
-    case CHANGE_BAN_ADD_ELEMENT:
+    case types.CHANGE_BAN_ADD_ELEMENT:
       return { ...state, creatingArticle: { ...state.creatingArticle, banAddElement: action.payload } };
-    case CHANGE_STATUS_CREATING_ARTICLE:
-      return { ...state, statusSendArticle: action.payload };
+    case types.CHANGE_STATUS_CREATING_ARTICLE:
+      return { ...state, statusCreatingArticle: action.payload };
+
     // обнуляем все от прошлой статьи. //
-    case RESET_COMPONENT_TO_ARTICLE:
+    case types.RESET_COMPONENT_TO_ARTICLE:
       return { ...state, creatingArticle: { ...state.creatingArticle, elements: [], IdElement: 0 } };
-    case RESET_PREVIEW_CONTENT_AN_ARTICLE:
+    case types.RESET_PREVIEW_CONTENT_AN_ARTICLE:
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: [] } }
 
     // для просмотра всех карт и статьи
-    case GET_ALL_CARDS:
+    case types.GET_ALL_CARDS:
       return { ...state, raportsArticles: { ...state.raportsArticles, cards: [...action.payload] } };
-    case GET_ALL_ARTICLES:
+    case types.GET_ALL_ARTICLES:
       return { ...state, raportsArticles: { ...state.raportsArticles, articles: [...action.payload] } };
 
     // разное
@@ -121,26 +104,3 @@ export const adminReducer = (state = defaultState, action) => {
       return state;
   }
 }
-
-export const inputChooseCard = (payload) => ({ type: INPUT_CHOOSE_CARD, payload });
-export const inputNameDescriptionCard = (payload) => ({ type: INPUT_NAME_DESCRIPTION_CARD, payload });
-export const statusCreatingCard = (payload) => ({ type: STATUS_CREATING_CARD, payload });
-export const setResponceId = (payload) => ({ type: SET_RESPONCE_ID, payload });
-export const addComponentToArticle = (payload) => ({ type: ADD_COMPONENT_TO_ARTICLE, payload });
-export const deletePreviewContentFromArticle = (payload) => ({ type: DELETE_PREVIEW_CONTENT_FROM_ARTICLE, payload });
-export const changeIdAllPreviewElements = (payload) => ({ type: CHANGE_ID_ALL_PREVIEW_ELEMENTS, payload });
-export const addPreviewContentAnArticle = (payload) => ({ type: ADD_PREVIEW_CONTENT_AN_ARTICLE, payload });
-export const addCurrentTagButton = (payload) => ({ type: CURRENT_TAG_BUTTON, payload });
-export const addPreviewContentAnArticleAfterEdit = (payload) => ({ type: ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT, payload });
-export const observeChanges = (payload) => ({ type: OBSERVE_CHANGES, payload });
-export const addIdForNewElement = (payload) => ({ type: ADD_ID_FOR_NEW_ELEMENT, payload });
-export const MinusIdForNewElement = (payload) => ({ type: MINUS_ID_FOR_NEW_ELEMENT, payload });
-export const changeBanAddElement = (payload) => ({ type: CHANGE_BAN_ADD_ELEMENT, payload });
-export const changeStatusCreatingArticle = (payload) => ({ type: CHANGE_STATUS_CREATING_ARTICLE, payload });
-//для обновления от прошлой статьи
-export const resetComponentToArticle = () => ({ type: RESET_COMPONENT_TO_ARTICLE });
-export const resetPreviewContentAnArticle = () => ({ type: RESET_PREVIEW_CONTENT_AN_ARTICLE });
-
-// для всех статьи
-export const getAllCards = (payload) => ({ type: GET_ALL_CARDS, payload });
-export const getAllArticles = (payload) => ({ type: GET_ALL_ARTICLES, payload });

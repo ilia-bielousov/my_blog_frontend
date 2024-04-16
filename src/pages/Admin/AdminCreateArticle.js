@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { statusCreatingCard, resetComponentToArticle, resetPreviewContentAnArticle, changeBanAddElement } from "../../store/adminReducer";
+import { statusCreatingCard, resetComponentToArticle, resetPreviewContentAnArticle, changeBanAddElement } from "../../store/adminActions";
 
 // import MyNewArticle from "./components/MyNewArticle";
 import AreaNewTags from "./components/AreaNewTags";

@@ -6,9 +6,9 @@ import axios from 'axios';
 
 import Modal from "../../components/Modal";
 
-import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, changeStatusCreatingArticle, setResponceId } from "../../store/adminReducer";
+import { inputChooseCard, inputNameDescriptionCard, statusCreatingCard, changeStatusCreatingArticle, setResponceId } from "../../store/adminActions";
 
-const formCardInnerCategory = (inputChoose, statusCreating) => {
+const formCardInnerCategory = (inputChoose) => {
   return (
     <>
       <label className="block mb-2 text-xl">
@@ -21,7 +21,6 @@ const formCardInnerCategory = (inputChoose, statusCreating) => {
         id="programming"
         name="choose"
         value="programming"
-        disabled={statusCreating}
       />
       <label
         className="mr-3 text-lg"
@@ -35,7 +34,6 @@ const formCardInnerCategory = (inputChoose, statusCreating) => {
         id="projects"
         name="choose"
         value="projects"
-        disabled={statusCreating}
       />
       <label
         className="mr-3 text-lg"
@@ -48,7 +46,6 @@ const formCardInnerCategory = (inputChoose, statusCreating) => {
         type="radio" id="modeling"
         name="choose"
         value="modeling"
-        disabled={statusCreating}
       />
       <label
         className="mb-3 text-lg"
@@ -60,7 +57,7 @@ const formCardInnerCategory = (inputChoose, statusCreating) => {
   )
 }
 
-const formCardInnerNameArticle = (register, errors, statusCreating) => {
+const formCardInnerNameArticle = (register, errors) => {
   return (
     <>
       <label
@@ -75,7 +72,6 @@ const formCardInnerNameArticle = (register, errors, statusCreating) => {
         type="text"
         id="name"
         name="name"
-        readOnly={statusCreating}
       />
       <br />
       {errors.name && errors.name.type === 'required' ? <div className="text-rose-500">поле название обязательное.</div> : null}
@@ -92,7 +88,6 @@ const formCardInnerNameArticle = (register, errors, statusCreating) => {
         {...register('description', { required: true, maxLength: 180, minLength: 4 })}
         id="description"
         name="description"
-        readOnly={statusCreating}
       />
       <br />
       {errors.description && errors.description.type === 'required' ? <div className="text-rose-500">поле описание обязательное.</div> : null}
@@ -115,7 +110,7 @@ const formCardInnerImage = (setCardImage) => {
   )
 }
 
-const formCardInnerSubmit = (statusCreating) => {
+const formCardInnerSubmit = () => {
   return (
     <button
       className="w-48 p-3 mb-3 border-2 rounded-xl transition hover:bg-slate-100 active:bg-slate-200 active:border-slate-200 cursor-pointer disabled:cursor-auto disabled:bg-slate-800 disabled:text-white"
@@ -139,8 +134,7 @@ const transliterate = (text) => {
 
 const AdminCreateCard = () => {
   const dispatch = useDispatch();
-  const choose = useSelector(state => state.admin.creatingCard.content.choose);
-  const statusCreating = useSelector(state => state.admin.creatingCard.statusCreating);
+  const choose = useSelector(state => state.admin.creatingCard.choose);
   const [modalActive, setModalActive] = useState({ status: null, error: false, loading: false });
   const [file, setFile] = useState('');
   const [token,] = useState(localStorage.getItem('admin'));
@@ -276,10 +270,10 @@ const AdminCreateCard = () => {
             <form
               onSubmit={handleSubmit(onSubmit)}
             >
-              {formCardInnerCategory(inputChoose, statusCreating)}
-              {formCardInnerNameArticle(register, errors, statusCreating)}
+              {formCardInnerCategory(inputChoose)}
+              {formCardInnerNameArticle(register, errors)}
               {formCardInnerImage(setFile)}
-              {formCardInnerSubmit(statusCreating)}
+              {formCardInnerSubmit()}
             </form>
           </div>
         </article>

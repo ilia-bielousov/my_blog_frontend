@@ -1,4 +1,4 @@
-import { getAllArticles } from "../adminReducer";
+import { getAllArticles } from "../adminActions";
 
 export const fetchForAllArticle = () => {
   return function (dispatch) {
@@ -9,3 +9,4 @@ export const fetchForAllArticle = () => {
       });
   }
 }
+

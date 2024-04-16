@@ -1,4 +1,4 @@
-import { getAllCards } from "../adminReducer";
+import { getAllCards } from "../adminActions";
 
 export const fetchForAllCards = () => {
   return function (dispatch) {

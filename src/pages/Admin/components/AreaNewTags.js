@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NewTag from "./NewTag";
 
-import { addIdForNewElement, addPreviewContentAnArticle, deletePreviewContentFromArticle, MinusIdForNewElement, changeIdAllPreviewElements } from "../../../store/adminReducer";
+import { addIdForNewElement, addPreviewContentAnArticle, deletePreviewContentFromArticle, MinusIdForNewElement, changeIdAllPreviewElements, filterPreviewContentAnArticle } from "../../../store/adminActions";
 
 import cross from './../../../assets/images/cross.svg';
 
@@ -42,8 +42,8 @@ const AreaNewTags = () => {
 
   const dropHandler = (e) => {
     e.preventDefault();
-    console.log('target ', e.target);
-    console.log('ref ', fieldRef.current);
+    // console.log('target ', e.target);
+    // console.log('ref ', fieldRef.current);
 
     if (currentTagButton && e.target === fieldRef.current) {
       setMyListElements((prevList) => {
@@ -84,17 +84,19 @@ const AreaNewTags = () => {
   };
 
   const handleDropBlock = (e, index) => {
-    console.log('test');
-
     const id = e.dataTransfer.getData('id');
     const dragIndex = myListElements.findIndex((block) => block.id === parseInt(id));
     const dragBlock = myListElements[dragIndex];
 
     setMyListElements((prevBlocks) => {
       const newBlocks = prevBlocks.filter((block) => block.id !== parseInt(id));
+
       newBlocks.splice(index, 0, dragBlock);
       return newBlocks;
     });
+
+    dispatch(filterPreviewContentAnArticle([id, index]))
+
     setDragOverIndex(null); // Сбрасываем состояние после завершения операции перетаскивания
   };
 
