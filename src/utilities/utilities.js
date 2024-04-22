@@ -32,6 +32,8 @@ const createArticle = (content) => {
         case 'ul': {
           const list = item[1].list.split('\n');
 
+          console.log(item[1]);
+
           return (
             <ul className="text-lg pl-5 mb-5">
               {list[0]}

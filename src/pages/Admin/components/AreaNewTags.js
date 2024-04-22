@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NewTag from "./NewTag";
 
-import { addIdForNewElement, addPreviewContentAnArticle, deletePreviewContentFromArticle, MinusIdForNewElement, changeIdAllPreviewElements, filterPreviewContentAnArticle } from "../../../store/adminActions";
+import { addIdForNewElement, addPreviewContentAnArticle, deletePreviewContentFromArticle, MinusIdForNewElement, changeIdAllPreviewElements, filterPreviewContentAnArticle, deletedComponentId, addCurrentTagButton } from "../../../store/adminActions";
 
 import cross from './../../../assets/images/cross.svg';
 
@@ -14,11 +14,17 @@ const AreaNewTags = () => {
 
   const [myListElements, setMyListElements] = useState([]);
   const [dragOverIndex, setDragOverIndex] = useState(null);
+  const [classesForBorderTagTop, setClassesForBorderTagTop] = useState('h-1/2 bg-transparent absolute top-0 left-0 z-auto w-full');
+  const [classesForBorderTagBottom, setClassesForBorderTagBottom] = useState('h-1/2 bg-transparent absolute bottom-0 left-0 z-auto w-full');
 
   const fieldRef = useRef(null);
+  const topRef = useRef(null);
+  const bottomRef = useRef(null);
 
   const deleteElement = (indexToRemove) => {
     const t = myListElements.filter((item, key) => indexToRemove !== key);
+
+    dispatch(deletedComponentId(indexToRemove));
 
     const updateT = t.map(item => {
       if (item.id > indexToRemove) {
@@ -26,6 +32,7 @@ const AreaNewTags = () => {
       } else {
         return item;
       }
+
     })
 
     // нужно обновить компоненты на редаксе
@@ -38,12 +45,12 @@ const AreaNewTags = () => {
 
   const dragOverSquareStyle = (e) => {
     e.preventDefault();
+
+    console.log(e.target);
   }
 
   const dropHandler = (e) => {
     e.preventDefault();
-    // console.log('target ', e.target);
-    // console.log('ref ', fieldRef.current);
 
     if (currentTagButton && e.target === fieldRef.current) {
       setMyListElements((prevList) => {
@@ -81,7 +88,23 @@ const AreaNewTags = () => {
     e.preventDefault();
 
     setDragOverIndex(index);
+
+    if (e.target === topRef.current) {
+      setClassesForBorderTagTop('h-1/2 bg-transparent absolute top-0 left-0 z-20 w-full border-t-4 border-red-600');
+      setClassesForBorderTagBottom('h-1/2 bg-transparent absolute bottom-0 left-0 z-20 w-full');
+    }
+
+    if (e.target === bottomRef.current) {
+      setClassesForBorderTagTop('h-1/2 bg-transparent absolute top-0 left-0 z-20 w-full');
+      setClassesForBorderTagBottom('h-1/2 bg-transparent absolute bottom-0 left-0 z-20 w-full border-b-4 border-red-600');
+    }
   };
+
+  const handleDragEnd = (e) => {
+    e.preventDefault();
+
+    setDragOverIndex(false);
+  }
 
   const handleDropBlock = (e, index) => {
     const id = e.dataTransfer.getData('id');
@@ -98,6 +121,8 @@ const AreaNewTags = () => {
     dispatch(filterPreviewContentAnArticle([id, index]))
 
     setDragOverIndex(null); // Сбрасываем состояние после завершения операции перетаскивания
+    setClassesForBorderTagTop('h-1/2 bg-transparent absolute top-0 left-0 z-auto w-full');
+    setClassesForBorderTagBottom('h-1/2 bg-transparent absolute bottom-0 left-0 z-auto w-full');
   };
 
   return (
@@ -105,32 +130,44 @@ const AreaNewTags = () => {
       onDragOver={(e) => dragOverSquareStyle(e)}
       onDrop={(e) => dropHandler(e)}
       ref={fieldRef}
-      className="square w-full min-h-96 p-8 border-dashed border-blue-600 border-2"
+      className="relative z-10 square w-full min-h-96 p-8 border-dashed border-blue-600 border-2"
     >
-      <div>
-        {myListElements && myListElements.map((item, index) => {
-          if (item.component) {
-            return (
-              <div
-                className={index === dragOverIndex ? `border-2 bg-slate-200 flex justify-between gap-5 mb-2 p-2` : `flex justify-between gap-5 mb-2 p-2`}
-                key={item.id}
-                draggable
-                onDragStart={(e) => handleDragStartBlock(e, item.id)}
-                onDragOver={(e) => handleDragOverBlock(e, index)}
-                onDrop={(e) => handleDropBlock(e, index)}
-              >
+      {myListElements && myListElements.map((item, index) => {
+        if (item.component) {
+          return (
+            <div
+              className='flex justify-between mb-2'
+              key={item.id}
+              draggable
+              onDragStart={(e) => handleDragStartBlock(e, item.id)}
+              onDragOver={(e) => handleDragOverBlock(e, index)}
+              onDragLeave={(e) => handleDragEnd(e)}
+              onDrop={(e) => handleDropBlock(e, index)}
+            >
+              <div className="flex flex-col w-full relative">
+                <div
+                  ref={topRef}
+                  className={index === dragOverIndex ? `${classesForBorderTagTop}` : 'h-1/2 bg-transparent absolute top-0 left-0 z-0 w-full'}>
+                </div>
+                {/* динамически нужно строить классы взависимости от выбраного тега */}
                 {item.component}
-                <img
-                  src={cross}
-                  alt="cross"
-                  className="w-12 h-auto hover:scale-125 transition cursor-pointer"
-                  onClick={() => deleteElement(index)}
-                />
+                <div
+                  ref={bottomRef}
+                  className={index === dragOverIndex ? `${classesForBorderTagBottom}` : 'h-1/2 bg-transparent absolute bottom-0 left-0 z-0 w-full'}>
+                </div>
               </div>
-            )
-          }
-        })}
-      </div>
+              <img
+                src={cross}
+                alt="cross"
+                className="w-12 h-auto hover:scale-125 transition cursor-pointer"
+                onClick={() => deleteElement(index)}
+              />
+            </div>
+          )
+        } else {
+          return null;
+        }
+      })}
     </div>
   );
 };

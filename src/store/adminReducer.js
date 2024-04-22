@@ -68,6 +68,9 @@ export const adminReducer = (state = defaultState, action) => {
       t1.splice(action.payload[1], 0, itemT);
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: t1 } };
     }
+    case types.DELETED_COMPONENT_ID: {
+      return { ...state, creatingArticle: { ...state.creatingArticle, deletedCompontentId: action.payload } };
+    }
 
 
 

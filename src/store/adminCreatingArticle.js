@@ -4,7 +4,8 @@ const creatingArticle = {
   IdElement: 0,
   banAddElement: false,
   currentTagButton: '',
-  currentStyleClassText: ''
+  currentStyleClassText: '',
+  deletedCompontentId: null,
 }
 
 export { creatingArticle };

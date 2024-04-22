@@ -7,7 +7,7 @@
 }
 
 .input__newTag {
-  @apply w-full p-2 outline-blue-700;
+  @apply w-full h-36 p-3 z-0 outline-blue-700;
 }
 
 .input__newTag-resize {

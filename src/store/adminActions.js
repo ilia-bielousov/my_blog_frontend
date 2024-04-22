@@ -21,6 +21,7 @@ export const changeBanAddElement = (payload) => ({ type: types.CHANGE_BAN_ADD_EL
 export const changeStatusCreatingArticle = (payload) => ({ type: types.CHANGE_STATUS_CREATING_ARTICLE, payload });
 export const updateReviewContentAnArticle = (payload) => ({ type: types.UPDATE_PREVIEW_CONTENT_AN_ARTICLE, payload });
 export const filterPreviewContentAnArticle = (payload) => ({ type: types.FILTER_PREVIEW_CONTENT_AN_ARTICLE, payload });
+export const deletedComponentId = (payload) => ({ type: types.DELETED_COMPONENT_ID, payload });
 // ////////////////////////////////////////////
 
 //для обновления от прошлой статьи
