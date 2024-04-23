@@ -107,7 +107,7 @@ const AdminCreateArticle = () => {
   return (
     <>
       <main className="flex flex-1 pl-72">
-        <aside className="w-2/3 flex-1 p-3 justify-center">
+        <aside className="w-2/3 flex flex-col flex-1 px-3 pt-3">
           <h2 className="text-3xl font-bold mb-5 text-center">
             Создание статьи
           </h2>

@@ -21,23 +21,25 @@ const AreaNewTags = () => {
   const deleteElement = (indexToRemove) => {
     const t = myListElements.filter((item, key) => indexToRemove !== key);
 
-    dispatch(deletedComponentId(indexToRemove));
+    // dispatch(deletedComponentId(indexToRemove));
 
-    const updateT = t.map(item => {
-      if (item.id > indexToRemove) {
-        return { ...item, id: item.id - 1 }
-      } else {
-        return item;
-      }
+    // const updateT = t.map(item => {
+    //   if (item.id > indexToRemove) {
+    //     return { ...item, id: item.id - 1 }
+    //   } else {
+    //     return item;
+    //   }
+    // });
 
-    })
+    console.log(t);
+
 
     // нужно обновить компоненты на редаксе
-    setMyListElements(updateT);
+    setMyListElements(t);
 
     dispatch(deletePreviewContentFromArticle(indexToRemove));
-    dispatch(MinusIdForNewElement());
-    dispatch(changeIdAllPreviewElements(indexToRemove));
+    // dispatch(MinusIdForNewElement());
+    // dispatch(changeIdAllPreviewElements(indexToRemove));
   };
 
   const dragOverSquareStyle = (e) => {
@@ -134,7 +136,7 @@ const AreaNewTags = () => {
       onDragOver={(e) => dragOverSquareStyle(e)}
       onDrop={(e) => dropHandler(e)}
       ref={fieldRef}
-      className="relative z-10 square w-full min-h-96 p-8 border-dashed border-blue-600 border-2"
+      className="relative z-10 square w-full flex-1 p-3 border-dashed border-blue-600 border-2"
     >
       {myListElements && myListElements.map((item, index) => {
         return (

@@ -85,8 +85,6 @@ export const adminReducer = (state = defaultState, action) => {
       return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: t } };
     }
 
-
-
     case types.CURRENT_TAG_BUTTON:
       return { ...state, creatingArticle: { ...state.creatingArticle, currentTagButton: action.payload } };
     case types.ADD_PREVIEW_CONTENT_AN_ARTICLE_AFTER_EDIT:

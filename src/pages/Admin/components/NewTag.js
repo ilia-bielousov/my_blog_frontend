@@ -37,18 +37,46 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
 
   }, []);
 
+  useEffect(() => {
+
+  }, [content])
+
   const onKeyDown = (e) => { // неправильная логика
     if (e.key === 'Enter' && tag !== 'ul' && tag !== 'code') {
       tagRef.current.blur();
 
       if (tag === 'p') {
-        content[idElem].className = `text-justify indent-12 mb-3`;
+        // content[idElem].className = `text-justify indent-12 mb-3`;
+
+        content.map(item => {
+          if (item.id === idElem) {
+            item.className = 'text-justify indent-12 mb-3';
+          }
+        });
       } else if (tag === 'h1') {
-        content[idElem].className = `text-3xl font-bold mb-5`;
+        // content[idElem].className = `text-3xl font-bold mb-5`;
+
+        content.map(item => {
+          if (item.id === idElem) {
+            item.className = 'text-3xl font-bold mb-5';
+          }
+        });
       } else if (tag === 'h2') {
-        content[idElem].className = `text-2xl font-bold mb-4`;
+        // content[idElem].className = `text-2xl font-bold mb-4`;
+
+        content.map(item => {
+          if (item.id === idElem) {
+            item.className = 'text-2xl font-bold mb-4';
+          }
+        });
       } else if (tag === 'h3') {
-        content[idElem].className = `text-xl mb-3`;
+        // content[idElem].className = `text-xl mb-3`;
+
+        content.map(item => {
+          if (item.id === idElem) {
+            item.className = 'text-xl mb-3';
+          }
+        });
       }
 
     } else if (tag === 'ul' && e.key === 'Control') {
@@ -156,7 +184,11 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
         return (
           <>
             {(!sourceImg ?
-              <div className="flex flex-col items-center p-2 max-w-xs mx-auto">
+              <div
+                // className="flex flex-col items-center p-2 max-w-xs mx-auto"
+                // {!statusClickPanelTags ? 'input__newTag input__newTag-resize relative z-30' : 'input__newTag input__newTag-resize'}
+                className={!statusClickPanelTags ? 'flex flex-col items-center p-2 max-w-xs mx-auto relative z-30' : 'flex flex-col items-center p-2 max-w-xs mx-auto'}
+              >
                 <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 mb-2 p-3 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
                   <input
                     type="file"
@@ -174,7 +206,10 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
                   confirm
                 </button>
               </div> :
-              <div className="mx-auto">
+              <div
+                // className="mx-auto"
+                className={!statusClickPanelTags ? 'flex flex-col items-center p-2 max-w-xs mx-auto relative z-30' : 'flex flex-col items-center p-2 max-w-xs mx-auto'}
+              >
                 <p className="text-xl text-center mb-3">Ваше изображение</p>
                 <img className="mx-auto px-3" src={sourceImg} alt="test" />
                 <div className="flex flex-col items-center p-2 max-w-xs mx-auto">
