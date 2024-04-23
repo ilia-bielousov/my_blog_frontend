@@ -65,11 +65,24 @@ export const adminReducer = (state = defaultState, action) => {
 
       const t1 = t.filter((block) => block.id !== parseInt(action.payload[0]));
 
-      t1.splice(action.payload[1], 0, itemT);
-      return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: t1 } };
+      if (!itemT) {
+        return { ...state };
+      } else {
+        t1.splice(action.payload[1], 0, itemT);
+        return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: t1 } };
+      }
     }
     case types.DELETED_COMPONENT_ID: {
       return { ...state, creatingArticle: { ...state.creatingArticle, deletedCompontentId: action.payload } };
+    }
+    case types.AFTER_ADDED_TO_REVIEW_CONTENT_ARTICLE: {
+      const index = action.payload[0];
+      const block = action.payload[1];
+      const t = state.creatingArticle.previewElements;
+
+      t.splice(index, 0, block);
+
+      return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: t } };
     }
 
 
@@ -86,6 +99,12 @@ export const adminReducer = (state = defaultState, action) => {
       return { ...state, creatingArticle: { ...state.creatingArticle, banAddElement: action.payload } };
     case types.CHANGE_STATUS_CREATING_ARTICLE:
       return { ...state, statusCreatingArticle: action.payload };
+    case types.HOVER_INDEX_ELEMENT: {
+      return { ...state, creatingArticle: { ...state.creatingArticle, hoverIndexElement: action.payload } };
+    }
+    case types.STATUS_CLICK_PANEL_TAGS: {
+      return { ...state, creatingArticle: { ...state.creatingArticle, statusClickPanelTags: action.payload } };
+    }
 
     // обнуляем все от прошлой статьи. //
     case types.RESET_COMPONENT_TO_ARTICLE:

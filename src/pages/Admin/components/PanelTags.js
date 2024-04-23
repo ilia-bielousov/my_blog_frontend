@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCurrentTagButton, changeStatusCreatingArticle } from '../../../store/adminActions';
+import { addCurrentTagButton, changeStatusCreatingArticle, setStatusClickPanelTags } from '../../../store/adminActions';
 
 import axios from 'axios';
 
@@ -116,6 +116,7 @@ const PanelTags = ({ setModalActive }) => {
 
   const dragStartHandler = (e) => {
     dispatch(addCurrentTagButton(e.target.getAttribute('data-tag')));
+    dispatch(setStatusClickPanelTags(true));
   }
 
   const sendArticle = async (e) => {

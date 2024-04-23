@@ -2,22 +2,31 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
-import { updateReviewContentAnArticle } from "../../../store/adminActions";
+import { updateReviewContentAnArticle, setHoverIndexElement, addCurrentTagButton } from "../../../store/adminActions";
 
 import picture from './../../../assets/images/picture.svg';
 
 const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная логика IDforElementOf...
   const dispatch = useDispatch();
-  const content = useSelector(state => state.admin.creatingArticle.previewElements);
+  let content = useSelector(state => state.admin.creatingArticle.previewElements);
   const deletedElement = useSelector(state => state.admin.creatingArticle.deletedCompontentId);
+  const statusClickPanelTags = useSelector(state => state.admin.creatingArticle.statusClickPanelTags);
 
   const tagRef = useRef(null);
 
   const [file, setFile] = useState('');
   const [sourceImg, setSourceImg] = useState(null);
-  const [idElem, setIdElem] = useState(IDforElementOfArticle);
+  const [idElem, setIdElem] = useState(null);
+
+  const [classesForBorderTagTop, setClassesForBorderTagTop] = useState('w-full h-1/2 absolute top-0 left-0 z-10');
+  const [classesForBorderTagBottom, setClassesForBorderTagBottom] = useState('w-full h-1/2 absolute bottom-0 left-0 z-10');
+
+  const topRef = useRef(null);
+  const bottomRef = useRef(null);
 
   useEffect(() => {
+    setIdElem(IDforElementOfArticle);
+
     if (tag !== 'img') {
       tagRef.current.focus();
     }
@@ -25,12 +34,8 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
     if (tag === 'code') {
       tagRef.current.children[0].focus();
     }
+
   }, []);
-
-  // useEffect(() => {
-  //   setIdElem((prev) => prev);
-
-  // }, [deletedElement]);
 
   const onKeyDown = (e) => { // неправильная логика
     if (e.key === 'Enter' && tag !== 'ul' && tag !== 'code') {
@@ -48,16 +53,28 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
 
     } else if (tag === 'ul' && e.key === 'Control') {
       tagRef.current.blur();
-      content[idElem].list = e.target.value;
-    } else if (e.key === 'Enter' && tag === 'code') {
-      content[idElem].text = tagRef.current.children[0].value;
-      content[idElem].language = tagRef.current.children[1].value;
 
+      content.map(item => {
+        if (item.id === idElem) {
+          item.list = e.target.value;
+        }
+      });
+    } else if (e.key === 'Enter' && tag === 'code') {
       tagRef.current.children[0].blur();
       tagRef.current.children[1].blur();
+
+      content.map(item => {
+        if (item.id === idElem) {
+          item.language = e.target.value;
+        }
+      });
     }
 
-    content[idElem].text = e.target.value;
+    content.map(item => {
+      if (item.id === idElem) {
+        item.text = e.target.value;
+      }
+    });
 
     dispatch(updateReviewContentAnArticle(content));
   };
@@ -69,7 +86,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
         return (
           <input // возможно еще тут переписать, добавить редактирование
             ref={tagRef}
-            className="input__newTag"
+            className={!statusClickPanelTags ? 'input__newTag relative z-30' : 'input__newTag'}
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
@@ -81,7 +98,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
         return (
           <input
             ref={tagRef}
-            className="input__newTag"
+            className={!statusClickPanelTags ? 'input__newTag relative z-30' : 'input__newTag'}
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
@@ -92,7 +109,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
         return (
           <input
             ref={tagRef}
-            className="input__newTag"
+            className={!statusClickPanelTags ? 'input__newTag relative z-30' : 'input__newTag'}
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
@@ -104,7 +121,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
           <textarea
             onKeyDown={onKeyDown}
             ref={tagRef}
-            className="input__newTag input__newTag-resize"
+            className={!statusClickPanelTags ? 'input__newTag input__newTag-resize relative z-30' : 'input__newTag input__newTag-resize'}
             type="text"
             placeholder='Введите свой текст'
           />
@@ -115,7 +132,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
           <textarea
             onKeyDown={onKeyDown}
             ref={tagRef}
-            className="input__newTag input__newTag-resize"
+            className={!statusClickPanelTags ? 'input__newTag input__newTag-resize relative z-30' : 'input__newTag input__newTag-resize'}
             type="text"
             placeholder='Введите свой текст'
           />
@@ -189,7 +206,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
             <p className="mb-3">Чтобы вставить видео, скопируйте ссылку и вставьте в поле ниже.</p>
             <input
               ref={tagRef}
-              className="input__newTag"
+              className={!statusClickPanelTags ? 'input__newTag relative z-30' : 'input__newTag'}
               type="text"
               onKeyDown={onKeyDown}
               placeholder='Введите свой текст'
@@ -204,14 +221,14 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
             ref={tagRef}>
             <textarea
               onKeyDown={onKeyDown}
-              className="input__newTag input__newTag-resize mb-2"
+              className={!statusClickPanelTags ? 'input__newTag input__newTag-resize relative z-30' : 'input__newTag input__newTag-resize'}
               type="text"
               placeholder='скопируйте свой код и вставьте сюда'
             />
             <input
               onKeyDown={onKeyDown}
               type="text"
-              className="input__newTag"
+              className={!statusClickPanelTags ? 'input__newTag relative z-30' : 'input__newTag'}
               placeholder="напишите язык на каком написан код (javascript, c/c++, python etc.)"
             />
           </div>
@@ -223,10 +240,51 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
     }
   }
 
+  const handleDragOverBlock = (e, index) => {
+    e.preventDefault();
+
+    if (e.target === topRef.current) {
+      setClassesForBorderTagTop('w-full h-1/2 absolute top-0 left-0 z-10 border-t-4 border-red-600')
+    }
+
+    if (e.target === bottomRef.current) {
+      setClassesForBorderTagBottom('w-full h-1/2 absolute bottom-0 left-0 z-10 border-b-4 border-red-600')
+    }
+  };
+
+  const handleDragEnd = (e) => {
+    e.preventDefault();
+
+    setClassesForBorderTagTop('w-full h-1/2 absolute top-0 left-0 z-10')
+    setClassesForBorderTagBottom('w-full h-1/2 absolute bottom-0 left-0 z-10')
+  }
+
+  const handleDrop = (e) => {
+    setClassesForBorderTagTop('w-full h-1/2 absolute top-0 left-0 z-10')
+    setClassesForBorderTagBottom('w-full h-1/2 absolute bottom-0 left-0 z-10')
+  }
+
   return (
-    <>
+    <div
+      className={statusClickPanelTags ? 'border-[3px] border-red-900' : ''}
+      onDragLeave={(e) => handleDragEnd(e)}
+      onDragOver={(e) => handleDragOverBlock(e)}
+      onDrop={(e) => handleDrop(e)}
+    >
+      <div
+        ref={topRef}
+        className={`${classesForBorderTagTop}`}
+        data-position='top'
+      >
+      </div>
       {determine()}
-    </>
+      <div
+        ref={bottomRef}
+        className={`${classesForBorderTagBottom}`}
+        data-position='bottom'
+      >
+      </div>
+    </div>
   )
 }
 

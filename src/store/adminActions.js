@@ -22,6 +22,9 @@ export const changeStatusCreatingArticle = (payload) => ({ type: types.CHANGE_ST
 export const updateReviewContentAnArticle = (payload) => ({ type: types.UPDATE_PREVIEW_CONTENT_AN_ARTICLE, payload });
 export const filterPreviewContentAnArticle = (payload) => ({ type: types.FILTER_PREVIEW_CONTENT_AN_ARTICLE, payload });
 export const deletedComponentId = (payload) => ({ type: types.DELETED_COMPONENT_ID, payload });
+export const setHoverIndexElement = (payload) => ({ type: types.HOVER_INDEX_ELEMENT, payload });
+export const setStatusClickPanelTags = (payload) => ({ type: types.STATUS_CLICK_PANEL_TAGS, payload });
+export const afterAddedToReviewContentArticle = (payload) => ({ type: types.AFTER_ADDED_TO_REVIEW_CONTENT_ARTICLE, payload });
 // ////////////////////////////////////////////
 
 //для обновления от прошлой статьи

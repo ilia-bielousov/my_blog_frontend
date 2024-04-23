@@ -6,6 +6,8 @@ const creatingArticle = {
   currentTagButton: '',
   currentStyleClassText: '',
   deletedCompontentId: null,
+  hoverIndexElement: null,
+  statusClickPanelTags: false,
 }
 
 export { creatingArticle };
