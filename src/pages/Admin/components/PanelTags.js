@@ -83,7 +83,7 @@ const PanelTags = ({ setModalActive }) => {
       else if (isDragging) {
         setTransform((prevPosition) => ({
           x: Math.min(window.innerWidth - 466, Math.max(0, prevPosition.x + e.movementX)),
-          y: Math.min(window.innerHeight - 128, Math.max(0, prevPosition.y + e.movementY)),
+          y: Math.min(document.documentElement.scrollHeight - 128, Math.max(0, prevPosition.y + e.movementY)),
         }));
       }
     };
@@ -102,15 +102,19 @@ const PanelTags = ({ setModalActive }) => {
   }, [isDragging]);
 
   const handleMouseDown = (e) => {
+    console.log('123');
     const rect = e.currentTarget.getBoundingClientRect();
     let offsetX = e.clientX - rect.left;
     let offsetY = e.clientY - rect.top;
 
     setIsDragging(true);
 
+    console.log(offsetY);
+    console.log(e.clientY);
+
     setTransform(() => ({
       x: e.clientX - offsetX,
-      y: e.clientY - offsetY,
+      y: e.clientY + window.scrollY - offsetY,
     }));
   };
 
@@ -141,8 +145,6 @@ const PanelTags = ({ setModalActive }) => {
   return (
     <div className="cursor-grab w-[450px] absolute z-20"
       style={{
-        // тут баг большой, надо исправлять.
-        // transform: `translate(${transform.x}px, ${transform.y}px)`,
         top: `${transform.y}px`,
         left: `${transform.x}px`,
         transition: isDragging ? 'none' : 'transform 0.2s ease', // Add transition for smooth movement

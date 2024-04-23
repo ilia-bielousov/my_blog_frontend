@@ -46,32 +46,24 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
       tagRef.current.blur();
 
       if (tag === 'p') {
-        // content[idElem].className = `text-justify indent-12 mb-3`;
-
         content.map(item => {
           if (item.id === idElem) {
             item.className = 'text-justify indent-12 mb-3';
           }
         });
       } else if (tag === 'h1') {
-        // content[idElem].className = `text-3xl font-bold mb-5`;
-
         content.map(item => {
           if (item.id === idElem) {
             item.className = 'text-3xl font-bold mb-5';
           }
         });
       } else if (tag === 'h2') {
-        // content[idElem].className = `text-2xl font-bold mb-4`;
-
         content.map(item => {
           if (item.id === idElem) {
             item.className = 'text-2xl font-bold mb-4';
           }
         });
       } else if (tag === 'h3') {
-        // content[idElem].className = `text-xl mb-3`;
-
         content.map(item => {
           if (item.id === idElem) {
             item.className = 'text-xl mb-3';
@@ -91,9 +83,11 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
       tagRef.current.children[0].blur();
       tagRef.current.children[1].blur();
 
+      console.log(tagRef.current.children);
       content.map(item => {
         if (item.id === idElem) {
-          item.language = e.target.value;
+          item.text = tagRef.current.children[0].value;
+          item.language = tagRef.current.children[1].value;
         }
       });
     }

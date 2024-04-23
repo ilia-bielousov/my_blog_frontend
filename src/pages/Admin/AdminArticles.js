@@ -53,7 +53,7 @@ const AdminArticles = () => {
               <span className='font-semibold flex-1'>Описание статьи:</span> <span className='flex-1'>{card.description} </span>
             </div>
             <div className='flex justify-between mb-5'>
-              <span className='font-semibold flex-1'>количество просмотров:</span> <span className='flex-1 text-end font-bold'>{t}.</span>
+              <span className='font-semibold flex-1'>количество просмотров:</span> <span className='flex-1 text-end font-bold'>{t}</span>
             </div>
           </li>
         )

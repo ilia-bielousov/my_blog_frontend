@@ -21,25 +21,9 @@ const AreaNewTags = () => {
   const deleteElement = (indexToRemove) => {
     const t = myListElements.filter((item, key) => indexToRemove !== key);
 
-    // dispatch(deletedComponentId(indexToRemove));
-
-    // const updateT = t.map(item => {
-    //   if (item.id > indexToRemove) {
-    //     return { ...item, id: item.id - 1 }
-    //   } else {
-    //     return item;
-    //   }
-    // });
-
-    console.log(t);
-
-
-    // нужно обновить компоненты на редаксе
     setMyListElements(t);
 
     dispatch(deletePreviewContentFromArticle(indexToRemove));
-    // dispatch(MinusIdForNewElement());
-    // dispatch(changeIdAllPreviewElements(indexToRemove));
   };
 
   const dragOverSquareStyle = (e) => {
