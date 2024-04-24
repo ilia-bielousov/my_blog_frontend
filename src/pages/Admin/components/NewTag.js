@@ -2,14 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
-import { updateReviewContentAnArticle, setHoverIndexElement, addCurrentTagButton } from "../../../store/adminActions";
+import { updateReviewContentAnArticle } from "../../../store/adminActions";
 
 import picture from './../../../assets/images/picture.svg';
 
-const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная логика IDforElementOf...
+const NewTag = ({ tag, IDforElementOfArticle }) => {
   const dispatch = useDispatch();
   let content = useSelector(state => state.admin.creatingArticle.previewElements);
-  const deletedElement = useSelector(state => state.admin.creatingArticle.deletedCompontentId);
   const statusClickPanelTags = useSelector(state => state.admin.creatingArticle.statusClickPanelTags);
 
   const tagRef = useRef(null);
@@ -20,6 +19,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
 
   const [classesForBorderTagTop, setClassesForBorderTagTop] = useState('w-full h-1/2 absolute top-0 left-0 z-10');
   const [classesForBorderTagBottom, setClassesForBorderTagBottom] = useState('w-full h-1/2 absolute bottom-0 left-0 z-10');
+  const [statusInputTag, setStatusInputTag] = useState(true);
 
   const topRef = useRef(null);
   const bottomRef = useRef(null);
@@ -41,7 +41,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
 
   }, [content])
 
-  const onKeyDown = (e) => { // неправильная логика
+  const onKeyDown = (e) => {
     if (e.key === 'Enter' && tag !== 'ul' && tag !== 'code') {
       tagRef.current.blur();
 
@@ -92,6 +92,9 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
       });
     }
 
+    if (e.key === 'Enter' || e.key === 'Control')
+      setStatusInputTag(false);
+
     content.map(item => {
       if (item.id === idElem) {
         item.text = e.target.value;
@@ -106,13 +109,12 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
     switch (tag) {
       case 'h1': {
         return (
-          <input // возможно еще тут переписать, добавить редактирование
+          <input
             ref={tagRef}
             className={!statusClickPanelTags ? 'input__newTag relative z-30' : 'input__newTag'}
             type="text"
             onKeyDown={onKeyDown}
             placeholder='Введите свой текст'
-          // value={value ? value : null}
           />
         )
       }
@@ -179,8 +181,6 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
           <>
             {(!sourceImg ?
               <div
-                // className="flex flex-col items-center p-2 max-w-xs mx-auto"
-                // {!statusClickPanelTags ? 'input__newTag input__newTag-resize relative z-30' : 'input__newTag input__newTag-resize'}
                 className={!statusClickPanelTags ? 'flex flex-col items-center p-2 max-w-xs mx-auto relative z-30' : 'flex flex-col items-center p-2 max-w-xs mx-auto'}
               >
                 <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 mb-2 p-3 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
@@ -189,19 +189,18 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
                     name="image"
                     id="image"
                     className="w-full h-full absolute inset-0 opacity-0 cursor-pointer"
-                    onChange={e => setFile(e.target.files[0])}
+                    onChange={e => { setFile(e.target.files[0]); }}
                   />
                   <img src={picture} alt="capt" className="w-8" />
                 </div>
                 <button
                   className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
-                  onClick={(e) => sendImage(e)}
+                  onClick={(e) => { sendImage(e); setStatusInputTag(false); }}
                 >
                   confirm
                 </button>
               </div> :
               <div
-                // className="mx-auto"
                 className={!statusClickPanelTags ? 'flex flex-col items-center p-2 max-w-xs mx-auto relative z-30' : 'flex flex-col items-center p-2 max-w-xs mx-auto'}
               >
                 <p className="text-xl text-center mb-3">Ваше изображение</p>
@@ -245,7 +244,6 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
       }
       case 'code': {
         return (
-          // проблема в tagRef когда я записываю язык на котором написано
           <div className="w-full"
             ref={tagRef}>
             <textarea
@@ -272,13 +270,11 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
   const handleDragOverBlock = (e, index) => {
     e.preventDefault();
 
-    if (e.target === topRef.current) {
+    if (e.target === topRef.current)
       setClassesForBorderTagTop('w-full h-1/2 absolute top-0 left-0 z-10 border-t-4 border-red-600')
-    }
 
-    if (e.target === bottomRef.current) {
+    if (e.target === bottomRef.current)
       setClassesForBorderTagBottom('w-full h-1/2 absolute bottom-0 left-0 z-10 border-b-4 border-red-600')
-    }
   };
 
   const handleDragEnd = (e) => {
@@ -306,7 +302,9 @@ const NewTag = ({ tag, IDforElementOfArticle }) => { // неправильная
         data-position='top'
       >
       </div>
-      {determine()}
+      <div className={statusInputTag ? 'border-2 border-red-600' : 'border-2'}>
+        {determine()}
+      </div>
       <div
         ref={bottomRef}
         className={`${classesForBorderTagBottom}`}

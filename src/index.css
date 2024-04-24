@@ -11,5 +11,5 @@
 }
 
 .input__newTag-resize {
-  @apply resize mb-2 h-60;
+  @apply resize mb-2 h-64;
 }

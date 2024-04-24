@@ -204,7 +204,7 @@ const NewTagForEdit = (props) => {
           return undefined;
         }
       }
-    }  // возможно добавить что-то, чтобы не было такого дергания
+    }
   }
 
   return (

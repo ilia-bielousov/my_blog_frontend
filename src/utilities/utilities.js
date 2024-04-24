@@ -25,7 +25,7 @@ const createArticle = (content) => {
         case 'iframe': {
           return (
             <div className="mx-auto min-w-72 px-2 mb-3 max-w-7xl">
-              {createElement('div', { className: 'w-full', dangerouslySetInnerHTML: { __html: item[1].text } })}
+              {createElement('a', { className: 'w-full', dangerouslySetInnerHTML: { __html: item[1].text } })}
             </div>
           )
         }

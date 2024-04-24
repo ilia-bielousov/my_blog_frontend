@@ -5,11 +5,10 @@ export const fetchArticle = (id, url) => {
     fetch(`http://localhost:4000/${url}/${id}`)
       .then(res => res.json())
       .then(data => {
-        // console.log(data);
-        // if (data.status !== 404)
-        dispatch(getArticleAction(data));
-        // else
-        // throw new Error();
+        if (data.status !== 404)
+          dispatch(getArticleAction(data));
+        else
+          throw new Error();
       })
       .catch(err => dispatch(statusError()));
   }

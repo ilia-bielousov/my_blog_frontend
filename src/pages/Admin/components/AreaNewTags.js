@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NewTag from "./NewTag";
 
-import { addIdForNewElement, addPreviewContentAnArticle, deletePreviewContentFromArticle, MinusIdForNewElement, changeIdAllPreviewElements, filterPreviewContentAnArticle, deletedComponentId, addCurrentTagButton, setHoverIndexElement, setStatusClickPanelTags, updateReviewContentAnArticle, afterAddedToReviewContentArticle } from "../../../store/adminActions";
+import { addIdForNewElement, addPreviewContentAnArticle, deletePreviewContentFromArticle, addCurrentTagButton, setHoverIndexElement, setStatusClickPanelTags, afterAddedToReviewContentArticle } from "../../../store/adminActions";
 
 import cross from './../../../assets/images/cross.svg';
 
@@ -12,7 +12,6 @@ const AreaNewTags = () => {
   const currentTagButton = useSelector(state => state.admin.creatingArticle.currentTagButton);
   const IDforElementOfArticle = useSelector(state => state.admin.creatingArticle.IdElement);
   const dragOverIndex = useSelector(state => state.admin.creatingArticle.hoverIndexElement);
-  const content = useSelector(state => state.admin.creatingArticle.previewElements);
 
   const [myListElements, setMyListElements] = useState([]);
 

@@ -73,7 +73,7 @@ const PanelTags = ({ setModalActive }) => {
   const content = useSelector(state => state.admin.creatingArticle.previewElements);
   const IDforArticle = useSelector(state => state.admin.id);
 
-  const [transform, setTransform] = useState({ x: 0, y: 0 });
+  const [transform, setTransform] = useState({ x: 125, y: 300 });
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
@@ -102,15 +102,11 @@ const PanelTags = ({ setModalActive }) => {
   }, [isDragging]);
 
   const handleMouseDown = (e) => {
-    console.log('123');
     const rect = e.currentTarget.getBoundingClientRect();
     let offsetX = e.clientX - rect.left;
     let offsetY = e.clientY - rect.top;
 
     setIsDragging(true);
-
-    console.log(offsetY);
-    console.log(e.clientY);
 
     setTransform(() => ({
       x: e.clientX - offsetX,
