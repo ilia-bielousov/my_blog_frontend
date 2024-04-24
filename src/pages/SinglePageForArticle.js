@@ -67,13 +67,11 @@ const SinglePageForArticle = () => {
       return null;
   };
 
-  // http://localhost:3000/programming/program1
-
   return (
     <>
       <main className="flex flex-1">
-        <div className="w-9/12 flex flex-1 justify-between gap-5">
-          <article className="w-9/12 flex-1 pl-32">
+        <div className="w-9/12 flex flex-col lg:flex-row flex-1 justify-between gap-5">
+          <article className="w-full lg:w-9/12 flex-1 md:pl-24 px-3">
             {article ?
               renderArticle()
               :
@@ -81,7 +79,7 @@ const SinglePageForArticle = () => {
             }
           </article>
           {article && article.status !== 404 ?
-            <aside className="w-3/12">
+            <aside className="lg:w-3/12 w-full  bg-slate-500">
               здесь добавить другие статьи из рубрики
             </aside>
             :

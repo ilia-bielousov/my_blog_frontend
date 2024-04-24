@@ -15,8 +15,6 @@ import AdminEdit from '../pages/Admin/AdminEdit';
 import AdminEditSingleArticle from '../pages/Admin/AdminEditSingleArticle';
 import Admin404 from '../pages/Admin/Admin404';
 
-import './App.css';
-
 const App = () => {
   return (
     <div className="App flex flex-col flex-1">

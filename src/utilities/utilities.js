@@ -25,14 +25,12 @@ const createArticle = (content) => {
         case 'iframe': {
           return (
             <div className="mx-auto min-w-72 px-2 mb-3 max-w-7xl">
-              {createElement('a', { className: 'w-full', dangerouslySetInnerHTML: { __html: item[1].text } })}
+              {createElement('div', { className: 'max-w:lg mx-auto relative pt-[56.25%]', dangerouslySetInnerHTML: { __html: item[1].text } })}
             </div>
           )
         }
         case 'ul': {
           const list = item[1].list.split('\n');
-
-          console.log(item[1]);
 
           return (
             <ul className="text-lg pl-5 mb-5">

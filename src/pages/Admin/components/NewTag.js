@@ -83,7 +83,6 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
       tagRef.current.children[0].blur();
       tagRef.current.children[1].blur();
 
-      console.log(tagRef.current.children);
       content.map(item => {
         if (item.id === idElem) {
           item.text = tagRef.current.children[0].value;
@@ -96,8 +95,16 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
       setStatusInputTag(false);
 
     content.map(item => {
-      if (item.id === idElem) {
+      if (item.id === idElem && tag !== 'iframe') {
         item.text = e.target.value;
+      }
+
+      if (item.id === idElem && tag === 'iframe') {
+        const t = e.target.value.split(' ');
+        t[1] = 'style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"';
+        t[2] = ' ';
+
+        item.text = t.join(' ');
       }
     });
 

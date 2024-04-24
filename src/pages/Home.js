@@ -25,7 +25,7 @@ const menuContent = [
 const Home = () => {
   return (
     <main className="flex flex-col justify-center flex-1">
-      <div className="flex content-center justify-center gap-8 max-xl:flex-col max-xl:items-center px-24 flex-wrap">
+      <div className="flex content-center justify-center gap-8 max-md:gap-4 max-xl:flex-col max-xl:items-center px-24 py-3 max-md:px-3 flex-wrap">
         {menuContent.map((card, i) => {
           return (
             <Card

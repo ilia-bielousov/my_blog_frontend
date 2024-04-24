@@ -120,8 +120,7 @@ const AdminEditSingleArticle = () => {
       </main >
       <>
         {modalActive.open ?
-          <Modal
-          >
+          <Modal>
             {!modalActive.error ? renderModal() : renderModalError()}
           </Modal> :
           null
