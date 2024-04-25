@@ -32,7 +32,9 @@ const AreaNewTags = () => {
   const dropHandler = (e) => {
     e.preventDefault();
 
-    if (currentTagButton && e.target === fieldRef.current) {
+    console.log(e.target);
+
+    if (currentTagButton && e.target === fieldRef.current && e.target !== null) {
       setMyListElements((prevList) => {
         return [
           ...prevList,
@@ -96,22 +98,24 @@ const AreaNewTags = () => {
       index = dragOverIndex + 1;
     }
 
-    setMyListElements((prevState) => {
-      return prevState.splice(index, 0, {
-        component: <NewTag
-          tag={currentTagButton}
-          IDforElementOfArticle={IDforElementOfArticle}
-        />,
-        id: IDforElementOfArticle
+    if (currentTagButton) {
+      setMyListElements((prevState) => {
+        return prevState.splice(index, 0, {
+          component: <NewTag
+            tag={currentTagButton}
+            IDforElementOfArticle={IDforElementOfArticle}
+          />,
+          id: IDforElementOfArticle
+        });
       });
-    });
 
-    dispatch(afterAddedToReviewContentArticle([index, {
-      tag: currentTagButton,
-      text: '',
-      id: IDforElementOfArticle,
-    }]));
-    dispatch(addIdForNewElement());
+      dispatch(afterAddedToReviewContentArticle([index, {
+        tag: currentTagButton,
+        text: '',
+        id: IDforElementOfArticle,
+      }]));
+      dispatch(addIdForNewElement());
+    }
   }
 
   return (

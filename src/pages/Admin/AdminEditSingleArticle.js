@@ -23,7 +23,7 @@ const AdminEditSingleArticle = () => {
   useEffect(() => {
     dispatch(removeStateArticle());
 
-    dispatch(updateStatusError()) // для ошибки, сразу false
+    dispatch(updateStatusError())
     dispatch(fetchArticle(id, 'admin/edit-article'));
   }, []);
 
@@ -116,7 +116,6 @@ const AdminEditSingleArticle = () => {
 
           </form>
         </article>
-        {/* <PanelTags /> чуть позже еще и с добавлением поработаю */}
       </main >
       <>
         {modalActive.open ?

@@ -10,6 +10,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
   const dispatch = useDispatch();
   let content = useSelector(state => state.admin.creatingArticle.previewElements);
   const statusClickPanelTags = useSelector(state => state.admin.creatingArticle.statusClickPanelTags);
+  const currentTagButton = useSelector(state => state.admin.creatingArticle.currentTagButton);
 
   const tagRef = useRef(null);
 
@@ -31,7 +32,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
       tagRef.current.focus();
     }
 
-    if (tag === 'code') {
+    if (tag === 'code && tagRef.current') {
       tagRef.current.children[0].focus();
     }
 
@@ -54,19 +55,19 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
       } else if (tag === 'h1') {
         content.map(item => {
           if (item.id === idElem) {
-            item.className = 'text-3xl font-bold mb-5';
+            item.className = 'text-3xl font-bold mb-5 max-md:text-2xl';
           }
         });
       } else if (tag === 'h2') {
         content.map(item => {
           if (item.id === idElem) {
-            item.className = 'text-2xl font-bold mb-4';
+            item.className = 'text-2xl font-bold mb-4 max-md:text-xl';
           }
         });
       } else if (tag === 'h3') {
         content.map(item => {
           if (item.id === idElem) {
-            item.className = 'text-xl mb-3';
+            item.className = 'text-xl mb-3 max-md:text-lg';
           }
         });
       }
@@ -82,13 +83,6 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
     } else if (e.key === 'Enter' && tag === 'code') {
       tagRef.current.children[0].blur();
       tagRef.current.children[1].blur();
-
-      content.map(item => {
-        if (item.id === idElem) {
-          item.text = tagRef.current.children[0].value;
-          item.language = tagRef.current.children[1].value;
-        }
-      });
     }
 
     if (e.key === 'Enter' || e.key === 'Control')
@@ -105,6 +99,11 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
         t[2] = ' ';
 
         item.text = t.join(' ');
+      }
+
+      if (item.id === idElem && tag === 'code') {
+        item.text = tagRef.current.children[0].value;
+        item.language = tagRef.current.children[1].value;
       }
     });
 
@@ -274,14 +273,14 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
     }
   }
 
-  const handleDragOverBlock = (e, index) => {
+  const handleDragOverBlock = (e) => {
     e.preventDefault();
 
-    if (e.target === topRef.current)
-      setClassesForBorderTagTop('w-full h-1/2 absolute top-0 left-0 z-10 border-t-4 border-red-600')
+    if (e.target === topRef.current && currentTagButton)
+      setClassesForBorderTagTop('w-full h-1/2 absolute top-0 left-0 z-10 border-t-4 rounded border-red-600')
 
-    if (e.target === bottomRef.current)
-      setClassesForBorderTagBottom('w-full h-1/2 absolute bottom-0 left-0 z-10 border-b-4 border-red-600')
+    if (e.target === bottomRef.current && currentTagButton)
+      setClassesForBorderTagBottom('w-full h-1/2 absolute bottom-0 left-0 z-10 border-b-4 rounded border-red-600')
   };
 
   const handleDragEnd = (e) => {
@@ -298,7 +297,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
 
   return (
     <div
-      className={statusClickPanelTags ? 'border-[3px] border-red-900' : ''}
+      className={statusClickPanelTags ? 'border-[1px] rounded border-red-900' : ''}
       onDragLeave={(e) => handleDragEnd(e)}
       onDragOver={(e) => handleDragOverBlock(e)}
       onDrop={(e) => handleDrop(e)}
@@ -309,7 +308,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
         data-position='top'
       >
       </div>
-      <div className={statusInputTag ? 'border-2 border-red-600' : 'border-2'}>
+      <div className={statusInputTag ? 'border-2 rounded border-red-600' : 'border-2 rounded'}>
         {determine()}
       </div>
       <div

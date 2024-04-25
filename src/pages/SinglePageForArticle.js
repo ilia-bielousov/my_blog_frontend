@@ -1,12 +1,13 @@
-import { useEffect, Fragment } from "react";
+import { useEffect, Fragment, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 
 import Modal from "../components/Modal";
 
-import { removeStateArticle } from "../store/clientReducer";
+import { removeStateArticle, removeStateCards } from "../store/clientReducer";
 import { fetchArticle } from "../store/asyncAction/article";
+import { fetchCards } from "../store/asyncAction/cardsClient";
 import createArticle from "../utilities/utilities";
 
 const SinglePageForArticle = () => {
@@ -14,17 +15,72 @@ const SinglePageForArticle = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cards = useSelector(state => state.client.cards);
   const article = useSelector(state => state.client.article);
   const error = useSelector(state => state.client.error);
 
+  const [randomNumbers, setRandomNumbers] = useState(null);
+  const [nextArticle, setNextArticle] = useState([]);
+
   useEffect(() => {
+    dispatch(removeStateCards());
     dispatch(removeStateArticle());
+    dispatch(fetchCards(`/${pathname.split('/')[1]}/`));
     dispatch(fetchArticle(id, pathname.split('/')[1]));
 
     axios.patch(`http://localhost:4000${pathname}`, { id })
       .then(() => { })
       .catch(() => { });
   }, []);
+
+  useEffect(() => {
+    setNextArticle(cards);
+    setRandomNumbers(() => {
+      let quantity = null;
+      let excludedNumber = null;
+
+      function getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      // неправильная логика тут
+
+      function generateUniqueNumbersInRange(min, max, count, excludedNumber) {
+        let numbers = [];
+        while (numbers.length <= count) { // тут
+          let randomNumber = getRandomNumber(min, max);
+          if (randomNumber !== excludedNumber && !numbers.includes(randomNumber)) {
+            numbers.push(randomNumber);
+          }
+        }
+
+        return numbers;
+      }
+
+      if (cards.length === 0 || cards.length === 1) {
+        return null;
+
+      } else if (cards.length < 2) {
+        quantity = 1;
+
+        cards.forEach((item, key) => {
+          if (item.pseudoName === id) {
+            excludedNumber = key;
+          }
+        });
+      } else if (cards.length >= 2) {
+        quantity = 2;
+
+        cards.forEach((item, key) => {
+          if (item.pseudoName === id) {
+            excludedNumber = key;
+          }
+        });
+      }
+
+      return generateUniqueNumbersInRange(0, cards.length - 1, quantity, excludedNumber);
+    })
+  }, [cards]);
 
   const renderArticle = () => {
     if (article.status === 404) {
@@ -67,6 +123,39 @@ const SinglePageForArticle = () => {
       return null;
   };
 
+  const renderNextArticle = () => {
+
+    console.log(nextArticle);
+    console.log(randomNumbers);
+
+    return (
+      <div className="flex flex-col p-2 max-lg:flex-row max-md:flex-col flex-wrap gap-2">
+        {nextArticle && randomNumbers ? (<div className="cursor-pointer border-2 p-3 flex-1 flex-wrap">
+          <h4 className="text-xl">
+            {nextArticle[randomNumbers[0]].name}
+          </h4>
+          <img
+            className="p-2 lg:max-h-48 w-full object-cover lg:block max-md:max-h-[80%]"
+            src={nextArticle[randomNumbers[0]].image} alt="kartinka" />
+          <p className="">
+            {nextArticle[randomNumbers[0]].description}
+          </p>
+        </div>) : null}
+        {nextArticle && randomNumbers ? (<div className="cursor-pointer border-2 p-3 flex-1 flex-wrap">
+          <h4 className="text-xl">
+            {nextArticle[randomNumbers[1]].name}
+          </h4>
+          <img
+            className="p-2 lg:max-h-48 w-full object-cover lg:block max-md:max-h-[80%]"
+            src={nextArticle[randomNumbers[1]].image} alt="kartinka" />
+          <p className="">
+            {nextArticle[randomNumbers[1]].description}
+          </p>
+        </div>) : null}
+      </div>
+    )
+  }
+
   return (
     <>
       <main className="flex flex-1">
@@ -79,8 +168,9 @@ const SinglePageForArticle = () => {
             }
           </article>
           {article && article.status !== 404 ?
-            <aside className="lg:w-3/12 w-full  bg-slate-500">
-              здесь добавить другие статьи из рубрики
+            <aside className="lg:w-3/12 w-full md:pl-24 lg:pl-0 px-3">
+              <h3 className="mb-3 text-xl">Посмотрите еще с этого раздела: </h3>
+              {nextArticle ? renderNextArticle() : <div> spinner </div>}
             </aside>
             :
             null

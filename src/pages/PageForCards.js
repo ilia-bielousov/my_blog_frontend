@@ -11,13 +11,14 @@ import { updateStatusError } from "../store/clientReducer";
 const PageForCards = () => {
   const dispatch = useDispatch();
   const cards = useSelector(state => state.client.cards);
-  // нужно создавать отдельный редакс для каждой ошибки
   const error = useSelector(state => state.client.error);
   const { pathname } = useLocation();
 
+  const path = pathname.length === 12 ? pathname + '/' : pathname;
+
   useEffect(() => {
     dispatch(updateStatusError());
-    dispatch(fetchCards(pathname));
+    dispatch(fetchCards(path));
   }, []);
 
   return (

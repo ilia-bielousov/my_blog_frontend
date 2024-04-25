@@ -32,15 +32,14 @@ const NewTagForEdit = (props) => {
     } else if (tag === 'ul' && e.key === 'Control') {
       tagRef.current.blur();
     } else if (e.key === 'Enter' && tag === 'code') {
-      tagRef.current.children[0].blur();
-      tagRef.current.children[1].blur();
+      tagRef.current.blur()
     }
 
     article.content = article.content.map(tag => {
       if (tag.id === id) {
-        return textContent
+        return textContent;
       } else {
-        return tag
+        return tag;
       }
     })
   }
