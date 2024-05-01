@@ -35,6 +35,11 @@ const App = () => {
               <PageForCards />
             </PageTransition>
           } />
+          <Route path='programming/error404' element={
+            <PageTransition>
+              <Client404 />
+            </PageTransition>
+          } />
           <Route path='programming/:id' element={
             <PageTransition>
               <SinglePageForArticle />
@@ -45,6 +50,11 @@ const App = () => {
               <PageForCards />
             </PageTransition>
           } />
+          <Route path='projects/error404' element={
+            <PageTransition>
+              <Client404 />
+            </PageTransition>
+          } />
           <Route path='projects/:id' element={
             <PageTransition>
               <SinglePageForArticle />
@@ -53,6 +63,11 @@ const App = () => {
           <Route path='modeling' element={
             <PageTransition>
               <PageForCards />
+            </PageTransition>
+          } />
+          <Route path='modeling/error404' element={
+            <PageTransition>
+              <Client404 />
             </PageTransition>
           } />
           <Route path='modeling/:id' element={

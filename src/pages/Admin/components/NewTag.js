@@ -177,8 +177,15 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
 
           await axios.post('http://localhost:4000/admin/upload', formData)
             .then(res => {
-              content[IDforElementOfArticle] = { ...content[IDforElementOfArticle], alt: res.data.name, image: `http://localhost:4000${res.data.path}`, id: IDforElementOfArticle, className: 'mx-auto p-3' }
+              content.map(item => {
+                if (item.id === idElem) {
+                  item.alt = res.data.name;
+                  item.image = `http://localhost:4000${res.data.path}`;
+                  item.className = 'mx-auto p-3';
+                }
+              });
               setSourceImg(`http://localhost:4000${res.data.path}`);
+              dispatch(updateReviewContentAnArticle(content));
             })
             .catch(err => console.log(err));
         }

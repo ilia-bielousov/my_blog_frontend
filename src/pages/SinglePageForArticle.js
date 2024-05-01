@@ -1,5 +1,5 @@
 import { useEffect, Fragment, useState } from "react";
-import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
+import { useLocation, useParams, useNavigate, Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 
@@ -9,6 +9,7 @@ import { removeStateArticle, removeStateCards } from "../store/clientReducer";
 import { fetchArticle } from "../store/asyncAction/article";
 import { fetchCards } from "../store/asyncAction/cardsClient";
 import createArticle from "../utilities/utilities";
+import Client404 from "./Client404";
 
 const SinglePageForArticle = () => {
   const { id } = useParams();
@@ -18,6 +19,7 @@ const SinglePageForArticle = () => {
   const cards = useSelector(state => state.client.cards);
   const article = useSelector(state => state.client.article);
   const error = useSelector(state => state.client.error);
+  const code = useSelector(state => state.client.code);
 
   const [randomNumbers, setRandomNumbers] = useState(null);
   const [nextArticle, setNextArticle] = useState([]);
@@ -47,10 +49,6 @@ const SinglePageForArticle = () => {
       function generateUniqueNumbersInRange(min, max, count, excludedNumber) {
         let numbers = [];
         while (numbers.length < count) {
-          // console.log(numbers.length);
-          // console.log(count);
-          // console.log('test');
-          // console.log(numbers);
           let randomNumber = getRandomNumber(min, max);
           if (randomNumber !== excludedNumber && !numbers.includes(randomNumber)) {
             numbers.push(randomNumber);
@@ -59,7 +57,6 @@ const SinglePageForArticle = () => {
 
         return numbers;
       }
-      // проблема с 3 статьями
       if (cards.length === 0 || cards.length === 1) {
 
         return null;
@@ -185,7 +182,7 @@ const SinglePageForArticle = () => {
           {article && article.status !== 404 ?
             <aside className="lg:w-3/12 w-full md:pl-24 lg:pl-0 px-3">
               {/* если нет, то не выводить заголовка или изменить его. */}
-              <h3 className="mb-3 text-xl">Посмотрите еще с этого раздела: </h3>
+              <h3 className="mb-3 text-xl text-center italic">{nextArticle.length < 2 ? 'Пока нет статей' : ' Посмотрите еще с этого раздела'} </h3>
               {nextArticle ? renderNextArticle() : <div> spinner </div>}
             </aside>
             :
@@ -193,20 +190,20 @@ const SinglePageForArticle = () => {
           }
         </div>
       </main>
-      {error ?
-        <Modal>
-          <p className="text-center">
-            Что-то пошло не так ... попробуйте еще раз.
-          </p>
-          <input
-            type="submit"
-            value="вернуться назад"
-            className="block mx-auto p-2 border rounded-md transition hover:bg-slate-100 active:bg-slate-200 cursor-pointer"
-            onClick={() => navigate(-1)}
-          />
-        </Modal>
-        :
-        null
+      {error && code === 404 ? <Navigate to={`../${pathname.split('/')[1]}/error404`} replace={true} /> :
+        error ?
+          <Modal>
+            <p className="text-center">
+              Что-то пошло не так ... попробуйте еще раз.
+            </p>
+            <input
+              type="submit"
+              value="вернуться назад"
+              className="block mx-auto p-2 border rounded-md transition hover:bg-slate-100 active:bg-slate-200 cursor-pointer"
+              onClick={() => navigate(-1)}
+            />
+          </Modal>
+          : null
       }
     </>
   )

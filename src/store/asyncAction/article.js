@@ -7,9 +7,10 @@ export const fetchArticle = (id, url) => {
       .then(data => {
         if (data.status !== 404)
           dispatch(getArticleAction(data));
-        else
+        else {
           throw new Error();
+        }
       })
-      .catch(err => dispatch(statusError()));
+      .catch(err => dispatch(statusError(404)));
   }
 }

@@ -5,10 +5,13 @@ export const fetchCards = (pathname) => {
     fetch(`http://localhost:4000/${pathname}`)
       .then(res => res.json())
       .then(data => {
-        if (data)
+        if (data) {
           dispatch(getCardsAction(data));
-        else throw new Error();
+        }
+        else {
+          throw new Error();
+        }
       })
-      .catch(err => dispatch(statusError()));
+      .catch(err => { dispatch(statusError(500)) });
   }
 }
