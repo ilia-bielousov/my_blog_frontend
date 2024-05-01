@@ -1,5 +1,5 @@
 import { useEffect, Fragment, useState } from "react";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 
@@ -25,7 +25,7 @@ const SinglePageForArticle = () => {
   useEffect(() => {
     dispatch(removeStateCards());
     dispatch(removeStateArticle());
-    dispatch(fetchCards(`/${pathname.split('/')[1]}/`));
+    dispatch(fetchCards(`${pathname.split('/')[1]}`));
     dispatch(fetchArticle(id, pathname.split('/')[1]));
 
     axios.patch(`http://localhost:4000${pathname}`, { id })
@@ -34,6 +34,7 @@ const SinglePageForArticle = () => {
   }, []);
 
   useEffect(() => {
+    setRandomNumbers(null);
     setNextArticle(cards);
     setRandomNumbers(() => {
       let quantity = null;
@@ -43,11 +44,13 @@ const SinglePageForArticle = () => {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
-      // неправильная логика тут
-
       function generateUniqueNumbersInRange(min, max, count, excludedNumber) {
         let numbers = [];
-        while (numbers.length <= count) { // тут
+        while (numbers.length < count) {
+          // console.log(numbers.length);
+          // console.log(count);
+          // console.log('test');
+          // console.log(numbers);
           let randomNumber = getRandomNumber(min, max);
           if (randomNumber !== excludedNumber && !numbers.includes(randomNumber)) {
             numbers.push(randomNumber);
@@ -56,18 +59,15 @@ const SinglePageForArticle = () => {
 
         return numbers;
       }
-
+      // проблема с 3 статьями
       if (cards.length === 0 || cards.length === 1) {
+
         return null;
 
-      } else if (cards.length < 2) {
-        quantity = 1;
+      } else if (cards.length === 2) {
 
-        cards.forEach((item, key) => {
-          if (item.pseudoName === id) {
-            excludedNumber = key;
-          }
-        });
+        return cards[0].pseudoName === id ? [1] : [0];
+
       } else if (cards.length >= 2) {
         quantity = 2;
 
@@ -76,9 +76,9 @@ const SinglePageForArticle = () => {
             excludedNumber = key;
           }
         });
-      }
 
-      return generateUniqueNumbersInRange(0, cards.length - 1, quantity, excludedNumber);
+        return generateUniqueNumbersInRange(0, cards.length - 1, quantity, excludedNumber);
+      }
     })
   }, [cards]);
 
@@ -125,12 +125,10 @@ const SinglePageForArticle = () => {
 
   const renderNextArticle = () => {
 
-    console.log(nextArticle);
-    console.log(randomNumbers);
-
-    return (
-      <div className="flex flex-col p-2 max-lg:flex-row max-md:flex-col flex-wrap gap-2">
-        {nextArticle && randomNumbers ? (<div className="cursor-pointer border-2 p-3 flex-1 flex-wrap">
+    if (randomNumbers && randomNumbers.length === 1) {
+      console.log('1');
+      return (
+        <Link to={`../${nextArticle[randomNumbers[0]].choose}/${nextArticle[randomNumbers[0]].pseudoName}`} className="block cursor-pointer border-2 p-3 flex-1 flex-wrap lg:hover:bg-slate-50 transition">
           <h4 className="text-xl">
             {nextArticle[randomNumbers[0]].name}
           </h4>
@@ -140,20 +138,37 @@ const SinglePageForArticle = () => {
           <p className="">
             {nextArticle[randomNumbers[0]].description}
           </p>
-        </div>) : null}
-        {nextArticle && randomNumbers ? (<div className="cursor-pointer border-2 p-3 flex-1 flex-wrap">
-          <h4 className="text-xl">
-            {nextArticle[randomNumbers[1]].name}
-          </h4>
-          <img
-            className="p-2 lg:max-h-48 w-full object-cover lg:block max-md:max-h-[80%]"
-            src={nextArticle[randomNumbers[1]].image} alt="kartinka" />
-          <p className="">
-            {nextArticle[randomNumbers[1]].description}
-          </p>
-        </div>) : null}
-      </div>
-    )
+        </Link>
+      )
+    } else if (randomNumbers && randomNumbers.length === 2) {
+      console.log('2');
+      return (
+        <div className="flex flex-col p-2 max-lg:flex-row max-md:flex-col flex-wrap gap-2">
+          <Link to={`../${nextArticle[randomNumbers[0]].choose}/${nextArticle[randomNumbers[0]].pseudoName}`} className="cursor-pointer border-2 p-3 flex-1 flex-wrap">
+            <h4 className="text-xl">
+              {nextArticle[randomNumbers[0]].name}
+            </h4>
+            <img
+              className="p-2 lg:max-h-48 w-full object-cover lg:block max-md:max-h-[80%]"
+              src={nextArticle[randomNumbers[0]].image} alt="kartinka" />
+            <p className="">
+              {nextArticle[randomNumbers[0]].description}
+            </p>
+          </Link>
+          <Link to={`../${nextArticle[randomNumbers[1]].choose}/${nextArticle[randomNumbers[1]].pseudoName}`} className="cursor-pointer border-2 p-3 flex-1 flex-wrap">
+            <h4 className="text-xl">
+              {nextArticle[randomNumbers[1]].name}
+            </h4>
+            <img
+              className="p-2 lg:max-h-48 w-full object-cover lg:block max-md:max-h-[80%]"
+              src={nextArticle[randomNumbers[1]].image} alt="kartinka" />
+            <p className="">
+              {nextArticle[randomNumbers[1]].description}
+            </p>
+          </Link>
+        </div>
+      )
+    }
   }
 
   return (
@@ -169,6 +184,7 @@ const SinglePageForArticle = () => {
           </article>
           {article && article.status !== 404 ?
             <aside className="lg:w-3/12 w-full md:pl-24 lg:pl-0 px-3">
+              {/* если нет, то не выводить заголовка или изменить его. */}
               <h3 className="mb-3 text-xl">Посмотрите еще с этого раздела: </h3>
               {nextArticle ? renderNextArticle() : <div> spinner </div>}
             </aside>

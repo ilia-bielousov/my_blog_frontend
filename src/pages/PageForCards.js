@@ -14,7 +14,7 @@ const PageForCards = () => {
   const error = useSelector(state => state.client.error);
   const { pathname } = useLocation();
 
-  const path = pathname.length === 12 ? pathname + '/' : pathname;
+  const path = pathname.replace(/\//g, '');
 
   useEffect(() => {
     dispatch(updateStatusError());

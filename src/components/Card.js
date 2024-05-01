@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function Card({ choose, name, description, image, pseudoName }) {
   return (
-    <div className="max-w-96 border rounded-2xl shadow-md hover:shadow-xl transition cursor-pointer hover:-translate-y-1">
+    <div className="max-w-96 border rounded-2xl shadow-md lg:hover:shadow-xl transition cursor-pointer lg:hover:-translate-y-1">
       <Link to={`/${choose}/${pseudoName ? pseudoName : ''}`} className="flex flex-col gap-4 p-5">
         <img
           src={image}
