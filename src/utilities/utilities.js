@@ -36,7 +36,7 @@ const createArticle = (content) => {
             <ul className="text-lg pl-5 mb-5">
               {list[0]}
               {list.map((l, i) => {
-                return (i === 0 || i === list.length - 1 ? null :
+                return (i === 0 || i === list.length ? null :
                   (<li key={i} className="list-disc text-base ">
                     {l};
                   </li>))

@@ -86,7 +86,6 @@ const AreaNewTags = () => {
     let index = null;
 
     if (pos === 'top') {
-      console.log(dragOverIndex);
       if (dragOverIndex - 1 === 0) {
         index = 1;
       } else {

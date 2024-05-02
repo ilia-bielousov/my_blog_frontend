@@ -14,7 +14,6 @@ const NewTagForEdit = (props) => {
     setTextContent({ tag, text, id, className, list, language, image, alt });
   }, [props]);
 
-  // тут закончил
   const changeText = (e) => {
     setTextContent(() => {
       if (tag === 'ul') {
@@ -57,7 +56,7 @@ const NewTagForEdit = (props) => {
               onKeyDown={onKeyDown}
               onChange={changeText}
               ref={tagRef}
-              className="w-full p-2 outline-blue-700 mb-2 border-2 rounded-xl"
+              className="w-full p-2 outline-blue-700  border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
               value={textContent.text}
@@ -70,7 +69,7 @@ const NewTagForEdit = (props) => {
               onChange={changeText}
               onKeyDown={onKeyDown}
               ref={tagRef}
-              className="w-full p-2 outline-blue-700 mb-2 border-2 rounded-xl"
+              className="w-full p-2 outline-blue-700  border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
               value={textContent.text}
@@ -83,7 +82,7 @@ const NewTagForEdit = (props) => {
               onChange={changeText}
               onKeyDown={onKeyDown}
               ref={tagRef}
-              className="w-full p-2 outline-blue-700 mb-2 border-2 rounded-xl"
+              className="w-full p-2 outline-blue-700  border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
               value={textContent.text}
@@ -96,7 +95,7 @@ const NewTagForEdit = (props) => {
               onChange={changeText}
               onKeyDown={onKeyDown}
               ref={tagRef}
-              className="w-full p-2 outline-blue-700 resize-none mb-2 h-60 border-2 rounded-xl"
+              className="w-full p-2 outline-blue-700 resize-none  h-60 border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
               value={textContent.list}
@@ -109,7 +108,7 @@ const NewTagForEdit = (props) => {
               onChange={changeText}
               onKeyDown={onKeyDown}
               ref={tagRef}
-              className="w-full p-2 outline-blue-700 resize-none mb-2 h-60 border-2 rounded-xl"
+              className="w-full p-2 outline-blue-700 resize-none  h-60 border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
               value={textContent.text}
@@ -140,7 +139,7 @@ const NewTagForEdit = (props) => {
                   }
                 })
               })
-              .catch(err => console.log(err));
+              .catch(err => console.log('картинки нет :('));
           }
           return (
             <div
@@ -148,9 +147,9 @@ const NewTagForEdit = (props) => {
             >
               <p className="text-xl text-center mb-3">Ваше изображение</p>
               <img className="mx-auto px-3" src={textContent.image} alt="test" />
-              <div className="flex flex-col items-center p-2 max-w-xs mx-auto">
-                <p className="text-center mb-3">Eсли хотите изменить, повторите.</p>
-                <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 mb-2 p-3 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
+              <div className="flex flex-col items-center gap-2 p-2 max-w-xs mx-auto">
+                <p className="text-center">Eсли хотите изменить, повторите.</p>
+                <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24  p-3 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
                   <input
                     type="file"
                     name="image"
@@ -162,7 +161,7 @@ const NewTagForEdit = (props) => {
                 </div>
                 <button
                   className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
-                  onClick={(e) => { sendImage(e); console.log(textContent); }}
+                  onClick={(e) => { sendImage(e); }}
                 >
                   confirm
                 </button>
@@ -176,7 +175,7 @@ const NewTagForEdit = (props) => {
               onChange={changeText}
               onKeyDown={onKeyDown}
               ref={tagRef}
-              className="w-full p-2 outline-blue-700 mb-2 border-2 rounded-xl"
+              className="w-full p-2 outline-blue-700  border-2 rounded-xl"
               type="text"
               placeholder='Введите свой текст'
               value={textContent.text}
@@ -190,7 +189,7 @@ const NewTagForEdit = (props) => {
                 onChange={changeText}
                 onKeyDown={onKeyDown}
                 ref={tagRef}
-                className="w-full p-2 outline-blue-700 resize-none mb-2 h-60 border-2 rounded-xl"
+                className="w-full p-2 outline-blue-700 resize-none  h-60 border-2 rounded-xl"
                 type="text"
                 placeholder='скопируйте свой код и вставьте сюда'
                 value={textContent.text}
@@ -201,7 +200,7 @@ const NewTagForEdit = (props) => {
                 ref={tagRef}
                 name="language"
                 type="text"
-                className="w-full p-2 outline-blue-700 mb-2 border-2 rounded-xl"
+                className="w-full p-2 outline-blue-700  border-2 rounded-xl"
                 placeholder="напишите язык на каком написан код (javascript, c/c++, python etc.)"
                 value={textContent.language || ''}
               />

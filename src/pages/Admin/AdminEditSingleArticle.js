@@ -44,7 +44,7 @@ const AdminEditSingleArticle = () => {
   const renderModal = () => {
     return (
       <>
-        <p className="mb-3">Статья успешно отредактирована, тыкните на кнопку, чтобы вас перенаправить.</p>
+        <p className="text-center mb-3">Статья успешно отредактирована, тыкните на кнопку, чтобы вас перенаправить.</p>
         <input
           onClick={() => setRedirect(true)}
           className="block mx-auto p-2 border rounded-lg transition hover:bg-slate-100 cursor-pointer active:bg-slate-200"
@@ -87,7 +87,9 @@ const AdminEditSingleArticle = () => {
           <h1 className="text-3xl font-bold mb-2">
             Редактирование статьи
           </h1>
-          <form onSubmit={sendEditArticle}>
+          <form
+            className="flex flex-col gap-2"
+            onSubmit={sendEditArticle}>
             {article && article.content ? article.content.map((item, key) => {
               return (
                 <NewTagForEdit

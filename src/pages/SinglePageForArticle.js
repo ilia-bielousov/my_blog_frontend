@@ -123,7 +123,6 @@ const SinglePageForArticle = () => {
   const renderNextArticle = () => {
 
     if (randomNumbers && randomNumbers.length === 1) {
-      console.log('1');
       return (
         <Link to={`../${nextArticle[randomNumbers[0]].choose}/${nextArticle[randomNumbers[0]].pseudoName}`} className="block cursor-pointer border-2 p-3 flex-1 flex-wrap lg:hover:bg-slate-50 transition">
           <h4 className="text-xl">
@@ -138,7 +137,6 @@ const SinglePageForArticle = () => {
         </Link>
       )
     } else if (randomNumbers && randomNumbers.length === 2) {
-      console.log('2');
       return (
         <div className="flex flex-col p-2 max-lg:flex-row max-md:flex-col flex-wrap gap-2">
           <Link to={`../${nextArticle[randomNumbers[0]].choose}/${nextArticle[randomNumbers[0]].pseudoName}`} className="cursor-pointer border-2 p-3 flex-1 flex-wrap">

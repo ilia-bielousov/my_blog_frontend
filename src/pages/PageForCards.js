@@ -19,7 +19,6 @@ const PageForCards = () => {
   useEffect(() => {
     dispatch(updateStatusError());
     dispatch(fetchCards(path));
-    console.log(cards);
   }, []);
 
   return (

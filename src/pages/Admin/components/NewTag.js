@@ -186,7 +186,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
               setSourceImg(`http://localhost:4000${res.data.path}`);
               dispatch(updateReviewContentAnArticle(content));
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log('картинки нет :('));
         }
 
         return (
