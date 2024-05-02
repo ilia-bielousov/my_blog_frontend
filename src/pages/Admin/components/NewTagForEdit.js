@@ -1,10 +1,20 @@
 import { useEffect, useState, useRef } from "react";
+import axios from "axios";
+
+import picture from './../../../assets/images/picture.svg';
 
 const NewTagForEdit = (props) => {
   const [textContent, setTextContent] = useState('');
   const tagRef = useRef();
-  const { tag, text, id, className, list, language, article } = props;
+  const { tag, text, id, className, list, language, article, image, alt } = props;
 
+  const [file, setFile] = useState('');
+
+  useEffect(() => {
+    setTextContent({ tag, text, id, className, list, language, image, alt });
+  }, [props]);
+
+  // тут закончил
   const changeText = (e) => {
     setTextContent(() => {
       if (tag === 'ul') {
@@ -35,19 +45,8 @@ const NewTagForEdit = (props) => {
       tagRef.current.blur()
     }
 
-    article.content = article.content.map(tag => {
-      if (tag.id === id) {
-        return textContent;
-      } else {
-        return tag;
-      }
-    })
+    article.content = article.content.map(tag => tag.id === id ? textContent : tag);
   }
-
-  useEffect(() => {
-    setTextContent({ tag, text, id, className, list, language });
-  }, [props]);
-
 
   const determine = () => {
     if (textContent) {
@@ -117,50 +116,60 @@ const NewTagForEdit = (props) => {
             />
           )
         }
-        // {
-        // // case 'img': { // добавить подпись для картинки
-        // //   const sendImage = async (e) => {
-        // //     e.preventDefault();
+        case 'img': {
+          const sendImage = async (e) => {
+            e.preventDefault();
 
-        // //     const formData = new FormData();
-        // //     formData.append('file', file);
+            const formData = new FormData();
+            formData.append('file', file);
 
-        // //     await axios.post('http://localhost:4000/admin/upload', formData)
-        // //       .then(res => {
-        // //         content[IDforElementOfArticle] = { ...content[IDforElementOfArticle], alt: res.data.name, image: `http://localhost:4000${res.data.path}`, id: IDforElementOfArticle, className: 'mx-auto p-3' }
-        // //         setSourceImg(`http://localhost:4000${res.data.path}`);
-        // //       })
-        // //       .catch(err => console.log(err));
-        // //   }
+            await axios.post('http://localhost:4000/admin/upload', formData)
+              .then(res => {
+                setTextContent(() => {
+                  return {
+                    ...textContent,
+                    image: `http://localhost:4000${res.data.path}`,
+                    alt: res.data.name
+                  };
+                });
 
-        // //   return (
-        // //     <>
-        // //       {(!sourceImg ?
-        // //         <div className="flex flex-col items-center p-2 max-w-xs mx-auto">
-        // //           <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 p-3 mb-2 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
-        // //             <input
-        // //               type="file"
-        // //               name="image"
-        // //               id="image"
-        // //               className="w-full h-full absolute inset-0 opacity-0 cursor-pointer"
-        // //               onChange={e => setFile(e.target.files[0])}
-        // //             />
-        // //             <img src={picture} alt="capt" className="w-8" />
-        // //           </div>
-        // //           <button
-        // //             className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
-        // //             onClick={(e) => sendImage(e)}
-        // //           >
-        // //             confirm
-        // //           </button>
-        // //         </div> :
-        // //         <div className="mx-auto">
-        // //           <img className="mx-auto p-3 mb-1.5" src={sourceImg} alt="test" />
-        // //         </div>)}
-        // //     </>
-        // //   )
-        // // }
-        // }
+                article.content.map(item => {
+                  if (item.id === id) {
+                    item.alt = res.data.name;
+                    item.image = `http://localhost:4000${res.data.path}`;
+                  }
+                })
+              })
+              .catch(err => console.log(err));
+          }
+          return (
+            <div
+              className='flex flex-col items-center p-2 max-w-xs mx-auto'
+            >
+              <p className="text-xl text-center mb-3">Ваше изображение</p>
+              <img className="mx-auto px-3" src={textContent.image} alt="test" />
+              <div className="flex flex-col items-center p-2 max-w-xs mx-auto">
+                <p className="text-center mb-3">Eсли хотите изменить, повторите.</p>
+                <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 mb-2 p-3 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
+                  <input
+                    type="file"
+                    name="image"
+                    id="image"
+                    className="w-full h-full absolute inset-0 opacity-0 cursor-pointer"
+                    onChange={e => { setFile(e.target.files[0]); }}
+                  />
+                  <img src={picture} alt="capt" className="w-8" />
+                </div>
+                <button
+                  className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
+                  onClick={(e) => { sendImage(e); console.log(textContent); }}
+                >
+                  confirm
+                </button>
+              </div>
+            </div>
+          )
+        }
         case 'iframe': {
           return (
             <input

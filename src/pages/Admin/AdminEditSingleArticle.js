@@ -99,6 +99,8 @@ const AdminEditSingleArticle = () => {
                   list={item.list}
                   language={item.language}
                   article={article}
+                  image={item.image}
+                  alt={item.alt}
                 />
               )
             }) :

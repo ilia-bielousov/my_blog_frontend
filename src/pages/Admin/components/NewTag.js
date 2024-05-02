@@ -111,7 +111,6 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
   };
 
   const determine = () => {
-    // возможно добавить цитату
     switch (tag) {
       case 'h1': {
         return (
@@ -168,7 +167,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
           />
         )
       }
-      case 'img': { // добавить подпись для картинки
+      case 'img': {
         const sendImage = async (e) => {
           e.preventDefault();
 
@@ -210,7 +209,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
                   className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
                   onClick={(e) => { sendImage(e); setStatusInputTag(false); }}
                 >
-                  confirm
+                  отправить
                 </button>
               </div> :
               <div
