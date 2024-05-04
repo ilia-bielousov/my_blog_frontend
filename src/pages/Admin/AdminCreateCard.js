@@ -215,6 +215,7 @@ const AdminCreateCard = () => {
   async function onSubmit(data) {
     dispatch(inputNameDescriptionCard(data));
 
+
     if (choose.length !== 0 && file) {
       const formData = new FormData();
       formData.append('file', file);
