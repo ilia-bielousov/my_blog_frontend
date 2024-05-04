@@ -123,7 +123,7 @@ const PanelTags = ({ setModalActive }) => {
     e.preventDefault();
     setModalActive({ open: true, loading: true, error: false })
 
-    await axios.post('http://process.env.REACT_APP_API_URL/admin/create-article', [...content, IDforArticle])
+    await axios.post(`http://${process.env.REACT_APP_API_URL}/admin/create-article`, [...content, IDforArticle])
       .then(res => {
         if (res.data.status === 200) {
           setModalActive({ open: true, loading: false, error: false });
