@@ -30,7 +30,7 @@ const SinglePageForArticle = () => {
     dispatch(fetchCards(`${pathname.split('/')[1]}`));
     dispatch(fetchArticle(id, pathname.split('/')[1]));
 
-    axios.patch(`http://localhost:4000${pathname}`, { id })
+    axios.patch(`http://process.env.REACT_APP_API_URL${pathname}`, { id })
       .then(() => { })
       .catch(() => { });
   }, []);
