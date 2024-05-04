@@ -174,16 +174,16 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
           const formData = new FormData();
           formData.append('file', file);
 
-          await axios.post(`${process.env.REACT_APP_API_URL}/admin/upload`, formData)
+          await axios.post(`${process.env.REACT_APP_API_URL}admin/upload`, formData)
             .then(res => {
               content.map(item => {
                 if (item.id === idElem) {
                   item.alt = res.data.name;
-                  item.image = `${process.env.REACT_APP_API_URL}/${res.data.path}`;
+                  item.image = `${process.env.REACT_APP_API_URL}${res.data.path}`;
                   item.className = 'mx-auto p-3';
                 }
               });
-              setSourceImg(`${process.env.REACT_APP_API_URL}/${res.data.path}`);
+              setSourceImg(`${process.env.REACT_APP_API_URL}${res.data.path}`);
               dispatch(updateReviewContentAnArticle(content));
             })
             .catch(err => console.log('картинки нет :('));

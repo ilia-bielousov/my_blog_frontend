@@ -122,12 +122,12 @@ const NewTagForEdit = (props) => {
             const formData = new FormData();
             formData.append('file', file);
 
-            await axios.post(`${process.env.REACT_APP_API_URL}/admin/upload`, formData)
+            await axios.post(`${process.env.REACT_APP_API_URL}admin/upload`, formData)
               .then(res => {
                 setTextContent(() => {
                   return {
                     ...textContent,
-                    image: `${process.env.REACT_APP_API_URL}/${res.data.path}`,
+                    image: `${process.env.REACT_APP_API_URL}${res.data.path}`,
                     alt: res.data.name
                   };
                 });
@@ -135,7 +135,7 @@ const NewTagForEdit = (props) => {
                 article.content.map(item => {
                   if (item.id === id) {
                     item.alt = res.data.name;
-                    item.image = `${process.env.REACT_APP_API_URL}/${res.data.path}`;
+                    item.image = `${process.env.REACT_APP_API_URL}${res.data.path}`;
                   }
                 })
               })

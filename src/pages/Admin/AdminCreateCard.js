@@ -221,9 +221,9 @@ const AdminCreateCard = () => {
       formData.append('file', file);
       setModalActive({ open: true, loading: true, error: false })
 
-      await axios.post(`${process.env.REACT_APP_API_URL}/admin/upload`, formData)
+      await axios.post(`${process.env.REACT_APP_API_URL}admin/upload`, formData)
         .then(res => {
-          axios.post(`${process.env.REACT_APP_API_URL}/admin/create-card`, { choose, ...data, image: `${process.env.REACT_APP_API_URL}/${res.data.path}`, pseudoName: transliterate(data.name.replace(/ /g, '_')) })
+          axios.post(`${process.env.REACT_APP_API_URL}admin/create-card`, { choose, ...data, image: `${process.env.REACT_APP_API_URL}${res.data.path}`, pseudoName: transliterate(data.name.replace(/ /g, '_')) })
             .then(res => {
               if (res.data.status === 200) {
                 setModalActive({ open: true, loading: false, error: false });
