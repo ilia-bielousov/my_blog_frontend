@@ -2,7 +2,7 @@ import { getArticleAction, statusError } from "../clientReducer";
 
 export const fetchArticle = (id, url) => {
   return function (dispatch) {
-    fetch(`http://${process.env.REACT_APP_API_URL}/${url}/${id}`)
+    fetch(`https://${process.env.REACT_APP_API_URL}/${url}/${id}`)
       .then(res => res.json())
       .then(data => {
         if (data.status !== 404)

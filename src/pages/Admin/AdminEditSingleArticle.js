@@ -30,7 +30,7 @@ const AdminEditSingleArticle = () => {
   const sendEditArticle = (e) => {
     e.preventDefault();
 
-    axios.patch(`http://${process.env.REACT_APP_API_URL}/admin/edit-article`, article)
+    axios.patch(`https://${process.env.REACT_APP_API_URL}/admin/edit-article`, article)
       .then(res => {
         if (res.data.status === 200)
           setModalActive({ open: true, error: false });
