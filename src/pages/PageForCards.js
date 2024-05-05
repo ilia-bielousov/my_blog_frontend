@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from 'react-router-dom';
 
@@ -14,17 +14,25 @@ const PageForCards = () => {
   const error = useSelector(state => state.client.error);
   const { pathname } = useLocation();
 
+  const [loading, setLoading] = useState(null);
+
   const path = pathname.replace(/\//g, '');
 
   useEffect(() => {
     dispatch(updateStatusError());
     dispatch(fetchCards(path));
+
+    setLoading(true);
   }, []);
 
   return (
     <>
       {cards && !error ?
-        <Content data={cards} />
+        <Content
+          data={cards}
+          loading={loading}
+          setLoading={setLoading}
+        />
         :
         <>
           <main className="flex-1" />
