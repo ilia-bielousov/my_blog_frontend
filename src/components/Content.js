@@ -8,7 +8,7 @@ const Content = ({ data, loading, setLoading }) => {
   const { pathname } = useLocation();
   const path = pathname.replace(/\//g, '');
   const statusLoading = loading ? <SkeletonCards /> : null
-  const content = data && data.length ? data : undefined;
+  const content = data && data.length ? data : null;
 
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const Content = ({ data, loading, setLoading }) => {
             return null;
           }
         })}
-        {content === undefined ?
+        {content === null && !loading ?
           <div className="flex flex-1 justify-center items-center">
             <p className="text-3xl">
               Пока ничего нет :(
