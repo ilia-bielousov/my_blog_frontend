@@ -6,7 +6,7 @@ import Content from "../components/Content";
 import Modal from "../components/Modal";
 import { fetchCards } from "../store/asyncAction/cardsClient";
 
-import { updateStatusError } from "../store/clientReducer";
+import { updateStatusError, removeStateCards } from "../store/clientReducer";
 
 const PageForCards = () => {
   const dispatch = useDispatch();
@@ -19,6 +19,8 @@ const PageForCards = () => {
   const path = pathname.replace(/\//g, '');
 
   useEffect(() => {
+    dispatch(removeStateCards());
+    console.log('pageforcards');
     dispatch(updateStatusError());
     dispatch(fetchCards(path));
 
@@ -30,8 +32,6 @@ const PageForCards = () => {
       {cards && !error ?
         <Content
           data={cards}
-          loading={loading}
-          setLoading={setLoading}
         />
         :
         <>

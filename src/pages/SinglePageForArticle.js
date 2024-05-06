@@ -34,7 +34,7 @@ const SinglePageForArticle = () => {
       .then(() => { })
       .catch(() => { });
   }, []);
-
+  // проблема, после того, как вышли со статьи, снова грузит скелетон.
   useEffect(() => {
     setRandomNumbers(null);
     setNextArticle(cards);
