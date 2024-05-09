@@ -5,8 +5,8 @@ export const fetchCards = (pathname) => {
     fetch(`${process.env.REACT_APP_API_URL}${pathname}`)
       .then(res => res.json())
       .then(data => {
-        if (data) {
-          dispatch(getCardsAction(data));
+        if (data.status === 200) {
+          dispatch(getCardsAction(data.data));
         }
         else {
           throw new Error();

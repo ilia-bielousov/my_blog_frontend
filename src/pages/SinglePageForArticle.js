@@ -9,7 +9,6 @@ import { removeStateArticle, removeStateCards } from "../store/clientReducer";
 import { fetchArticle } from "../store/asyncAction/article";
 import { fetchCards } from "../store/asyncAction/cardsClient";
 import createArticle from "../utilities/utilities";
-import Client404 from "./Client404";
 
 const SinglePageForArticle = () => {
   const { id } = useParams();
@@ -30,11 +29,11 @@ const SinglePageForArticle = () => {
     dispatch(fetchCards(`${pathname.split('/')[1]}`));
     dispatch(fetchArticle(id, pathname.split('/')[1]));
 
-    axios.patch(`${process.env.REACT_APP_API_URL}${pathname}`, { id })
+    axios.patch(`${process.env.REACT_APP_API_URL}${pathname.slice(1)}`, { id })
       .then(() => { })
       .catch(() => { });
   }, []);
-  // проблема, после того, как вышли со статьи, снова грузит скелетон.
+
   useEffect(() => {
     setRandomNumbers(null);
     setNextArticle(cards);
@@ -108,7 +107,6 @@ const SinglePageForArticle = () => {
   const renderSpinner = () => {
     if (!error)
       return (
-        // спиннер 
         <div role="status" className="flex justify-center p-5">
           <svg aria-hidden="true" className="w-24 h-24 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -179,7 +177,6 @@ const SinglePageForArticle = () => {
           </article>
           {article && article.status !== 404 ?
             <aside className="lg:w-3/12 w-full md:pl-24 lg:pl-0 px-3">
-              {/* если нет, то не выводить заголовка или изменить его. */}
               <h3 className="mb-3 text-xl text-center italic">{nextArticle.length < 2 ? 'Пока нет статей' : ' Посмотрите еще с этого раздела'} </h3>
               {nextArticle ? renderNextArticle() : <div> spinner </div>}
             </aside>

@@ -12,7 +12,7 @@
 }
 
 .input__newTag-resize {
-  @apply resize mb-2 h-64;
+  @apply resize mb-2 h-12;
 }
 
 html,

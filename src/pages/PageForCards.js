@@ -20,7 +20,6 @@ const PageForCards = () => {
 
   useEffect(() => {
     dispatch(removeStateCards());
-    console.log('pageforcards');
     dispatch(updateStatusError());
     dispatch(fetchCards(path));
 
