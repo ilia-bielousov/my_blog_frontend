@@ -44,12 +44,12 @@ const AdminEditSingleArticle = () => {
   const renderModal = () => {
     return (
       <>
-        <p className="text-center mb-3">Статья успешно отредактирована, тыкните на кнопку, чтобы вас перенаправить.</p>
+        <p className="text-center mb-3">Artykuł został pomyślnie zredagowany, kliknij przycisk, aby cię przekierować.</p>
         <input
           onClick={() => setRedirect(true)}
           className="block mx-auto p-2 border rounded-lg transition hover:bg-slate-100 cursor-pointer active:bg-slate-200"
           type="submit"
-          value="тыкать сюда"
+          value="tutaj"
         />
       </>
     )
@@ -59,7 +59,7 @@ const AdminEditSingleArticle = () => {
     return (
       <>
         <p className="text-center">
-          Появилась ошибка, попробуйте обновить страницу.
+          Wystąpił błąd, spróbuj odświeżyć stronę.
         </p>
       </>
     )
@@ -85,7 +85,7 @@ const AdminEditSingleArticle = () => {
       <main className="flex flex-1 pl-72">
         <article className="p-5 flex-1 flex flex-col w-full">
           <h1 className="text-3xl font-bold mb-2">
-            Редактирование статьи
+            Edycja artykułu
           </h1>
           <form
             className="flex flex-col gap-2"
@@ -108,13 +108,13 @@ const AdminEditSingleArticle = () => {
             }) :
               (!statusError ? renderSpinner() :
                 <div className="text-center flex-1">
-                  <span className="block font-bold text-3xl mb-10">Ошибка 404</span>
-                  <p className="text-xl">такой статьи не существует.</p>
+                  <span className="block font-bold text-3xl mb-10">Błąd 404</span>
+                  <p className="text-xl">taki artykuł nie istnieje.</p>
                 </div>)
             }
             {!statusError ? <input
               type="submit"
-              value="подтвердить"
+              value="potwierdzić"
               className="mx-auto block mt-5 py-3 px-6 border rounded-lg cursor-pointer hover:bg-slate-100 transition active:bg-slate-200"
             /> : null}
 

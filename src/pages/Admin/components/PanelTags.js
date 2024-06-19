@@ -160,7 +160,7 @@ const PanelTags = ({ setModalActive }) => {
           type="submit"
           className="p-2 bg-white text-slate-600 rounded-xl font-bold active:bg-slate-200"
         >
-          Опубликовать
+          Opublikować
         </button>
       </form>
       <div className="flex">

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NewTag from "./NewTag";
 
@@ -50,7 +50,6 @@ const AreaNewTags = () => {
       dispatch(addPreviewContentAnArticle(
         {
           tag: currentTagButton,
-          // text: '',
           id: IDforElementOfArticle,
         }
       ));
@@ -124,6 +123,7 @@ const AreaNewTags = () => {
       className="relative z-10 square w-full flex-1 p-3 border-dashed border-blue-600 border-2"
     >
       {myListElements && myListElements.map((item, index) => {
+        console.log(item);
         return (
           <div
             className='flex justify-between mb-2'
@@ -136,7 +136,10 @@ const AreaNewTags = () => {
             <div className="flex flex-col w-full relative"
               onDrop={(e) => test(e)}
             >
-              {item.component}
+              {/* {createElement('div', { className: '' }, item.component)} */}
+              <Fragment>
+                {item.component}
+              </Fragment>
             </div>
             <img
               src={cross}

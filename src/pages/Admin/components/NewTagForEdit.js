@@ -18,6 +18,7 @@ const NewTagForEdit = (props) => {
     setTextContent({ tag, text, id, className, list, language, image, alt });
   }, [props]);
 
+
   const changeText = (e) => {
     setTextContent(() => {
       if (tag === 'ul') {
@@ -62,7 +63,7 @@ const NewTagForEdit = (props) => {
               ref={tagRef}
               className="w-full p-2 outline-blue-700  border-2 rounded-xl"
               type="text"
-              placeholder='Введите свой текст'
+              placeholder='Wpisz swój tekst'
               value={textContent.text}
             />
           )
@@ -75,7 +76,7 @@ const NewTagForEdit = (props) => {
               ref={tagRef}
               className="w-full p-2 outline-blue-700  border-2 rounded-xl"
               type="text"
-              placeholder='Введите свой текст'
+              placeholder='Wpisz swój tekst'
               value={textContent.text}
             />
           )
@@ -88,7 +89,7 @@ const NewTagForEdit = (props) => {
               ref={tagRef}
               className="w-full p-2 outline-blue-700  border-2 rounded-xl"
               type="text"
-              placeholder='Введите свой текст'
+              placeholder='Wpisz swój tekst'
               value={textContent.text}
             />
           )
@@ -101,7 +102,7 @@ const NewTagForEdit = (props) => {
               ref={tagRef}
               className="w-full p-2 outline-blue-700 resize-none  h-60 border-2 rounded-xl"
               type="text"
-              placeholder='Введите свой текст'
+              placeholder='Wpisz swój tekst'
               value={textContent.list}
             />
           )
@@ -114,7 +115,7 @@ const NewTagForEdit = (props) => {
               ref={tagRef}
               className="w-full p-2 outline-blue-700 resize-none  h-60 border-2 rounded-xl"
               type="text"
-              placeholder='Введите свой текст'
+              placeholder='Wpisz swój tekst'
               value={textContent.text}
             />
           )
@@ -143,17 +144,16 @@ const NewTagForEdit = (props) => {
                   }
                 })
               })
-              .catch(err => console.log('картинки нет :('));
+              .catch(err => console.log('brak obrazu :('));
           }
           return (
             <div
               className='flex flex-col items-center p-2 max-w-xs mx-auto'
             >
-              <p className="text-xl text-center mb-3">Ваше изображение</p>
+              <p className="text-xl text-center mb-3">Twój obraz</p>
               <RenderImage imageSource={textContent.image} />
-              {/* <img className="mx-auto px-3" src={textContent.image} alt="test" /> */}
               <div className="flex flex-col items-center gap-2 p-2 max-w-xs mx-auto">
-                <p className="text-center">Eсли хотите изменить, повторите.</p>
+                <p className="text-center">Jeśli chcesz zmienić, powtórz.</p>
                 <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24  p-3 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
                   <input
                     type="file"
@@ -168,7 +168,7 @@ const NewTagForEdit = (props) => {
                   className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
                   onClick={(e) => { sendImage(e); }}
                 >
-                  confirm
+                  wyślij
                 </button>
               </div>
             </div>
@@ -182,7 +182,7 @@ const NewTagForEdit = (props) => {
               ref={tagRef}
               className="w-full p-2 outline-blue-700  border-2 rounded-xl"
               type="text"
-              placeholder='Введите свой текст'
+              placeholder='Wpisz swój tekst'
               value={textContent.text}
             />
           )
@@ -196,7 +196,7 @@ const NewTagForEdit = (props) => {
                 ref={tagRef}
                 className="w-full p-2 outline-blue-700 resize-none  h-60 border-2 rounded-xl"
                 type="text"
-                placeholder='скопируйте свой код и вставьте сюда'
+                placeholder='skopiuj swój kod i wklej tutaj'
                 value={textContent.text}
               />
               <input
@@ -206,7 +206,7 @@ const NewTagForEdit = (props) => {
                 name="language"
                 type="text"
                 className="w-full p-2 outline-blue-700  border-2 rounded-xl"
-                placeholder="напишите язык на каком написан код (javascript, c/c++, python etc.)"
+                placeholder="napisz język, w którym napisany jest kod (javascript, C / C++, python itp.)"
                 value={textContent.language || ''}
               />
             </div>

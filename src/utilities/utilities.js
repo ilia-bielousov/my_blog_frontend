@@ -44,7 +44,7 @@ const createArticle = (content) => {
           )
         }
         case 'ul': {
-          const list = item[1].list.split('\n');
+          const list = item[1].text.split('\n');
 
           return (
             <ul className="text-lg pl-5 mb-5">
@@ -52,7 +52,7 @@ const createArticle = (content) => {
               {list.map((l, i) => {
                 return (i === 0 || i === list.length ? null :
                   (<li key={i} className="list-disc text-base ">
-                    {l};
+                    {l}
                   </li>))
               })}
             </ul>

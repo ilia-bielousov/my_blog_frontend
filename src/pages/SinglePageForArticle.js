@@ -22,6 +22,8 @@ const SinglePageForArticle = () => {
 
   const [randomNumbers, setRandomNumbers] = useState(null);
   const [nextArticle, setNextArticle] = useState([]);
+  const [renderImage1, setRenderImage1] = useState(null);
+  const [renderImage2, setRenderImage2] = useState(null);
 
   useEffect(() => {
     dispatch(removeStateCards());
@@ -84,7 +86,7 @@ const SinglePageForArticle = () => {
         <div className="flex h-full flex-col justify-center items-center">
           <span className="text-8xl font-medium mb-4">404</span>
           <p className="text-2xl">
-            Такой статьи не существует.
+            Taki artykuł nie istnieje.
           </p>
         </div>
       )
@@ -119,8 +121,20 @@ const SinglePageForArticle = () => {
   };
 
   const renderNextArticle = () => {
+    const renderImage = async (image, setImage) => {
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}upload/${image}`);
+        console.log(res);
+        setImage(`data:image/format;base64,${res.data.data[0].imageSource}`);
+
+      } catch (err) {
+        return console.log(err);
+      } // нужно будет обработать ошибку
+    }
 
     if (randomNumbers && randomNumbers.length === 1) {
+      renderImage(nextArticle[randomNumbers[0]].image, setRenderImage1);
+
       return (
         <Link to={`../${nextArticle[randomNumbers[0]].choose}/${nextArticle[randomNumbers[0]].pseudoName}`} className="block cursor-pointer border-2 p-3 flex-1 flex-wrap lg:hover:bg-slate-50 transition">
           <h4 className="text-xl">
@@ -128,13 +142,16 @@ const SinglePageForArticle = () => {
           </h4>
           <img
             className="p-2 lg:max-h-48 w-full object-cover lg:block max-md:max-h-[80%]"
-            src={nextArticle[randomNumbers[0]].image} alt="kartinka" />
+            src={renderImage1} alt="kartinka" />
           <p className="">
             {nextArticle[randomNumbers[0]].description}
           </p>
         </Link>
       )
     } else if (randomNumbers && randomNumbers.length === 2) {
+      renderImage(nextArticle[randomNumbers[0]].image, setRenderImage1);
+      renderImage(nextArticle[randomNumbers[1]].image, setRenderImage2)
+
       return (
         <div className="flex flex-col p-2 max-lg:flex-row max-md:flex-col flex-wrap gap-2">
           <Link to={`../${nextArticle[randomNumbers[0]].choose}/${nextArticle[randomNumbers[0]].pseudoName}`} className="cursor-pointer border-2 p-3 flex-1 flex-wrap">
@@ -143,7 +160,7 @@ const SinglePageForArticle = () => {
             </h4>
             <img
               className="p-2 lg:max-h-48 w-full object-cover lg:block max-md:max-h-[80%]"
-              src={nextArticle[randomNumbers[0]].image} alt="kartinka" />
+              src={renderImage1} alt="kartinka" />
             <p className="">
               {nextArticle[randomNumbers[0]].description}
             </p>
@@ -154,7 +171,7 @@ const SinglePageForArticle = () => {
             </h4>
             <img
               className="p-2 lg:max-h-48 w-full object-cover lg:block max-md:max-h-[80%]"
-              src={nextArticle[randomNumbers[1]].image} alt="kartinka" />
+              src={renderImage2} alt="kartinka" />
             <p className="">
               {nextArticle[randomNumbers[1]].description}
             </p>
@@ -177,7 +194,7 @@ const SinglePageForArticle = () => {
           </article>
           {article && article.status !== 404 ?
             <aside className="lg:w-3/12 w-full md:pl-24 lg:pl-0 px-3">
-              <h3 className="mb-3 text-xl text-center italic">{nextArticle.length < 2 ? 'Пока нет статей' : ' Посмотрите еще с этого раздела'} </h3>
+              <h3 className="mb-3 text-xl text-center italic">{nextArticle.length < 2 ? 'Brak jeszcze artykułów' : ' Zobacz więcej z tej sekcji'} </h3>
               {nextArticle ? renderNextArticle() : <div> spinner </div>}
             </aside>
             :
@@ -189,7 +206,7 @@ const SinglePageForArticle = () => {
         error ?
           <Modal>
             <p className="text-center">
-              Что-то пошло не так ... попробуйте еще раз.
+              Coś poszło nie tak ... spróbuj ponownie.
             </p>
             <input
               type="submit"

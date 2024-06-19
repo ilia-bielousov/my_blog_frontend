@@ -12,7 +12,7 @@ const formCardInnerCategory = (inputChoose) => {
   return (
     <>
       <label className="block mb-2 text-xl">
-        Нужно выбрать, для какого раздела будет написана статья.
+        Musisz wybrać, dla której sekcji zostanie napisany artykuł.
       </label>
       <input
         onClick={(e) => inputChoose(e)}
@@ -25,7 +25,7 @@ const formCardInnerCategory = (inputChoose) => {
       <label
         className="mr-3 text-lg"
         htmlFor="programming">
-        Программирование
+        Programming
       </label>
       <input
         onClick={(e) => inputChoose(e)}
@@ -38,7 +38,7 @@ const formCardInnerCategory = (inputChoose) => {
       <label
         className="mr-3 text-lg"
         htmlFor="projects">
-        Ардуино
+        Projects
       </label>
       <input
         className="mr-1"
@@ -50,7 +50,7 @@ const formCardInnerCategory = (inputChoose) => {
       <label
         className="mb-3 text-lg"
         htmlFor="modeling">
-        Моделирование
+        Modeling
       </label>
       <br />
     </>
@@ -64,7 +64,7 @@ const formCardInnerNameArticle = (register, errors) => {
         className="block my-2 text-lg"
         htmlFor="name"
       >
-        Придумайте название статьи (максимум 30 символов).
+        Wymyśl tytuł artykułu (maksymalnie 30 znaków).
       </label>
       <input
         className="w-80 p-1 px-3 border-2 rounded-xl outline-none focus:border-blue-700"
@@ -74,14 +74,14 @@ const formCardInnerNameArticle = (register, errors) => {
         name="name"
       />
       <br />
-      {errors.name && errors.name.type === 'required' ? <div className="text-rose-500">поле название обязательное.</div> : null}
-      {errors.name && errors.name.type === 'maxLength' ? <div className="text-rose-500">максимальная длина названия 30 символов.</div> : null}
-      {errors.name && errors.name.type === 'minLength' ? <div className="text-rose-500">минимальная длина названия 4 символа.</div> : null}
+      {errors.name && errors.name.type === 'required' ? <div className="text-rose-500">pole nazwa jest obowiązkowe.</div> : null}
+      {errors.name && errors.name.type === 'maxLength' ? <div className="text-rose-500">maksymalna długość nazwy to 30 znaków.</div> : null}
+      {errors.name && errors.name.type === 'minLength' ? <div className="text-rose-500">minimalna długość nazwy to 4 znaki.</div> : null}
       <label
         className="block mt-2 text-lg"
         htmlFor="description"
       >
-        Короткое описание статьи (максимум 180 символов).
+        Krótki opis artykułu (maksymalnie 180 znaków).
       </label>
       <textarea
         className="p-2 border-2 rounded-xl w-80 h-36 outline-none focus:border-blue-700 resize-none"
@@ -90,9 +90,9 @@ const formCardInnerNameArticle = (register, errors) => {
         name="description"
       />
       <br />
-      {errors.description && errors.description.type === 'required' ? <div className="text-rose-500">поле описание обязательное.</div> : null}
-      {errors.description && errors.description.type === 'maxLength' ? <div className="text-rose-500">максимальная длина описания 180 символов.</div> : null}
-      {errors.description && errors.description.type === 'minLength' ? <div className="text-rose-500">минимальная длина описания 4 символа.</div> : null}
+      {errors.description && errors.description.type === 'required' ? <div className="text-rose-500">pole opis jest obowiązkowe.</div> : null}
+      {errors.description && errors.description.type === 'maxLength' ? <div className="text-rose-500">maksymalna długość opisu to 180 znaków.</div> : null}
+      {errors.description && errors.description.type === 'minLength' ? <div className="text-rose-500">minimalna długość opisu to 4 znaki.</div> : null}
     </>
   )
 }
@@ -116,7 +116,7 @@ const formCardInnerSubmit = () => {
       className="w-48 p-3 mb-3 border-2 rounded-xl transition hover:bg-slate-100 active:bg-slate-200 active:border-slate-200 cursor-pointer disabled:cursor-auto disabled:bg-slate-800 disabled:text-white"
       type="submit"
     >
-      отправить данные
+      wyślij dane
     </button>
   )
 }
@@ -150,7 +150,7 @@ const AdminCreateCard = () => {
   } = useForm();
 
   if (!token) {
-    alert('У вас нет доступа, чтобы создавать/редактировать статьи.')
+    alert('Nie masz dostępu do tworzenia / edytowania artykułów.')
     return <Navigate to='/' />
   }
 
@@ -165,7 +165,7 @@ const AdminCreateCard = () => {
             :
             <>
               <p className="text-center">
-                Карточка успешно создана, тыкните на кнопку, чтобы продолжить.
+                Karta została utworzona, dotknij przycisku, aby kontynuować.
               </p>
               <div className="flex justify-center">
                 <Link
@@ -180,7 +180,7 @@ const AdminCreateCard = () => {
                   }
                   }
                 >
-                  Тыкать сюда
+                  Tutaj
                 </Link>
               </div>
             </>
@@ -198,14 +198,15 @@ const AdminCreateCard = () => {
             :
             <>
               <p className="text-center">
-                Что-то пошло не так ... попробуйте еще раз.
+                Coś poszło nie tak... spróbuj ponownie.
               </p>
-              <input
+              <button
                 type="submit"
-                value="попробовать еще раз"
                 className="block mx-auto p-2 border rounded-md transition hover:bg-slate-100 active:bg-slate-200 cursor-pointer"
                 onClick={() => setModalActive({ open: false, error: null })}
-              />
+              >
+                spróbuj ponownie
+              </button>
             </>
         }
       </>
@@ -242,11 +243,11 @@ const AdminCreateCard = () => {
         });
     } else {
       if (choose.length <= 0) {
-        alert('вы не выбрали раздел');
+        alert('nie wybrałeś sekcji');
       }
 
       if (file === '') {
-        alert('вы не добавили картинку');
+        alert('nie dodałeś zdjęcia');
       }
     }
   };
@@ -264,7 +265,7 @@ const AdminCreateCard = () => {
       <main className="flex-1 pl-72">
         <article className="p-5">
           <h2 className="text-3xl font-bold mb-2">
-            Для того, чтобы создать статью, сначала нужно создать презентационную карточку.
+            Aby utworzyć artykuł, musisz najpierw utworzyć kartę prezentacyjną.
           </h2>
           <div className="flex items-center">
             <form

@@ -3,7 +3,6 @@ import { Navigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { statusCreatingCard, resetComponentToArticle, resetPreviewContentAnArticle, changeBanAddElement } from "../../store/adminActions";
 
-// import MyNewArticle from "./components/MyNewArticle";
 import AreaNewTags from "./components/AreaNewTags";
 import PanelTags from "./components/PanelTags";
 import Modal from "../../components/Modal";
@@ -11,10 +10,9 @@ import Modal from "../../components/Modal";
 
 const AdminCreateArticle = () => {
   const dispatch = useDispatch();
-  const [redirect, setRedirect] = useState(false);
+  const [, setRedirect] = useState(false);
   const [modalActive, setModalActive] = useState({ status: null, error: false, loading: false });
 
-  const statusCreatingArticle = useSelector(state => state.admin.statusSendArticle);
   const idArticle = useSelector(state => state.admin.id);
   const [token,] = useState(localStorage.getItem('admin'))
 
@@ -26,7 +24,6 @@ const AdminCreateArticle = () => {
       dispatch(resetPreviewContentAnArticle());
       dispatch(changeBanAddElement(false));
     } else {
-      // alert('Сначала нужно создать карточку, только потом статью')
       setRedirect(true);
     }
     // нужно проверить, если обновили страницу и нет айди в редаксе, найти карточку и удалить ее в монго
@@ -49,7 +46,7 @@ const AdminCreateArticle = () => {
           :
           <>
             <p className="text-center">
-              Статья успешно создана, тыкните на кнопку, чтобы продолжить.
+              Artykuł został pomyślnie utworzony, kliknij przycisk, aby kontynuować.
             </p>
             <div className="flex justify-center">
               <Link
@@ -62,7 +59,7 @@ const AdminCreateArticle = () => {
                 }
                 }
               >
-                Тыкать сюда
+                Tutaj
               </Link>
             </div>
           </>
@@ -80,7 +77,7 @@ const AdminCreateArticle = () => {
             :
             <>
               <p className="text-center">
-                Что-то пошло не так ... попробуйте еще раз.
+                Coś poszło nie tak... spróbuj ponownie.
               </p>
               <div className="flex justify-center">
                 <Link
@@ -95,7 +92,7 @@ const AdminCreateArticle = () => {
                   }
                   }
                 >
-                  Тыкать сюда
+                  Tutaj
                 </Link>
               </div>
             </>
@@ -109,7 +106,7 @@ const AdminCreateArticle = () => {
       <main className="flex flex-1 pl-72">
         <aside className="w-2/3 flex flex-col flex-1 px-3 pt-3">
           <h2 className="text-3xl font-bold mb-5 text-center">
-            Создание статьи
+            Tworzenie artykułu
           </h2>
           <AreaNewTags />
         </aside>

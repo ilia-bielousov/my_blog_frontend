@@ -18,7 +18,7 @@ const AdminToolbar = () => {
             key={'admin'}
           >
             <img className='mr-4' src={home} alt="home" />
-            <span className="text-xl">Домашняя страница</span>
+            <span className="text-xl">Strona główna</span>
           </Link>
         </li>
         <li className='transition hover:bg-slate-300'>
@@ -29,7 +29,7 @@ const AdminToolbar = () => {
             key={'create-card'}
           >
             <img className='mr-4' src={create} alt="create" />
-            <span className="text-xl">Создание статьи</span>
+            <span className="text-xl">Tworzenie artykułu</span>
           </Link>
         </li>
         <li className='transition hover:bg-slate-300'>
@@ -40,7 +40,7 @@ const AdminToolbar = () => {
             key={'edit-article'}
           >
             <img className='mr-4' src={edit} alt="edit" />
-            <span className="text-xl">Редактировае статьи</span>
+            <span className="text-xl">Edycja artykułu</span>
           </Link>
         </li>
         <li className='transition hover:bg-slate-300'>
@@ -51,7 +51,7 @@ const AdminToolbar = () => {
             key={'articles'}
           >
             <img className='mr-4' src={article} alt="article" />
-            <span className="text-xl">Аналитика</span>
+            <span className="text-xl">Analiza</span>
           </Link>
         </li>
       </ul>

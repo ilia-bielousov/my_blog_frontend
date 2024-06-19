@@ -119,7 +119,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
             className={!statusClickPanelTags ? 'input__newTag relative z-30' : 'input__newTag'}
             type="text"
             onKeyDown={onKeyDown}
-            placeholder='Введите свой текст'
+            placeholder='Wpisz swój tekst'
           />
         )
       }
@@ -130,7 +130,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
             className={!statusClickPanelTags ? 'input__newTag relative z-30' : 'input__newTag'}
             type="text"
             onKeyDown={onKeyDown}
-            placeholder='Введите свой текст'
+            placeholder='Wpisz swój tekst'
           />
         )
       }
@@ -141,7 +141,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
             className={!statusClickPanelTags ? 'input__newTag relative z-30' : 'input__newTag'}
             type="text"
             onKeyDown={onKeyDown}
-            placeholder='Введите свой текст'
+            placeholder='Wpisz swój tekst'
           />
         )
       }
@@ -152,7 +152,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
             ref={tagRef}
             className={!statusClickPanelTags ? 'input__newTag input__newTag-resize relative z-30' : 'input__newTag input__newTag-resize'}
             type="text"
-            placeholder='Введите свой текст'
+            placeholder='Wpisz swój tekst'
           />
         )
       }
@@ -161,9 +161,9 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
           <textarea
             onKeyDown={onKeyDown}
             ref={tagRef}
-            className={!statusClickPanelTags ? 'input__newTag input__newTag-resize relative z-30' : 'input__newTag input__newTag-resize'}
+            className={!statusClickPanelTags ? 'input__newTag input__newTag-resize relative z-30 h-full' : 'input__newTag input__newTag-resize'}
             type="text"
-            placeholder='Введите свой текст'
+            placeholder='Wpisz swój tekst'
           />
         )
       }
@@ -186,7 +186,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
               setSourceImg(`${process.env.REACT_APP_API_URL}${res.data.path}`);
               dispatch(updateReviewContentAnArticle(content));
             })
-            .catch(err => console.log('картинки нет :('));
+            .catch(err => console.log('brak obrazu :('));
         }
 
         return (
@@ -209,16 +209,16 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
                   className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
                   onClick={(e) => { sendImage(e); setStatusInputTag(false); }}
                 >
-                  отправить
+                  wyślij
                 </button>
               </div> :
               <div
                 className={!statusClickPanelTags ? 'flex flex-col items-center p-2 max-w-xs mx-auto relative z-30' : 'flex flex-col items-center p-2 max-w-xs mx-auto'}
               >
-                <p className="text-xl text-center mb-3">Ваше изображение</p>
+                <p className="text-xl text-center mb-3 font-semibold">Twój obraz</p>
                 <img className="mx-auto px-3" src={sourceImg} alt="test" />
                 <div className="flex flex-col items-center p-2 max-w-xs mx-auto">
-                  <p className="text-center mb-3">Eсли хотите изменить, повторите.</p>
+                  <p className="text-center mb-3">Jeśli chcesz zmienić, powtórz.</p>
                   <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24 mb-2 p-3 bg-blue-100 hover:bg-blue-300 rounded-xl transition">
                     <input
                       type="file"
@@ -233,7 +233,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
                     className="inline-block p-2 rounded-md transition bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white"
                     onClick={(e) => sendImage(e)}
                   >
-                    confirm
+                    wyślij
                   </button>
                 </div>
               </div>)}
@@ -243,13 +243,13 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
       case 'iframe': {
         return (
           <div className="w-full">
-            <p className="mb-3">Чтобы вставить видео, скопируйте ссылку и вставьте в поле ниже.</p>
+            <p className="p-2">Aby wkleić film, skopiuj link i wklej w polu poniżej.</p>
             <input
               ref={tagRef}
               className={!statusClickPanelTags ? 'input__newTag relative z-30' : 'input__newTag'}
               type="text"
               onKeyDown={onKeyDown}
-              placeholder='Введите свой текст'
+              placeholder='Wpisz swój tekst'
             />
           </div>
         )
@@ -260,15 +260,15 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
             ref={tagRef}>
             <textarea
               onKeyDown={onKeyDown}
-              className={!statusClickPanelTags ? 'input__newTag input__newTag-resize relative z-30' : 'input__newTag input__newTag-resize'}
+              className={!statusClickPanelTags ? 'input__newTag input__newTag-resize relative z-30 border' : 'input__newTag input__newTag-resize'}
               type="text"
-              placeholder='скопируйте свой код и вставьте сюда'
+              placeholder='skopiuj swój kod i wklej tutaj'
             />
             <input
               onKeyDown={onKeyDown}
               type="text"
               className={!statusClickPanelTags ? 'input__newTag relative z-30' : 'input__newTag'}
-              placeholder="напишите язык на каком написан код (javascript, c/c++, python etc.)"
+              placeholder="napisz język, w którym napisany jest kod (javascript, C / C++, python itp.)"
             />
           </div>
         )

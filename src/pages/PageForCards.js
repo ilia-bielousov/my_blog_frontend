@@ -28,7 +28,7 @@ const PageForCards = () => {
 
   return (
     <>
-      {cards && !error ?
+      {cards && !error && loading ?
         <Content
           data={cards}
         />
@@ -37,11 +37,11 @@ const PageForCards = () => {
           <main className="flex-1" />
           <Modal>
             <p className="text-center">
-              Что-то пошло не так ... попробуйте еще раз.
+              Coś poszło nie tak ... spróbuj ponownie.
             </p>
             <input
               type="submit"
-              value="попробовать еще раз"
+              value="spróbuj ponownie"
               className="block mx-auto p-2 border rounded-md transition hover:bg-slate-100 active:bg-slate-200 cursor-pointer"
               onClick={() => window.location.reload()}
             />
