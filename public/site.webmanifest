@@ -1,1 +1,25 @@
-{"name":"","short_name":"","icons":[{"src":"\/favicon-16x16.png","sizes":"16x16","type":"image\/png"},{"src":"\/favicon-32x32.png","sizes":"32x32","type":"image\/png"},{"src":"\/favicon.ico","sizes":"48x48","type":"image\/x-icon"}]}
+{
+  "name": "My blog",
+  "short_name": "Create react-blog",
+  "icons": [
+    {
+    "src": "\/favicon-16x16.png",
+    "sizes": "16x16",
+    "type": "image\/png"
+  },
+  {
+    "src": "\/favicon-32x32.png",
+    "sizes": "32x32",
+    "type": "image\/png"
+  },
+  {
+    "src": "\/favicon.ico",
+    "sizes": "48x48",
+    "type": "image\/x-icon"
+  }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
