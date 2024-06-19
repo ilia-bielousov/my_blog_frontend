@@ -215,15 +215,14 @@ const AdminCreateCard = () => {
   async function onSubmit(data) {
     dispatch(inputNameDescriptionCard(data));
 
-
     if (choose.length !== 0 && file) {
       const formData = new FormData();
       formData.append('file', file);
       setModalActive({ open: true, loading: true, error: false })
 
       await axios.post(`${process.env.REACT_APP_API_URL}admin/upload`, formData)
-        .then(res => {
-          axios.post(`${process.env.REACT_APP_API_URL}admin/create-card`, { choose, ...data, image: `${process.env.REACT_APP_API_URL}${res.data.path}`, pseudoName: transliterate(data.name.replace(/ /g, '_')) })
+        .then(async res => {
+          await axios.post(`${process.env.REACT_APP_API_URL}admin/create-card`, { choose, ...data, image: res.data.path, pseudoName: transliterate(data.name.replace(/ /g, '_')) })
             .then(res => {
               if (res.data.status === 200) {
                 setModalActive({ open: true, loading: false, error: false });

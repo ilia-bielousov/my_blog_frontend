@@ -179,7 +179,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
               content.map(item => {
                 if (item.id === idElem) {
                   item.alt = res.data.name;
-                  item.image = `${process.env.REACT_APP_API_URL}${res.data.path}`;
+                  item.image = res.data.path;
                   item.className = 'mx-auto p-3';
                 }
               });

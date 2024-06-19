@@ -1,24 +1,20 @@
 import Card from "../components/Card";
 
-import programming from './../assets/images/programming1.jpeg';
-import arduino from './../assets/images/arduino1.png';
-import modeling from './../assets/images/modeling.png';
-
 const menuContent = [
   {
     name: 'programming',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
-    image: programming
+    description: 'To zajęcie pomaga mi rozwijać myślenie logiczne i kreatywność, a także pozwala rozwiązywać ciekawe problemy.',
+    image: 'programming-main.jpeg'
   },
   {
     name: 'projects',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
-    image: arduino
+    description: 'Tworzę różne urządzenia elektroniczne, co pomaga mi w praktyce uczyć się programowania.',
+    image: 'arduino-main.png'
   },
   {
     name: 'modeling',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, facere!',
-    image: modeling
+    description: 'Hobby rozwija myślenie przestrzenne, a także daje możliwość skupiać się na szczegółach.',
+    image: 'modeling-main.png'
   },
 ]
 

@@ -1,11 +1,21 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Card({ choose, name, description, image, pseudoName }) {
+  const [imageUrl, setImage] = useState('');
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL}upload/${image}`)
+      .then(res => setImage(`data:image/format;base64,${res.data.data[0].imageSource}`))
+      .catch(err => console.log(err)) // нужно будет обработать ошибку
+  }, []);
+
   return (
     <div className="w-96 max-[459px]:max-w-80 border rounded-2xl shadow-md lg:hover:shadow-xl transition cursor-pointer lg:hover:-translate-y-1">
       <Link to={`/${choose}/${pseudoName ? pseudoName : ''}`} className="flex flex-col gap-4 p-5">
         <img
-          src={image}
+          src={imageUrl}
           alt={choose}
           className="object-cover h-64"
         />

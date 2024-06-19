@@ -1,5 +1,22 @@
-import { Fragment, createElement } from "react";
+import { useState, createElement } from "react";
 import CodeExample from "../components/CodeExample";
+import axios from "axios";
+
+const RenderImage = ({ imageSource }) => {
+  const [image, setImage] = useState('');
+  const [alt, setAlt] = useState('');
+
+  axios.get(`${process.env.REACT_APP_API_URL}upload/${imageSource}`)
+    .then(res => {
+      setImage(`data:image/format;base64,${res.data.data[0].imageSource}`);
+      setAlt(res.data.data[0].imageUrl);
+    })
+    .catch(err => console.log(err)) // нужно будет обработать ошибку
+
+  return (
+    <img alt={alt} src={image} className='mx-auto p-3' />
+  )
+}
 
 
 const createArticle = (content) => {
@@ -15,10 +32,7 @@ const createArticle = (content) => {
         case 'img': {
           return (
             <div className="mx-auto">
-              {createElement(
-                item[1].tag,
-                { className: item[1].className, src: item[1].image, alt: item[1].alt },
-              )}
+              <RenderImage imageSource={item[1].image} />
             </div>
           )
         }
@@ -60,4 +74,5 @@ const createArticle = (content) => {
   });
 }
 
-export default createArticle;
+export { createArticle };
+export { RenderImage };

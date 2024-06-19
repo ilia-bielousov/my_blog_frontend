@@ -1,7 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
+import { RenderImage } from "../../../utilities/utilities";
+
 import picture from './../../../assets/images/picture.svg';
+
+
 
 const NewTagForEdit = (props) => {
   const [textContent, setTextContent] = useState('');
@@ -127,7 +131,7 @@ const NewTagForEdit = (props) => {
                 setTextContent(() => {
                   return {
                     ...textContent,
-                    image: `${process.env.REACT_APP_API_URL}${res.data.path}`,
+                    image: res.data.path,
                     alt: res.data.name
                   };
                 });
@@ -135,7 +139,7 @@ const NewTagForEdit = (props) => {
                 article.content.map(item => {
                   if (item.id === id) {
                     item.alt = res.data.name;
-                    item.image = `${process.env.REACT_APP_API_URL}${res.data.path}`;
+                    item.image = res.data.path;
                   }
                 })
               })
@@ -146,7 +150,8 @@ const NewTagForEdit = (props) => {
               className='flex flex-col items-center p-2 max-w-xs mx-auto'
             >
               <p className="text-xl text-center mb-3">Ваше изображение</p>
-              <img className="mx-auto px-3" src={textContent.image} alt="test" />
+              <RenderImage imageSource={textContent.image} />
+              {/* <img className="mx-auto px-3" src={textContent.image} alt="test" /> */}
               <div className="flex flex-col items-center gap-2 p-2 max-w-xs mx-auto">
                 <p className="text-center">Eсли хотите изменить, повторите.</p>
                 <div className="relative flex flex-col justify-center items-center w-48 mx-auto h-24  p-3 bg-blue-100 hover:bg-blue-300 rounded-xl transition">

@@ -8,7 +8,7 @@ import Modal from "../components/Modal";
 import { removeStateArticle, removeStateCards } from "../store/clientReducer";
 import { fetchArticle } from "../store/asyncAction/article";
 import { fetchCards } from "../store/asyncAction/cardsClient";
-import createArticle from "../utilities/utilities";
+import { createArticle } from "../utilities/utilities";
 
 const SinglePageForArticle = () => {
   const { id } = useParams();
