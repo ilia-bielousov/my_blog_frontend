@@ -123,16 +123,18 @@ const AreaNewTags = () => {
       className="relative z-10 square w-full flex-1 p-3 border-dashed border-blue-600 border-2"
     >
       {myListElements && myListElements.map((item, index) => {
-        console.log(item);
         return (
           <div
-            className='flex justify-between mb-2'
+            className='flex justify-between items-center mb-2'
             key={item.id}
             draggable
             onDragStart={(e) => handleDragStartBlock(e, item.id)}
             onDragOver={(e) => handleDragOverBlock(e, index)}
             onDragLeave={(e) => handleDragEnd(e)}
           >
+            <span className="block p-2">
+              {item.component.props.tag}
+            </span>
             <div className="flex flex-col w-full relative"
               onDrop={(e) => test(e)}
             >

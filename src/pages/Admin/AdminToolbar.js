@@ -10,6 +10,15 @@ const AdminToolbar = () => {
     <nav className="fixed left-0 top-0 h-full w-72 shadow-xl z-10">
       <ul className='flex flex-col'>
         <li className='transition hover:bg-slate-300'>
+          <a
+            className='flex p-2 text-2xl'
+            target={'_blank'}
+            href="./../"
+          >
+            Home
+          </a>
+        </li>
+        <li className='transition hover:bg-slate-300'>
           <Link
             to="../admin"
             title="Home"

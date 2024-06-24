@@ -75,6 +75,7 @@ const PanelTags = ({ setModalActive }) => {
 
   const [transform, setTransform] = useState({ x: 125, y: 300 });
   const [isDragging, setIsDragging] = useState(false);
+  const [idPreview, setIdPreview] = useState(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -121,10 +122,15 @@ const PanelTags = ({ setModalActive }) => {
 
   const sendArticle = async (e) => {
     e.preventDefault();
+
     setModalActive({ open: true, loading: true, error: false })
 
+    if (idPreview && idPreview.id) {
+      await axios.delete(`${process.env.REACT_APP_API_URL}admin/preview/${idPreview.id}`);
+    }
+
     await axios.post(`${process.env.REACT_APP_API_URL}admin/create-article`, [...content, IDforArticle])
-      .then(res => {
+      .then(async (res) => {
         if (res.data.status === 200) {
           setModalActive({ open: true, loading: false, error: false });
         }
@@ -136,6 +142,17 @@ const PanelTags = ({ setModalActive }) => {
       });
 
     dispatch(changeStatusCreatingArticle(true));
+  }
+
+  const handlePreviewArticle = async (e) => {
+    if (idPreview) {
+      await axios.patch(`${process.env.REACT_APP_API_URL}admin/preview`, { _id: idPreview.id, content: [...content] })
+    } else {
+      await axios.post(`${process.env.REACT_APP_API_URL}admin/preview`, [...content])
+        .then(res => {
+          setIdPreview(res.data);
+        })
+    }
   }
 
   return (
@@ -156,12 +173,23 @@ const PanelTags = ({ setModalActive }) => {
         <h3 className="p-2 italic text-xl">
           Panel My Blog
         </h3>
-        <button
-          type="submit"
-          className="p-2 bg-white text-slate-600 rounded-xl font-bold active:bg-slate-200"
-        >
-          Opublikować
-        </button>
+        <div className='flex gap-3'>
+          <a
+            onClick={handlePreviewArticle}
+            href='./../preview'
+            target='_blank'
+            type="submit"
+            className="p-2 bg-white text-slate-600 rounded-xl font-bold active:bg-slate-200"
+          >
+            Podgląd
+          </a>
+          <button
+            type="submit"
+            className="p-2 bg-white text-slate-600 rounded-xl font-bold active:bg-slate-200"
+          >
+            Opublikować
+          </button>
+        </div>
       </form>
       <div className="flex">
         {tagsRender.map((tag, key) => {

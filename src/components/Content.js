@@ -24,7 +24,6 @@ const Content = ({ data }) => {
       <div className='flex content-center justify-center gap-8 max-md:gap-4 max-xl:flex-col max-xl:items-center px-24 py-3 max-md:px-3 flex-wrap'>
         <div className='grid grid-rows 2xl:grid-cols-3 gap-8 max-md:gap-4 xl:grid-cols-2 2xl:gap-5 xl:gap-3'>
           {statusLoading}
-
           {content && content.map((card, i) => {
             if (card.choose === path) {
               return (
@@ -37,8 +36,6 @@ const Content = ({ data }) => {
                   pseudoName={card.pseudoName}
                 />
               )
-            } else {
-              return null;
             }
           })}
         </div>

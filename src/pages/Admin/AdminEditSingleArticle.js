@@ -30,6 +30,8 @@ const AdminEditSingleArticle = () => {
   const sendEditArticle = (e) => {
     e.preventDefault();
 
+    console.log(article);
+
     axios.patch(`${process.env.REACT_APP_API_URL}admin/edit-article`, article)
       .then(res => {
         if (res.data.status === 200)

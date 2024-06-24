@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
-
 import Layout from './Layout';
 import Home from '../pages/Home';
 import PageForCards from '../pages/PageForCards';
 import PageTransition from './PageTransition';
 import SinglePageForArticle from '../pages/SinglePageForArticle';
+import Review from '../pages/Review';
 import Client404 from '../pages/Client404';
 import AdminLayout from '../pages/Admin/AdminLayout';
 import AdminHome from '../pages/Admin/AdminHome';
@@ -73,6 +73,11 @@ const App = () => {
           <Route path='modeling/:id' element={
             <PageTransition>
               <SinglePageForArticle />
+            </PageTransition>
+          } />
+          <Route path='preview' element={
+            <PageTransition>
+              <Review />
             </PageTransition>
           } />
         </Route>

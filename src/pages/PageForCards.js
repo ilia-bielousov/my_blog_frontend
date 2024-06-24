@@ -28,7 +28,7 @@ const PageForCards = () => {
 
   return (
     <>
-      {cards && !error && loading ?
+      {cards && !error ?
         <Content
           data={cards}
         />

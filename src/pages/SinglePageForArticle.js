@@ -124,7 +124,6 @@ const SinglePageForArticle = () => {
     const renderImage = async (image, setImage) => {
       try {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}upload/${image}`);
-        console.log(res);
         setImage(`data:image/format;base64,${res.data.data[0].imageSource}`);
 
       } catch (err) {
@@ -195,7 +194,7 @@ const SinglePageForArticle = () => {
           {article && article.status !== 404 ?
             <aside className="lg:w-3/12 w-full md:pl-24 lg:pl-0 px-3">
               <h3 className="mb-3 text-xl text-center italic">{nextArticle.length < 2 ? 'Brak jeszcze artykułów' : ' Zobacz więcej z tej sekcji'} </h3>
-              {nextArticle ? renderNextArticle() : <div> spinner </div>}
+              {nextArticle ? renderNextArticle() : null}
             </aside>
             :
             null
