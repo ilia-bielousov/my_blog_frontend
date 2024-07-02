@@ -20,7 +20,7 @@ const RenderImage = ({ imageSource }) => {
     })
 
   return (
-    <img alt={alt} src={image} className={noImg ? 'h-64' : 'object-cover h-64'} />
+    <img alt={alt} src={image} className={noImg ? 'mx-auto p-3' : 'object-cover h-64'} />
   )
 }
 
