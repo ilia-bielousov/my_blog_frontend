@@ -1,6 +1,9 @@
-import { useState, createElement } from "react";
-import CodeExample from "../components/CodeExample";
+import { useState, createElement, useEffect } from "react";
+
 import axios from "axios";
+import CodeExample from "../components/CodeExample";
+
+import noImg from './../assets/images/no-img.svg'
 
 const RenderImage = ({ imageSource }) => {
   const [image, setImage] = useState('');
@@ -11,13 +14,15 @@ const RenderImage = ({ imageSource }) => {
       setImage(`data:image/format;base64,${res.data.data[0].imageSource}`);
       setAlt(res.data.data[0].imageUrl);
     })
-    .catch(err => console.log(err)) // нужно будет обработать ошибку
+    .catch(() => {
+      setImage(noImg);
+      setAlt('no picture');
+    })
 
   return (
-    <img alt={alt} src={image} className='mx-auto p-3' />
+    <img alt={alt} src={image} className={noImg ? 'h-64' : 'object-cover h-64'} />
   )
 }
-
 
 const createArticle = (content) => {
   const t = Object.entries(content);
@@ -74,5 +79,17 @@ const createArticle = (content) => {
   });
 }
 
+const transliterate = (text) => {
+  const transliterationMap = {
+    а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', е: 'e', ё: 'e', ж: 'zh', з: 'z',
+    и: 'i', й: 'y', к: 'k', л: 'l', м: 'm', н: 'n', о: 'o', п: 'p', р: 'r',
+    с: 's', т: 't', у: 'u', ф: 'f', х: 'kh', ц: 'ts', ч: 'ch', ш: 'sh', щ: 'sch',
+    ъ: '\'', ы: 'y', ь: '\'', э: 'e', ю: 'yu', я: 'ya',
+  };
+
+  return text.split('').map(char => transliterationMap[char] || char).join('');
+};
+
 export { createArticle };
 export { RenderImage };
+export { transliterate };

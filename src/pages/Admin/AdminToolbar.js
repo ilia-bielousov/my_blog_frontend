@@ -11,11 +11,11 @@ const AdminToolbar = () => {
       <ul className='flex flex-col'>
         <li className='transition hover:bg-slate-300'>
           <a
-            className='flex p-2 text-2xl'
-            target={'_blank'}
+            className='flex p-2 text-3xl justify-center'
+            target='_blank'
             href="./../"
           >
-            Home
+            Blog page
           </a>
         </li>
         <li className='transition hover:bg-slate-300'>
