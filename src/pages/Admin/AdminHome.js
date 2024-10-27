@@ -13,16 +13,16 @@ const AdminHome = () => {
     <main className="flex-1 pl-72">
       <article className="max-w-3xl p-5 mx-auto">
         <h2 className='text-3xl font-bold mb-3'>
-          Witam!
+          Главная
         </h2>
         <p className="text-xl text-justify indent-10">
-          Jesteś w panelu administracyjnym bloga. Tutaj możesz zarządzać wszystkimi aspektami bloga, w tym tworzyć nowe artykuły, edytować istniejące artykuły i analizować liczbę wyświetleń artykułów.
+          Вы находитесь на панели администрирования блога. Здесь вы можете создавать статьи и редактировать, а так же просмотреть краткую статиститу выбраной статьи.
         </p>
         <p className="text-xl mb-5">
-          Aby rozpocząć, wybierz pozycję menu z listy po lewej stronie.
+          Для начала выберите пункт меню из списка слева.
         </p>
         <p className="text-2xl font-bold">
-          Życzę miłego korzystania z panelu administracyjnego!
+          Надеюсь, вам понравится пользоваться административной панелью!
         </p>
       </article>
     </main >

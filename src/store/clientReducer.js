@@ -31,7 +31,7 @@ export const clientReducer = (state = defaultState, action) => {
       return { ...state, error: true, code: action.payload }
 
     case UPDATE_STATUS_ERROR:
-      return { ...state, error: false }
+      return { ...state, error: false, code: null }
 
     case NEXT_ARTICLE:
       return { ...state, nextArticle: { ...action.payload } };
