@@ -42,6 +42,8 @@ const AdminArticles = () => {
           if (article.card === card._id) {
             return article.views;
           }
+
+          // const t = allArticles.filter(article => {return article.card === card._id ? article.views : null})
         });
 
         return (

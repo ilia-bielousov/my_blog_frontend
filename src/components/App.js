@@ -1,18 +1,18 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
-// import Home from '../pages/Home';
-import PageForCards from '../pages/PageForCards';
+// import Home from '../pages/Client/Home';
+import PageForCards from '../pages/Client/PageForCards';
 import PageTransition from './PageTransition';
-import SinglePageForArticle from '../pages/SinglePageForArticle';
-import Review from '../pages/Review';
-import Client404 from '../pages/Client404';
+import SinglePageForArticle from '../pages/Client/SinglePageForArticle';
+import Review from '../pages/Admin/Review';
+import Client404 from '../pages/Client/Client404';
 import AdminLayout from '../pages/Admin/AdminLayout';
 import AdminHome from '../pages/Admin/AdminHome';
 import AdminArticles from '../pages/Admin/AdminArticles';
 import CreatingCard from '../pages/Admin/CreatingCard/CreatingCard';
-import AdminCreateArticle from '../pages/Admin/AdminCreateArticle';
+import CreatingArticle from '../pages/Admin/CreatingArticle/CreatingArticle';
 import AdminEdit from '../pages/Admin/AdminEdit';
-import AdminEditSingleArticle from '../pages/Admin/AdminEditSingleArticle';
+import EditingArticle from '../pages/Admin/EditingArticle/EditingArticle';
 import Admin404 from '../pages/Admin/Admin404';
 
 const App = () => {
@@ -87,9 +87,9 @@ const App = () => {
           } />
           <Route path='articles' element={<AdminArticles />} />
           <Route path='create-card' element={<CreatingCard />} />
-          <Route path='create-article' element={<AdminCreateArticle />} />
+          <Route path='create-article' element={<CreatingArticle />} />
           <Route path='edit-article' element={<AdminEdit />} />
-          <Route path='edit-article/:id' element={<AdminEditSingleArticle />} />
+          <Route path='edit-article/:id' element={<EditingArticle />} />
           <Route path='*' element={<Admin404 />} />
         </Route>
       </Routes>

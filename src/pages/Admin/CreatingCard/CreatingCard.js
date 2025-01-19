@@ -82,7 +82,6 @@ const CreatingCard = () => {
           errorElems: updatedErrorElems
         };
       } else {
-
         delete updatedErrorElems[fieldName];
         return {
           ...prevState,
@@ -198,13 +197,10 @@ const CreatingCard = () => {
             Чтобы создать статью, необходимо сначала создать презентационную карточку.
           </h2>
           <div className="flex items-center">
-            <form
-              onSubmit={handleSubmit}
-            >
+            <form onSubmit={handleSubmit} >
               <InputCategoryCard setData={setData} errors={errors} />
               <InputNameCard setData={setData} errors={errors} />
               <InputFileCard setData={setData} errors={errors} />
-
               <button
                 className="w-48 p-3 mb-3 border-2 rounded-xl transition hover:bg-slate-100 active:bg-slate-200 active:border-slate-200 cursor-pointer disabled:cursor-auto disabled:bg-slate-800 disabled:text-white"
                 type="submit"

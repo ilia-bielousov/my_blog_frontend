@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 .panel__btn {
-  @apply w-12 h-12 p-2 mr-1 bg-blue-700 hover:bg-blue-800 transition rounded-xl text-white text-xl;
+  @apply w-14 h-12 p-2 mr-1 bg-blue-700 hover:bg-blue-800 transition rounded-xl text-white text-xl;
 }
 
 .input__newTag {

@@ -1,5 +1,5 @@
 import { useEffect, useState, Fragment } from "react";
-import { createArticle } from "../utilities/utilities";
+import { createArticle } from "../../utilities/utilities";
 import axios from "axios";
 
 const Review = () => {

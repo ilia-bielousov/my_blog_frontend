@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 
-import home from './../../../assets/images/home.svg'
-import article from './../../../assets/images/article.svg';
-import create from './../../../assets/images/create.svg';
-import edit from './../../../assets/images/edit.svg';
+import home from './../assets/images/home.svg'
+import article from './../assets/images/article.svg';
+import create from './../assets/images/create.svg';
+import edit from './../assets/images/edit.svg';
 
 const AdminToolbar = () => {
   return (
