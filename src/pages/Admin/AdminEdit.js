@@ -42,7 +42,7 @@ const AdminEdit = () => {
     <main className="flex-1 pl-72">
       <article className="p-5">
         <h2 className='text-3xl font-bold mb-3'>
-          Edycja artykułu
+          Редактирование статьи
         </h2>
         <div className="flex flex-wrap gap-5">
           {renderCol('programming')}

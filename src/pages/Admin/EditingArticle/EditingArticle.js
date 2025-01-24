@@ -11,7 +11,7 @@ import Modal from "../../../components/Modal";
 
 const EditingArticle = () => {
   const { id } = useParams();
-
+  // надо доработать.
   const dispatch = useDispatch();
 
   const [modalActive, setModalActive] = useState({});
@@ -46,12 +46,12 @@ const EditingArticle = () => {
   const renderModal = () => {
     return (
       <>
-        <p className="text-center mb-3">Artykuł został pomyślnie zredagowany, kliknij przycisk, aby cię przekierować.</p>
+        <p className="text-center mb-3">Статья была успешно отредактирована, нажмите кнопку, чтобы перенаправить вас.</p>
         <input
           onClick={() => setRedirect(true)}
           className="block mx-auto p-2 border rounded-lg transition hover:bg-slate-100 cursor-pointer active:bg-slate-200"
           type="submit"
-          value="tutaj"
+          value="сдесь"
         />
       </>
     )
@@ -61,7 +61,7 @@ const EditingArticle = () => {
     return (
       <>
         <p className="text-center">
-          Wystąpił błąd, spróbuj odświeżyć stronę.
+          Произошла ошибка, попробуйте обновить страницу.
         </p>
       </>
     )
@@ -87,7 +87,7 @@ const EditingArticle = () => {
       <main className="flex flex-1 pl-72">
         <article className="p-5 flex-1 flex flex-col w-full">
           <h1 className="text-3xl font-bold mb-2">
-            Edycja artykułu
+            Редактирование статьи
           </h1>
           <form
             className="flex flex-col gap-2"
@@ -110,8 +110,8 @@ const EditingArticle = () => {
             }) :
               (!statusError ? renderSpinner() :
                 <div className="text-center flex-1">
-                  <span className="block font-bold text-3xl mb-10">Błąd 404</span>
-                  <p className="text-xl">taki artykuł nie istnieje.</p>
+                  <span className="block font-bold text-3xl mb-10">Ошибка 404</span>
+                  <p className="text-xl">такой статьи не существует.</p>
                 </div>)
             }
             {!statusError ? <input

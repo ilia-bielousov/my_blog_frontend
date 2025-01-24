@@ -12,7 +12,7 @@ const Review = () => {
         setPreviewContent(data.data);
         setLoading(false);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // надо обработать
   }, []);
 
   const renderPreview = () => {
@@ -33,7 +33,7 @@ const Review = () => {
         </article>
         <aside className="lg:w-3/12 w-full md:pl-24 lg:pl-0 px-3">
           <h3 className="mb-3 text-xl text-center italic">
-            podgląd
+            предпросмотр
           </h3>
         </aside>
       </div>

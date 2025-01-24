@@ -31,7 +31,7 @@ const AdminArticles = () => {
   }, []);
 
   if (!token) {
-    alert('Nie masz dostępu do tworzenia / edytowania artykułów.')
+    alert('У вас нет доступа к созданию / редактированию статей.')
     return <Navigate to='/' />
   }
 
@@ -49,13 +49,13 @@ const AdminArticles = () => {
         return (
           <li className='mb-1 text-xl flex flex-col p-2 border-2' key={key}>
             <div className='flex justify-between mb-5'>
-              <span className='font-semibold flex-1'>Tytuł artykułu:</span> <span className='flex-1 text-end'>{card.name} </span>
+              <span className='font-semibold flex-1'>Название статьи:</span> <span className='flex-1 text-end'>{card.name} </span>
             </div>
             <div className='flex flex-col justify-between mb-5'>
-              <span className='font-semibold flex-1'>Opis artykułu:</span> <span className='flex-1'>{card.description} </span>
+              <span className='font-semibold flex-1'>Описание статьи:</span> <span className='flex-1'>{card.description} </span>
             </div>
             <div className='flex justify-between mb-5'>
-              <span className='font-semibold flex-1'>Ilość wyświetleń:</span> <span className='flex-1 text-end font-bold'>{t}</span>
+              <span className='font-semibold flex-1'>Количество просмотров:</span> <span className='flex-1 text-end font-bold'>{t}</span>
             </div>
           </li>
         )
@@ -67,7 +67,7 @@ const AdminArticles = () => {
     <main className="flex-1 pl-72">
       <article className="p-5">
         <h2 className='text-3xl font-bold mb-10'>
-          Statystyk
+          Статистика
         </h2>
         <div className='articles p-3 flex gap-5 '>
           {categories.map((item, key) => {

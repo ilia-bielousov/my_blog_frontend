@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { statusCreatingCard, resetComponentToArticle, resetPreviewContentAnArticle, changeBanAddElement } from "../../../store/adminActions";
+import { statusCreatingCard, resetComponentToArticle, resetPreviewContentAnArticle } from "../../../store/adminActions";
 
 import AreaNewTags from "./elements/AreaNewTags"
 import PanelTags from "./elements/PanelTags";
@@ -22,7 +22,6 @@ const CreatingArticle = () => {
       dispatch(statusCreatingCard(false));
       dispatch(resetComponentToArticle());
       dispatch(resetPreviewContentAnArticle());
-      dispatch(changeBanAddElement(false));
     } else {
       setRedirect(true);
     }
@@ -46,7 +45,7 @@ const CreatingArticle = () => {
           :
           <>
             <p className="text-center">
-              Artykuł został pomyślnie utworzony, kliknij przycisk, aby kontynuować.
+              Статья была успешно создана, нажмите кнопку, чтобы продолжить.
             </p>
             <div className="flex justify-center">
               <Link
@@ -77,7 +76,7 @@ const CreatingArticle = () => {
             :
             <>
               <p className="text-center">
-                Coś poszło nie tak... spróbuj ponownie.
+                Что-то пошло не так... попробуйте еще раз.
               </p>
               <div className="flex justify-center">
                 <Link
@@ -106,7 +105,7 @@ const CreatingArticle = () => {
       <main className="flex flex-1 pl-72">
         <aside className="w-2/3 flex flex-col flex-1 px-3 pt-3">
           <h2 className="text-3xl font-bold mb-5 text-center">
-            Tworzenie artykułu
+            Создание статьи
           </h2>
           <AreaNewTags />
         </aside>

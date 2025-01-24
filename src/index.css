@@ -8,11 +8,11 @@
 }
 
 .input__newTag {
-  @apply w-full h-12 p-3 rounded outline-blue-700;
+  @apply w-full p-3 rounded outline-blue-700;
 }
 
 .input__newTag-resize {
-  @apply resize h-12;
+  @apply resize-y h-12;
 }
 
 html,

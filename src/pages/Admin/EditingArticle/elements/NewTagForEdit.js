@@ -5,19 +5,16 @@ import { RenderImage } from "../../../../utilities/utilities";
 
 import picture from './../../../../assets/images/picture.svg';
 
-
-
 const NewTagForEdit = (props) => {
   const [textContent, setTextContent] = useState('');
+  const [file, setFile] = useState('');
+
   const tagRef = useRef();
   const { tag, text, id, className, list, language, article, image, alt } = props;
-
-  const [file, setFile] = useState('');
 
   useEffect(() => {
     setTextContent({ tag, text, id, className, list, language, image, alt });
   }, [props]);
-
 
   const changeText = (e) => {
     setTextContent(() => {
@@ -100,7 +97,7 @@ const NewTagForEdit = (props) => {
               onChange={changeText}
               onKeyDown={onKeyDown}
               ref={tagRef}
-              className="w-full p-2 outline-blue-700 resize-none  h-60 border-2 rounded-xl"
+              className="w-full p-2 outline-blue-700 resize-none h-60 border-2 rounded-xl"
               type="text"
               placeholder='Wpisz swój tekst'
               value={textContent.list}
@@ -113,7 +110,7 @@ const NewTagForEdit = (props) => {
               onChange={changeText}
               onKeyDown={onKeyDown}
               ref={tagRef}
-              className="w-full p-2 outline-blue-700 resize-none  h-60 border-2 rounded-xl"
+              className="w-full p-2 outline-blue-700 resize-none h-60 border-2 rounded-xl"
               type="text"
               placeholder='Wpisz swój tekst'
               value={textContent.text}
@@ -144,7 +141,7 @@ const NewTagForEdit = (props) => {
                   }
                 })
               })
-              .catch(err => console.log('brak obrazu :('));
+              .catch(err => console.log('нет картинки'));
           }
           return (
             <div

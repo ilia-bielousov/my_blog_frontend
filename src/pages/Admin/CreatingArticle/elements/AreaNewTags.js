@@ -127,7 +127,7 @@ const AreaNewTags = () => {
           <div
             className='flex justify-between items-center mb-2'
             key={item.id}
-            draggable
+            draggable //пока непонятно
             onDragStart={(e) => handleDragStartBlock(e, item.id)}
             onDragOver={(e) => handleDragOverBlock(e, index)}
             onDragLeave={(e) => handleDragEnd(e)}

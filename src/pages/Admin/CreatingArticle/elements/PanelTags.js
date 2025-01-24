@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCurrentTagButton, changeStatusCreatingArticle, setStatusClickPanelTags } from '../../../../store/adminActions';
+import { addCurrentTagButton, changeStatusCreatingArticle, updateReviewContentAnArticle, setStatusClickPanelTags } from '../../../../store/adminActions';
 import axios from 'axios';
 
 // images
@@ -35,12 +35,14 @@ const PanelTags = ({ setModalActive }) => {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [idPreview, setIdPreview] = useState(null);
 
+
+  // какой-то баг, то что оно прыгает.
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (isDragging) {
         setPosition({
-          x: Math.min(window.innerWidth - 466, Math.max(0, e.clientX - dragOffset.x)),
-          y: Math.min(document.documentElement.scrollHeight - 128, Math.max(0, e.clientY - dragOffset.y)),
+          x: Math.min(window.innerWidth - 540, Math.max(10, e.clientX - dragOffset.x)),
+          y: Math.min(document.documentElement.scrollHeight - 122, Math.max(10, e.clientY - dragOffset.y)),
         });
       }
     };
@@ -72,6 +74,7 @@ const PanelTags = ({ setModalActive }) => {
   };
 
   const handlePreviewArticle = async (e) => {
+    updateClassName();
     if (idPreview) {
       await axios.patch(`${process.env.REACT_APP_API_URL}admin/preview`, { _id: idPreview.id, content: [...content] })
     } else {
@@ -82,10 +85,42 @@ const PanelTags = ({ setModalActive }) => {
     }
   }
 
+  const updateClassName = () => {
+    content.forEach(item => {
+      switch (item.tag) {
+        case 'h1':
+          item.className = 'text-3xl font-bold mb-5 max-md:text-2xl';
+          break;
+        case 'h2':
+          item.className = 'text-2xl font-bold mb-4 max-md:text-xl';
+          break;
+        case 'h3':
+          item.className = 'text-xl mb-3 max-md:text-lg';
+          break;
+        // case 'ul':
+        //   item.className = '';
+        //   break;
+        case 'p':
+          item.className = 'text-justify indent-12 mb-3';
+          break;
+        case 'img':
+          item.className = '"mx-auto p-3';
+          break;
+        // case 'code':
+        //   item.className = '';
+        //   break;
+
+        default: { }
+      }
+    });
+    dispatch(updateReviewContentAnArticle(content));
+  }
+
   const sendArticle = async (e) => {
     e.preventDefault();
-    setModalActive({ open: true, loading: true, error: false })
+    setModalActive({ open: true, loading: true, error: false });
 
+    updateClassName();
     if (idPreview && idPreview.id) {
       await axios.delete(`${process.env.REACT_APP_API_URL}admin/preview/${idPreview.id}`);
     }

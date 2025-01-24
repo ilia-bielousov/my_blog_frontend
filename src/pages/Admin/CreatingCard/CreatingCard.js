@@ -90,7 +90,7 @@ const CreatingCard = () => {
         };
       }
     });
-  };
+  }
 
   const renderModal = () => {
     return (
@@ -139,14 +139,14 @@ const CreatingCard = () => {
             :
             <>
               <p className="text-center">
-                Coś poszło nie tak... spróbuj ponownie.
+                Что-то пошло не так... попробуйте еще раз.
               </p>
               <button
                 type="submit"
                 className="block mx-auto p-2 border rounded-md transition hover:bg-slate-100 active:bg-slate-200 cursor-pointer"
                 onClick={() => setModalActive({ open: false, error: null })}
               >
-                spróbuj ponownie
+                попробовать еще раз
               </button>
             </>
         }
@@ -157,32 +157,34 @@ const CreatingCard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // if (!errors.error) {
-    //   setModalActive({ open: true, loading: true, error: false })
-    //   const formData = new FormData();
-    //   formData.append('file', data.file);
+    console.log(errors.errorElems);
 
-    //   await axios.post(`${process.env.REACT_APP_API_URL}admin/upload`, formData)
-    //     .then(async res => {
-    //       await axios.post(`${process.env.REACT_APP_API_URL}admin/create-card`, { ...data, image: res.data.path, pseudoName: transliterate(data.name.replace(/ /g, '_')) })
-    //         .then(res => {
-    //           if (res.data.status === 200) {
-    //             setModalActive({ open: true, loading: false, error: false });
-    //             dispatch(setResponceId(res.data.id));
-    //           }
-    //         })
-    //         .catch(err => {
-    //           if (err.response.data.status === 500) {
-    //             dispatch(statusCreatingCard(false));
-    //             setModalActive({ open: true, loading: false, error: true });
-    //           }
-    //         });
-    //     })
-    //     .catch(err => {
-    //       dispatch(statusCreatingCard(false));
-    //       setModalActive({ open: true, loading: false, error: true });
-    //     });
-    // }
+    if (Object.keys(errors.errorElems).length === 0) {
+      setModalActive({ open: true, loading: true, error: false });
+      const formData = new FormData();
+      formData.append('file', data.file);
+
+      await axios.post(`${process.env.REACT_APP_API_URL}admin/upload`, formData)
+        .then(async res => {
+          await axios.post(`${process.env.REACT_APP_API_URL}admin/create-card`, { ...data, image: res.data.path, pseudoName: transliterate(data.name.replace(/ /g, '_')) })
+            .then(res => {
+              if (res.data.status === 200) {
+                setModalActive({ open: true, loading: false, error: false });
+                dispatch(setResponceId(res.data.id));
+              }
+            })
+            .catch(err => {
+              if (err.response.data.status === 500) {
+                dispatch(statusCreatingCard(false));
+                setModalActive({ open: true, loading: false, error: true });
+              }
+            });
+        })
+        .catch(err => {
+          dispatch(statusCreatingCard(false));
+          setModalActive({ open: true, loading: false, error: true });
+        });
+    }
   }
 
   // window.addEventListener('beforeunload', function (event) {

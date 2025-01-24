@@ -1,4 +1,4 @@
-import { useState, createElement, useEffect } from "react";
+import { useState, createElement } from "react";
 
 import axios from "axios";
 import CodeExample from "../components/CodeExample";
@@ -42,6 +42,10 @@ const createArticle = (content) => {
           )
         }
         case 'iframe': {
+          const t = item[1].text.split(' ');
+          t[1] = 'style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"';
+          t[2] = ' ';
+          item[1].text = t.join(' ');
           return (
             <div className="mx-auto min-w-72 px-2 mb-3 max-w-7xl">
               {createElement('div', { className: 'max-w:lg mx-auto relative pt-[56.25%]', dangerouslySetInnerHTML: { __html: item[1].text } })}
@@ -49,16 +53,17 @@ const createArticle = (content) => {
           )
         }
         case 'ul': {
-          const list = item[1].text.split('\n');
+          const list = item[1].list.split(':');
+          const items = list[1].split(';');
 
           return (
             <ul className="text-lg pl-5 mb-5">
-              {list[0]}
-              {list.map((l, i) => {
-                return (i === 0 || i === list.length ? null :
-                  (<li key={i} className="list-disc text-base ">
+              {list[0]}:
+              {items.map((l, i) => {
+                return i === items.length - 1 ? null :
+                  (<li key={i} className="list-disc text-base">
                     {l}
-                  </li>))
+                  </li>)
               })}
             </ul>
           )
