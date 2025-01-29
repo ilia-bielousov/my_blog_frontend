@@ -30,8 +30,6 @@ const EditingArticle = () => {
   const sendEditArticle = (e) => {
     e.preventDefault();
 
-    console.log(article);
-
     axios.patch(`${process.env.REACT_APP_API_URL}admin/edit-article`, article)
       .then(res => {
         if (res.data.status === 200)
@@ -116,7 +114,7 @@ const EditingArticle = () => {
             }
             {!statusError ? <input
               type="submit"
-              value="potwierdzić"
+              value="подтвердить"
               className="mx-auto block mt-5 py-3 px-6 border rounded-lg cursor-pointer hover:bg-slate-100 transition active:bg-slate-200"
             /> : null}
 

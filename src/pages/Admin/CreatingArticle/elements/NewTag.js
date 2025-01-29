@@ -45,7 +45,7 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
       dispatch(updateReviewContentAnArticle(content));
     },
     focus: 'true'
-  }
+  };
 
   useEffect(() => {
     setIdElem(IDforElementOfArticle);

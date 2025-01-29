@@ -19,7 +19,7 @@ const Content = ({ data }) => {
   return (
     <main className='flex flex-col justify-center flex-1'>
       <div className='flex content-center justify-center gap-8 max-md:gap-4 max-xl:flex-col max-xl:items-center px-24 py-3 max-md:px-3 flex-wrap'>
-        <div className='grid grid-rows 2xl:grid-cols-3 gap-8 max-md:gap-4 xl:grid-cols-2 2xl:gap-5 xl:gap-3'>
+        <div className='grid grid-rows gap-8 max-md:gap-4 xl:grid-cols-3 2xl:gap-4 xl:gap-3'>
           {loading ? <SkeletonCards /> : null}
           {!loading ? data.map((card, i) => {
             if (card.choose === path && path !== '/') {
