@@ -45,7 +45,10 @@ const CreatingArticle = () => {
           :
           <>
             <p className="text-center">
-              Статья была успешно создана, нажмите кнопку, чтобы продолжить.
+              Статья была успешно создана.
+            </p>
+            <p className="text-center">
+              Нажмите кнопку, чтобы продолжить.
             </p>
             <div className="flex justify-center">
               <Link
@@ -58,7 +61,7 @@ const CreatingArticle = () => {
                 }
                 }
               >
-                Tutaj
+                продолжить
               </Link>
             </div>
           </>

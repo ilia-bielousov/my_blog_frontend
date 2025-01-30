@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
-// import Home from '../pages/Client/Home';
 import PageForCards from '../pages/Client/PageForCards';
 import PageTransition from './PageTransition';
 import SinglePageForArticle from '../pages/Client/SinglePageForArticle';

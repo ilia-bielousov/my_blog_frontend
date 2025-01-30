@@ -44,12 +44,17 @@ const EditingArticle = () => {
   const renderModal = () => {
     return (
       <>
-        <p className="text-center mb-3">Статья была успешно отредактирована, нажмите кнопку, чтобы перенаправить вас.</p>
+        <p className="text-center mb-1">
+          Статья была успешно отредактирована.
+        </p>
+        <p className="text-center mb-1">
+          Нажмите кнопку, чтобы перенаправить вас.
+        </p>
         <input
           onClick={() => setRedirect(true)}
           className="block mx-auto p-2 border rounded-lg transition hover:bg-slate-100 cursor-pointer active:bg-slate-200"
           type="submit"
-          value="сдесь"
+          value="здесь"
         />
       </>
     )

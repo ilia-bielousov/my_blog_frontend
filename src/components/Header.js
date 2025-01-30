@@ -13,6 +13,7 @@ const Header = () => {
     const handleScroll = () => window.scrollY > 50 ? setScrolled(true) : setScrolled(false);
 
     window.addEventListener('scroll', handleScroll);
+    document.title = 'Мой Блог';
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -40,7 +41,7 @@ const Header = () => {
             to='./'
             key='/'
           >
-            My blog
+            Мой блог
           </Link>
         </span>
       </header>

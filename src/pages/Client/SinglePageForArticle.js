@@ -7,7 +7,7 @@ import Modal from "../../components/Modal";
 
 import { removeStateArticle, removeStateCards, updateStatusError } from "../../store/clientReducer";
 import { fetchArticle } from "../../store/asyncAction/article";
-// import { fetchCards } from "../store/asyncAction/cardsClient";
+import { fetchCards } from "../../store/asyncAction/cardsClient";
 import { createArticle } from "../../utilities/utilities";
 
 const SinglePageForArticle = () => {
@@ -31,8 +31,7 @@ const SinglePageForArticle = () => {
     dispatch(removeStateCards());
     dispatch(removeStateArticle());
     dispatch(updateStatusError());
-    // dispatch(fetchCards(section));
-    // обновить код ошбки
+    dispatch(fetchCards(section));
     dispatch(fetchArticle(id, section));
 
     axios.patch(`${process.env.REACT_APP_API_URL}${pathname.slice(1)}`, { id })

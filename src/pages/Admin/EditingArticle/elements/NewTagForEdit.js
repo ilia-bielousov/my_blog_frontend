@@ -17,7 +17,7 @@ const NewTagForEdit = (props) => {
     className: 'input__newTag',
     contentEditable: true,
     suppressContentEditableWarning: true,
-    onInput: (e) => { // проблема с Item.
+    onInput: (e) => {
       article.content.forEach((item) => {
         if (item.id === id && textTags.includes(tag)) {
           item.text = e.target.textContent;
@@ -79,7 +79,7 @@ const NewTagForEdit = (props) => {
           <div
             className='flex flex-col items-center p-2 max-w-xs mx-auto'
           >
-            <p className="text-xl text-center mb-3">Twój obraz</p>
+            <p className="text-xl text-center mb-3">Твоя картинка</p>
             <RenderImage imageSource={textContent.image} />
             <div className="flex flex-col items-center gap-2 p-2 max-w-xs mx-auto">
               <p className="text-center">Если вы хотите изменить, повторите.</p>
@@ -107,8 +107,8 @@ const NewTagForEdit = (props) => {
       case 'code':
         return (
           <div ref={tagRef}>
-            <textarea onInput={inputCode} placeholder="скопируйте свой код" type="text" className='input__newTag input__newTag-resize mb-2' value={textContent.text} />
-            <input onInput={inputCode} placeholder="укажите язык на котором написан код" type="text" value={textContent.language} className='input__newTag'></input>
+            <textarea onInput={inputCode} placeholder="скопируйте свой код" type="text" className='input__newTag input__newTag-resize mb-2' defaultValue={textContent.text}></textarea>
+            <input onInput={inputCode} placeholder="укажите язык на котором написан код" type="text" className='input__newTag' defaultValue={textContent.language} />
           </div>
         )
       default: {

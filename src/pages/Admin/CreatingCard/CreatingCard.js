@@ -157,8 +157,6 @@ const CreatingCard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(errors.errorElems);
-
     if (Object.keys(errors.errorElems).length === 0) {
       setModalActive({ open: true, loading: true, error: false });
       const formData = new FormData();
