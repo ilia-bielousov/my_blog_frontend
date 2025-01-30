@@ -35,14 +35,13 @@ const PanelTags = ({ setModalActive }) => {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [idPreview, setIdPreview] = useState(null);
 
-
-  // какой-то баг, то что оно прыгает.
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (isDragging) {
+        const scrollOffset = window.scrollY;
         setPosition({
           x: Math.min(window.innerWidth - 540, Math.max(10, e.clientX - dragOffset.x)),
-          y: Math.min(document.documentElement.scrollHeight - 122, Math.max(10, e.clientY - dragOffset.y)),
+          y: Math.min(document.documentElement.scrollHeight - 122 + scrollOffset, Math.max(10, e.pageY - dragOffset.y)), // используем e.pageY
         });
       }
     };
