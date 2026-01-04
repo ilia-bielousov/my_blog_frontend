@@ -6,12 +6,12 @@ const Admin404 = () => {
       <div className="flex flex-col items-center justify-center gap-2 px-24">
         <span className="text-8xl font-medium mb-4">404</span>
         <span className="text-xl font-bold">
-          taka strona nie istnieje
+          Такой страницы не существует.
         </span>
         <Link
           className="border p-3 hover:bg-slate-100 active:bg-slate-200 transition"
           to='/admin'>
-          kliknij tutaj, aby przejść do głównego panelu administracyjnego.
+          Нажми здесь, чтобы перейти на главную админ панель.
         </Link>
       </div>
     </main>

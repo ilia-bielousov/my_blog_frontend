@@ -1,4 +1,4 @@
-import { getCardsAction, statusError } from "../clientReducer";
+import { getCardsAction, statusErrorState, statusErrorCode } from "../clientReducer";
 
 export const fetchCards = (pathname) => {
   return function (dispatch) {
@@ -7,11 +7,16 @@ export const fetchCards = (pathname) => {
       .then(data => {
         if (data.status === 200) {
           dispatch(getCardsAction(data.data));
+          dispatch(statusErrorState(false));
+          dispatch(statusErrorCode(200));
         }
         else {
           throw new Error();
         }
       })
-      .catch(err => { dispatch(statusError(500)) });
+      .catch(err => {
+        dispatch(statusErrorState(true));
+        dispatch(statusErrorCode(500));
+      });
   }
 }

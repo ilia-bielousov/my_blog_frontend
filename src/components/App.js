@@ -16,7 +16,7 @@ import Admin404 from '../pages/Admin/Admin404';
 
 const App = () => {
   return (
-    <div className="App flex flex-col flex-1">
+    <>
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={
@@ -92,7 +92,7 @@ const App = () => {
           <Route path='*' element={<Admin404 />} />
         </Route>
       </Routes>
-    </div>
+    </>
   );
 }
 

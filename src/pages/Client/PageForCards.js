@@ -34,7 +34,7 @@ const PageForCards = () => {
 
   return (
     <>
-      {cards && !error && !loading ?
+      {cards.length !== 0 && code !== 500 && !loading ?
         <Content
           data={cards}
         />
@@ -48,7 +48,6 @@ const PageForCards = () => {
             <p className="text-center p-3">
               Что-то пошло не так ...
             </p>
-            {/* svg */}
             <div className="flex flex-col gap-3">
               <input
                 type="submit"

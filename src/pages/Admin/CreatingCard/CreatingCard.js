@@ -26,6 +26,18 @@ const CreatingCard = () => {
   useEffect(() => {
   }, [errors]);
 
+  // для перезагрузки
+  // useEffect(() => {
+  //   const handleBeforeUnload = (e) => {
+  //     e.preventDefault();
+  //     e.returnValue = "";
+  //   };
+
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
+  //   return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  // }, []);
+
+
   if (!token) {
     alert('У вас нет доступа для создания/редактирования статей.')
     return <Navigate to='/' />

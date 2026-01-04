@@ -10,7 +10,8 @@ const GET_CARDS = 'GET_CARDS';
 const GET_ARTICLE = 'GET_ARTICLE';
 const REMOVE_STATE_ARTICLE = 'REMOVE_STATE_ARTICLE';
 const REMOVE_STATE_CARDS = 'REMOVE_STATE_CARDS';
-const STATUS_ERROR = 'STATUS_ERROR';
+const STATUS_ERROR_STATE = 'STATUS_ERROR_STATE';
+const STATUS_ERROR_CODE = 'STATUS_ERROR_CODE';
 const UPDATE_STATUS_ERROR = 'UPDATE_STATUS_ERROR';
 const NEXT_ARTICLE = 'NEXT_ARTICLE';
 
@@ -27,8 +28,11 @@ export const clientReducer = (state = defaultState, action) => {
     case REMOVE_STATE_CARDS:
       return { ...state, cards: [] };
 
-    case STATUS_ERROR:
-      return { ...state, error: true, code: action.payload }
+    case STATUS_ERROR_STATE:
+      return { ...state, error: action.payload }
+
+    case STATUS_ERROR_CODE:
+      return { ...state, code: action.payload }
 
     case UPDATE_STATUS_ERROR:
       return { ...state, error: false, code: null }
@@ -45,6 +49,7 @@ export const getCardsAction = (payload) => ({ type: GET_CARDS, payload })
 export const getArticleAction = (payload) => ({ type: GET_ARTICLE, payload });
 export const removeStateArticle = () => ({ type: REMOVE_STATE_ARTICLE });
 export const removeStateCards = () => ({ type: REMOVE_STATE_CARDS });
-export const statusError = (payload) => ({ type: STATUS_ERROR, payload });
+export const statusErrorState = (payload) => ({ type: STATUS_ERROR_STATE, payload });
+export const statusErrorCode = (payload) => ({ type: STATUS_ERROR_CODE, payload });
 export const updateStatusError = () => ({ type: UPDATE_STATUS_ERROR });
 export const setNextArticle = (payload) => ({ type: NEXT_ARTICLE, payload });

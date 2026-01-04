@@ -96,18 +96,12 @@ const PanelTags = ({ setModalActive }) => {
         case 'h3':
           item.className = 'text-xl mb-3 max-md:text-lg';
           break;
-        // case 'ul':
-        //   item.className = '';
-        //   break;
         case 'p':
           item.className = 'text-justify indent-12 mb-3';
           break;
         case 'img':
           item.className = '"mx-auto p-3';
           break;
-        // case 'code':
-        //   item.className = '';
-        //   break;
 
         default: { }
       }
@@ -192,6 +186,7 @@ const PanelTags = ({ setModalActive }) => {
                 key={key}
                 draggable={true}
                 onDragStart={(e) => dragStartHandler(e)}
+                onDragEnd={(e) => dispatch(setStatusClickPanelTags(false))}
                 className={tagsRender.length - 1 === key ? 'panel__btn !mr-0' : 'panel__btn'}
                 title={tag.title}
                 data-tag={tag.dataTag}

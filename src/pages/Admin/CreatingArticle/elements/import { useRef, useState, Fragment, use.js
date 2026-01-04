@@ -1,19 +1,40 @@
-import { useRef, useState, Fragment } from "react";
+import { useRef, useState, Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { nanoid } from 'nanoid';
-import NewTag from "./NewTag";
+import NewTag from "./../../CreatingArticle/elements/NewTag";
 
-import { addPreviewContentAnArticle, deletePreviewContentFromArticle, addCurrentTagButton, setStatusClickPanelTags, afterAddedToReviewContentArticle } from "../../../../store/adminActions";
+import { addIdForNewElement, addPreviewContentAnArticle, deletePreviewContentFromArticle, addCurrentTagButton, setHoverIndexElement, setStatusClickPanelTags, afterAddedToReviewContentArticle } from "../../../../store/adminActions";
 
 import cross from './../../../../assets/images/cross.svg';
+import NewTagForEdit from "./NewTagForEdit";
 
-const AreaNewTags = () => {
+const AreaNewTagsForEdit = ({ article }) => {
   const dispatch = useDispatch();
   const currentTagButton = useSelector(state => state.admin.creatingArticle.currentTagButton);
+  const dragOverIndex = useSelector(state => state.admin.creatingArticle.hoverIndexElement);
 
   const [myListElements, setMyListElements] = useState([]);
-  const [dragOverIndex, setDragOverIndex] = useState(null);
+  const [IDforElementOfArticle, setIDforElementOfArticle] = useState();
   const fieldRef = useRef(null);
+
+  useEffect(() => {
+    if (article?.content) {
+
+      setMyListElements(() => {
+        const t = article.content.map((item, i) => {
+          return {
+            component: <NewTagForEdit props={item} />,
+            id: item.id,
+            tag: item.tag
+          }
+        });
+
+        return [...t];
+      });
+
+      setIDforElementOfArticle(article.content.length);
+    }
+  }, [article]);
 
   const deleteElement = (indexToRemove) => {
     const t = myListElements.filter((item, key) => indexToRemove !== key);
@@ -40,7 +61,6 @@ const AreaNewTags = () => {
               tag={currentTagButton}
               IDforElementOfArticle={id}
             />,
-            id: id
           }
         ]
       }
@@ -53,35 +73,9 @@ const AreaNewTags = () => {
         }
       ));
 
-    } else if (currentTagButton && e.target !== fieldRef.current && e.target !== null) {
-      const pos = e.target.getAttribute('data-position');
-      let index = null;
-
-      if (pos === 'top') {
-        index = dragOverIndex <= 0 ? 0 : dragOverIndex;
-      }
-      if (pos === 'bottom') {
-        index = (dragOverIndex ?? -1) + 1;
-      }
-
-      setMyListElements((prevState) => {
-        const next = [...prevState];
-
-        next.splice(index, 0, {
-          component: <NewTag
-            tag={currentTagButton}
-            IDforElementOfArticle={id}
-          />,
-          id: id
-        });
-        return next;
-      });
-
-      dispatch(afterAddedToReviewContentArticle([index, {
-        tag: currentTagButton,
-        text: '',
-        id: id,
-      }]));
+      dispatch(addIdForNewElement());
+    } else {
+      setMyListElements(myListElements);
     }
 
     dispatch(setStatusClickPanelTags(false));
@@ -95,13 +89,49 @@ const AreaNewTags = () => {
   const handleDragOverBlock = (e, index) => {
     e.preventDefault();
 
-    setDragOverIndex(index);
+    dispatch(setHoverIndexElement(index));
   };
 
   const handleDragEnd = (e) => {
     e.preventDefault();
 
-    setDragOverIndex(false);
+    dispatch(setHoverIndexElement(false));
+  }
+
+  const test = (e) => {
+    const pos = e.target.getAttribute('data-position');
+    let index = null;
+
+    if (pos === 'top') {
+      if (dragOverIndex - 1 === 0) {
+        index = 1;
+      } else {
+        index = (dragOverIndex - 1 < 0) || (dragOverIndex - 1 === 0) ? 0 : dragOverIndex;
+      }
+    }
+    if (pos === 'bottom') {
+      index = dragOverIndex + 1;
+    }
+
+    if (currentTagButton) {
+      setMyListElements((prevState) => {
+        return prevState.splice(index, 0, {
+          component: <NewTag
+            tag={currentTagButton}
+            IDforElementOfArticle={IDforElementOfArticle}
+          />,
+          id: IDforElementOfArticle,
+          tag: currentTagButton,
+        });
+      });
+
+      dispatch(afterAddedToReviewContentArticle([index, {
+        tag: currentTagButton,
+        text: '',
+        id: IDforElementOfArticle,
+      }]));
+      dispatch(addIdForNewElement());
+    }
   }
 
   return (
@@ -122,9 +152,10 @@ const AreaNewTags = () => {
             onDragLeave={(e) => handleDragEnd(e)}
           >
             <span className="block p-2">
-              {item.component.props.tag}
+              {item.tag}
             </span>
             <div className="flex flex-col w-full relative"
+              onDrop={(e) => test(e)}
             >
               <Fragment>
                 {item.component}
@@ -143,4 +174,4 @@ const AreaNewTags = () => {
   );
 };
 
-export default AreaNewTags;
+export default AreaNewTagsForEdit;

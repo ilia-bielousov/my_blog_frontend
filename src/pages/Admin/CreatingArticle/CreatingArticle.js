@@ -7,16 +7,12 @@ import AreaNewTags from "./elements/AreaNewTags"
 import PanelTags from "./elements/PanelTags";
 import Modal from "../../../components/Modal";
 
-
 const CreatingArticle = () => {
   const dispatch = useDispatch();
-  const [, setRedirect] = useState(false);
+  const [, setRedirect] = useState(false); // ?? это еще зачем не помню.
   const [modalActive, setModalActive] = useState({ status: null, error: false, loading: false });
-
   const idArticle = useSelector(state => state.admin.id);
-  const [token,] = useState(localStorage.getItem('admin'))
 
-  // посмотреть какой redux я не использую, короче проследить как че работает.
   useEffect(() => {
     if (idArticle) {
       dispatch(statusCreatingCard(false));
@@ -26,11 +22,20 @@ const CreatingArticle = () => {
       setRedirect(true);
     }
     // нужно проверить, если обновили страницу и нет айди в редаксе, найти карточку и удалить ее в монго
-  }, [dispatch]);
+  }, []);
 
-  // если вышли, то делать запрос, что мы вышли и удалять карточку.
+  // для перезагрузки
+  // useEffect(() => {
+  //   const handleBeforeUnload = (e) => {
+  //     e.preventDefault();
+  //     e.returnValue = "";
+  //   };
 
-  if (!token) {
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
+  //   return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  // }, []);
+
+  if (!localStorage.getItem('admin')) {
     alert('У вас нет доступа, чтобы создавать/редактировать статьи.')
     return <Navigate to='/' />
   }

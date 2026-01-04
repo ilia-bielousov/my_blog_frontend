@@ -8,14 +8,17 @@ import { removeStateArticle, updateStatusError } from "../../../store/clientRedu
 
 import NewTagForEdit from "./elements/NewTagForEdit";
 import Modal from "../../../components/Modal";
+import PanelTags from "../CreatingArticle/elements/PanelTags";
+import AreaNewTagsForEdit from "./elements/AreaNewTagsForEdit";
 
 const EditingArticle = () => {
   const { id } = useParams();
   // надо доработать.
   const dispatch = useDispatch();
 
-  const [modalActive, setModalActive] = useState({});
+  const [modalActive, setModalActive] = useState({ status: null, error: false, loading: false });
   const [redirect, setRedirect] = useState(false);
+
 
   const article = useSelector(state => state.client.article);
   const statusError = useSelector(state => state.client.error);
@@ -94,36 +97,16 @@ const EditingArticle = () => {
           </h1>
           <form
             className="flex flex-col gap-2"
-            onSubmit={sendEditArticle}>
-            {article && article.content ? article.content.map((item, key) => {
-              return (
-                <NewTagForEdit
-                  key={key}
-                  tag={item.tag}
-                  text={item.text}
-                  className={item.className}
-                  id={item.id}
-                  list={item.list}
-                  language={item.language}
-                  article={article}
-                  image={item.image}
-                  alt={item.alt}
-                />
-              )
-            }) :
-              (!statusError ? renderSpinner() :
-                <div className="text-center flex-1">
-                  <span className="block font-bold text-3xl mb-10">Ошибка 404</span>
-                  <p className="text-xl">такой статьи не существует.</p>
-                </div>)
-            }
+            onSubmit={sendEditArticle}
+          >
+            {article && article.content ? <AreaNewTagsForEdit article={article} /> : null}
             {!statusError ? <input
               type="submit"
               value="подтвердить"
               className="mx-auto block mt-5 py-3 px-6 border rounded-lg cursor-pointer hover:bg-slate-100 transition active:bg-slate-200"
             /> : null}
-
           </form>
+          <PanelTags setModalActive={setModalActive} />
         </article>
       </main >
       <>

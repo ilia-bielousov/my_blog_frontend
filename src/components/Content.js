@@ -14,10 +14,11 @@ const Content = ({ data }) => {
     if (data && data.length !== 0) {
       setLoading(false);
     }
+
   }, [data]);
 
   return (
-    <main className='flex flex-col justify-center flex-1'>
+    <main className=''>
       <div className='flex content-center justify-center gap-8 max-md:gap-4 max-xl:flex-col max-xl:items-center px-24 py-3 max-md:px-3 flex-wrap'>
         <div className='grid grid-rows gap-8 max-md:gap-4 xl:grid-cols-3 2xl:gap-4 xl:gap-3'>
           {loading ? <SkeletonCards /> : null}

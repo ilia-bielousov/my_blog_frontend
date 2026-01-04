@@ -33,7 +33,6 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
     onInput: (e) => {
       content.forEach((item) => {
         if (item.id === idElem && textTags.includes(tag)) {
-          // item.text = textTags.includes(tagRef.current.datatag) ? e.target.innerHTML : e.target.textContent;
           item.text = e.target.textContent;
         } else if (item.id === idElem && tag === 'code') {
           item.code = e.target.textContent;
@@ -181,7 +180,6 @@ const NewTag = ({ tag, IDforElementOfArticle }) => {
     setClassesForBorderTagBottom('w-full h-1/2 absolute bottom-0 left-0 z-10')
   }
 
-  // нужно поправить, чтобы было видно, куда вставлять новый тег (посмотреть как реализовано в прошлом коммите)
   return (
     <>
       <div

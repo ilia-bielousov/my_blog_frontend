@@ -1,19 +1,38 @@
-import { useRef, useState, Fragment } from "react";
+import { useRef, useState, Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { nanoid } from 'nanoid';
-import NewTag from "./NewTag";
+import NewTagForEdit from './NewTagForEdit';
 
 import { addPreviewContentAnArticle, deletePreviewContentFromArticle, addCurrentTagButton, setStatusClickPanelTags, afterAddedToReviewContentArticle } from "../../../../store/adminActions";
 
 import cross from './../../../../assets/images/cross.svg';
 
-const AreaNewTags = () => {
+const AreaNewTagsForEdit = ({ article }) => {
   const dispatch = useDispatch();
   const currentTagButton = useSelector(state => state.admin.creatingArticle.currentTagButton);
 
   const [myListElements, setMyListElements] = useState([]);
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const fieldRef = useRef(null);
+
+  useEffect(() => {
+    if (article?.content) {
+
+      setMyListElements(() => {
+        const t = article.content.map((item, i) => {
+          console.log(item);
+
+          return {
+            component: <NewTagForEdit {...item} article={article} />,
+            id: item.id,
+            tag: item.tag
+          }
+        });
+
+        return [...t];
+      });
+    }
+  }, [article]);
 
   const deleteElement = (indexToRemove) => {
     const t = myListElements.filter((item, key) => indexToRemove !== key);
@@ -36,7 +55,7 @@ const AreaNewTags = () => {
         return [
           ...prevList,
           {
-            component: <NewTag
+            component: <NewTagForEdit
               tag={currentTagButton}
               IDforElementOfArticle={id}
             />,
@@ -68,7 +87,7 @@ const AreaNewTags = () => {
         const next = [...prevState];
 
         next.splice(index, 0, {
-          component: <NewTag
+          component: <NewTagForEdit
             tag={currentTagButton}
             IDforElementOfArticle={id}
           />,
@@ -143,4 +162,4 @@ const AreaNewTags = () => {
   );
 };
 
-export default AreaNewTags;
+export default AreaNewTagsForEdit;
