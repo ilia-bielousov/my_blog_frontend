@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+// import {}
+
 import noImg from './../assets/images/no-img.svg';
 
 export default function Card({ choose, name, description, image, pseudoName }) {
   const [imageUrl, setImage] = useState('');
 
   useEffect(() => {
+
     axios.get(`${process.env.REACT_APP_API_URL}upload/${image}`)
       .then(res => setImage(`data:image/format;base64,${res.data.data[0].imageSource}`))
       .catch(() => {

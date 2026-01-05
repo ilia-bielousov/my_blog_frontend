@@ -95,6 +95,19 @@ const transliterate = (text) => {
   return text.split('').map(char => transliterationMap[char] || char).join('');
 };
 
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return '';
+
+  // Если ссылка уже полная (от Google Cloud), возвращаем как есть
+  if (imagePath.startsWith('http') || imagePath.startsWith('https')) {
+    return imagePath;
+  }
+
+  // Иначе это старая локальная картинка, добавляем путь к серверу
+  return `${process.env.REACT_APP_API_URL}${imagePath.startsWith('/') ? '' : 'upload/'}${imagePath}`;
+}
+
 export { createArticle };
 export { RenderImage };
 export { transliterate };
+export { getImageUrl }; 

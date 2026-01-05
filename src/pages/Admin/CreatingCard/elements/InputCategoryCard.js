@@ -1,4 +1,6 @@
-const InputCategoryCard = ({ setData, errors }) => {
+const InputCategoryCard = ({ setData, errors, defaultValue }) => {
+  console.log(defaultValue);
+
   const handleInput = (e) => {
     setData(prevState => {
       return {
@@ -19,6 +21,7 @@ const InputCategoryCard = ({ setData, errors }) => {
         id="programming"
         name="choose"
         value="programming"
+        // checked={defaultValue === 'programming' ? true : false}
         onChange={(e) => handleInput(e)}
       />
       <label
@@ -32,6 +35,7 @@ const InputCategoryCard = ({ setData, errors }) => {
         id="projects"
         name="choose"
         value="projects"
+        // checked={defaultValue === 'projects' ? true : false}
         onChange={(e) => handleInput(e)}
       />
       <label
@@ -44,6 +48,7 @@ const InputCategoryCard = ({ setData, errors }) => {
         type="radio" id="modeling"
         name="choose"
         value="modeling"
+        // checked={defaultValue === 'modeling' ? true : false}
         onChange={(e) => handleInput(e)}
       />
       <label
