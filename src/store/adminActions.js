@@ -20,6 +20,7 @@ export const deletedComponentId = (payload) => ({ type: types.DELETED_COMPONENT_
 export const setHoverIndexElement = (payload) => ({ type: types.HOVER_INDEX_ELEMENT, payload });
 export const setStatusClickPanelTags = (payload) => ({ type: types.STATUS_CLICK_PANEL_TAGS, payload });
 export const afterAddedToReviewContentArticle = (payload) => ({ type: types.AFTER_ADDED_TO_REVIEW_CONTENT_ARTICLE, payload });
+export const setContent = (payload) => ({ type: types.SET_CONTENT, payload });
 // ////////////////////////////////////////////
 
 //для обновления от прошлой статьи

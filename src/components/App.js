@@ -91,7 +91,7 @@ const App = () => {
           <Route path='create-card' element={<CreatingCard />} />
           {/* Пример где-то в твоих роутах */}
           <Route path="drafts" element={<AdminDrafts />} />
-          <Route path='create-article' element={<CreatingArticle />} />
+          <Route path='create-article/:id' element={<CreatingArticle />} />
           <Route path='edit-cards' element={<AdminEditCards />} />
           <Route path='edit-cards/:pseudoName' element={<EditingCard />} />
           <Route path='edit-article' element={<AdminEdit />} />

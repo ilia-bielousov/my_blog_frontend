@@ -78,6 +78,9 @@ export const adminReducer = (state = defaultState, action) => {
       return { ...state, creatingArticle: { ...state.creatingArticle, statusClickPanelTags: action.payload } };
     }
 
+    case types.SET_CONTENT: {
+      return { ...state, creatingArticle: { ...state.creatingArticle, previewElements: action.payload } };
+    }
     // обнуляем все от прошлой статьи. //
     case types.RESET_COMPONENT_TO_ARTICLE:
       return { ...state, creatingArticle: { ...state.creatingArticle, elements: [], IdElement: 0 } };

@@ -1,7 +1,6 @@
-const InputFileCard = ({ setData, errors, handleSubmitImage }) => {
-  const handleInput = (e) => {
-    console.log(e.target.files[0]);
+const InputFileCard = ({ setData, errors }) => {
 
+  const handleInput = (e) => {
     setData(prevState => {
       return {
         ...prevState,
@@ -18,7 +17,6 @@ const InputFileCard = ({ setData, errors, handleSubmitImage }) => {
         name="image"
         id="image"
       />
-      <button onClick={handleSubmitImage}>click</button>
       {errors.file === 'no-image' ? <div className="text-rose-500">добавьте картинку на предпросмотр</div> : null}
     </div >
   )
