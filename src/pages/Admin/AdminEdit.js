@@ -29,7 +29,9 @@ const AdminEdit = () => {
   // Функция рендера одной секции (Категории)
   const renderCategorySection = (category) => {
     // Фильтруем карточки только этой категории
-    const categoryCards = allCards.filter(card => card.choose === category.id);
+    const categoryCards = allCards.filter(card =>
+      card.choose === category.id && card.isPublished === true
+    );
 
     if (categoryCards.length === 0) return null; // Не рисуем пустые секции (или можно рисовать заглушку)
 

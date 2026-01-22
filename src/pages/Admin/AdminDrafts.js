@@ -18,7 +18,7 @@ const AdminDrafts = () => {
   // Фильтруем: берем ТОЛЬКО те, где isPublished === false (или нет такого поля)
   // Примечание: тебе нужно будет адаптировать условие под то, как ты назовешь поле в БД
   // Пока предположим, что черновики - это те, у которых нет контента или спец. флаг
-  const drafts = allCards.filter(card => !card.isPublished);
+  const drafts = allCards.filter(card => card.isPublished === false);
 
   return (
     <div className="w-full max-w-[1600px] mx-auto">

@@ -133,10 +133,6 @@ const CreatingCard = () => {
         dispatch(statusCreatingCard(false));
         setModalActive({ open: true, loading: false, error: true });
       }
-    } else {
-      // Если нажали "Создать", но картинка еще грузится или не выбрана
-      checkErrors();
-      if (!previewUrl) alert("Подождите загрузки изображения или выберите его.");
     }
   }
 

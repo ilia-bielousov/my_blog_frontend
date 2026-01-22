@@ -3,53 +3,60 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, Navigate } from "react-router-dom";
 import axios from 'axios';
 
-// Импортируем админские экшены
+// import AreaNewTagsForEdit from './elements/AreaNewTagsForEdit';
+import AreaNewTags from './../CreatingArticle/elements/AreaNewTags';
+
+// Админские экшены
 import {
   setContent,
   resetComponentToArticle,
-  resetPreviewContentAnArticle
+  resetPreviewContentAnArticle,
+  updateReviewContentAnArticle // Не забываем импортировать это для обновления стилей
 } from "../../../store/adminActions";
 
 import Modal from "../../../components/Modal";
 import PanelTags from "../CreatingArticle/elements/PanelTags";
 import PageHeader from "../../../components/PageHeader";
-import AreaNewTagsForEdit from "./elements/AreaNewTagsForEdit";
+
+// ВАЖНО: Используем тот же компонент, что и при создании! 
+// Выкидываем AreaNewTagsForEdit, так как это дублирование кода и источник багов.
+// import AreaNewTags from "../CreatingArticle/elements/AreaNewTags";
 
 const EditingArticle = () => {
-  const { id } = useParams(); // pseudoName или ID
+  const { id } = useParams();
   const dispatch = useDispatch();
 
   const [modalActive, setModalActive] = useState({ open: false, error: false, loading: true });
   const [redirect, setRedirect] = useState(false);
 
-  // Данные из Redux (контент редактора)
+  // Контент берем из того же места в Redux
   const adminContent = useSelector(state => state.admin.creatingArticle.previewElements);
 
-  // Данные о статье (ID и Имя)
-  const [articleMeta, setArticleMeta] = useState({ name: '', _id: null });
+  // Локальное состояние мета-данных статьи
+  const [articleMeta, setArticleMeta] = useState({ name: '', _id: null, cardId: null });
 
-  // 1. ЗАГРУЗКА
+  // 1. ЗАГРУЗКА ДАННЫХ
   useEffect(() => {
     const fetchData = async () => {
-      // Чистим редактор перед загрузкой
+      // Сброс Redux перед загрузкой, чтобы не было мусора
       dispatch(resetComponentToArticle());
       dispatch(resetPreviewContentAnArticle());
 
       setModalActive({ open: false, error: false, loading: true });
 
       try {
-        // Запрос к нашему новому контроллеру getArticleForEdit
         const res = await axios.get(`${process.env.REACT_APP_API_URL}admin/edit-article/${id}`);
 
         if (res.data) {
-          // Загружаем контент в Redux
+          console.log(res.data);
+          // Записываем контент в Redux. AreaNewTags подхватит его автоматически.
           if (res.data.content) {
             dispatch(setContent(res.data.content));
           }
-          // Сохраняем ID и Имя
           setArticleMeta({
             name: res.data.name,
-            _id: res.data._id
+            _id: res.data._id,
+            cardId: res.data.cardId
           });
         }
         setModalActive({ open: false, error: false, loading: false });
@@ -59,90 +66,155 @@ const EditingArticle = () => {
         setModalActive({ open: true, error: true, loading: false });
       }
     };
-
     fetchData();
   }, [dispatch, id]);
 
-  // 2. СОХРАНЕНИЕ
-  const sendEditArticle = async (e) => {
+  // --- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ (Копия из CreatingArticle) ---
+  const updateClassName = () => {
+    const updatedContent = adminContent.map(item => {
+      const newItem = { ...item };
+      switch (newItem.tag) {
+        case 'h1': newItem.className = 'text-3xl font-bold mb-5 max-md:text-2xl text-slate-900 dark:text-white'; break;
+        case 'h2': newItem.className = 'text-2xl font-bold mb-4 max-md:text-xl text-slate-800 dark:text-slate-100'; break;
+        case 'h3': newItem.className = 'text-xl mb-3 max-md:text-lg text-slate-800 dark:text-slate-200'; break;
+        case 'p': newItem.className = 'text-justify indent-12 mb-3 text-slate-600 dark:text-slate-300'; break;
+        case 'img': newItem.className = 'mx-auto p-3 rounded-lg'; break;
+        default: break;
+      }
+      return newItem;
+    });
+    dispatch(updateReviewContentAnArticle(updatedContent));
+    return updatedContent;
+  }
+
+  // 2. СОХРАНЕНИЕ / ОБНОВЛЕНИЕ
+  const sendEditArticle = async (e, publish = false) => {
     e?.preventDefault();
     setModalActive({ open: true, loading: true, error: false });
 
-    try {
-      // Отправляем объект { id, content }
-      const res = await axios.patch(`${process.env.REACT_APP_API_URL}admin/edit-article`, {
-        id: articleMeta._id,
-        content: adminContent
-      });
+    // Сначала обновляем стили
+    const contentToSend = updateClassName();
 
-      if (res.data.status === 200) {
-        setModalActive({ open: true, error: false, loading: false });
+    try {
+      let res;
+
+      if (articleMeta._id) {
+        // ОБНОВЛЕНИЕ
+        res = await axios.patch(`${process.env.REACT_APP_API_URL}admin/edit-article`, {
+          id: articleMeta._id,
+          content: contentToSend, // Отправляем обновленный контент
+          isPublished: publish
+        });
+      } else {
+        // СОЗДАНИЕ (если статьи не было)
+        res = await axios.post(`${process.env.REACT_APP_API_URL}admin/create-article`, {
+          cardId: articleMeta.cardId,
+          content: contentToSend,
+          isPublished: publish
+        });
+
+        if (res.data && res.data.id) {
+          setArticleMeta(prev => ({ ...prev, _id: res.data.id }));
+        }
       }
+
+      if (res && res.data.status === 200) {
+        setModalActive({ open: true, loading: false, error: false });
+        if (publish) {
+          setTimeout(() => setRedirect(true), 1500);
+        }
+      } else {
+        throw new Error("Error status");
+      }
+
     } catch (err) {
       console.error(err);
       setModalActive({ open: true, error: true, loading: false });
     }
   }
 
-  // --- UI ---
+  // --- UI КОМПОНЕНТЫ ---
   const renderSpinner = () => (
-    <div className="flex justify-center items-center py-20">
-      <svg className="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+    <div className="flex justify-center items-center py-8">
+      <svg className="animate-spin h-12 w-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
     </div>
   );
 
   const renderModalSuccess = () => (
     <div className="p-6 flex flex-col items-center">
-      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg></div>
-      <h3 className="text-xl font-bold mb-2">Сохранено!</h3>
-      <button onClick={() => setRedirect(true)} className="px-6 py-2 bg-blue-600 text-white rounded-lg">К списку</button>
+      <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 text-green-600 dark:text-green-400">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+      </div>
+      <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Сохранено!</h3>
+      <button onClick={() => setModalActive({ open: false, error: false, loading: false })} className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+        Продолжить работу
+      </button>
     </div>
   );
 
   const renderModalError = () => (
-    <div className="p-6 text-center">
-      <h3 className="text-xl font-bold text-red-600 mb-2">Ошибка</h3>
+    <div className="p-6 flex flex-col items-center">
+      <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4 text-red-600 dark:text-red-400">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+      </div>
+      <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Ошибка</h3>
+      <p className="mb-4 text-center text-slate-500">Не удалось сохранить изменения.</p>
       <button onClick={() => setModalActive({ open: false })} className="px-6 py-2 bg-slate-200 rounded-lg">Закрыть</button>
     </div>
   );
 
-  if (redirect) return <Navigate to='/admin/edit-cards' />; // Или куда тебе надо
+  if (redirect) return <Navigate to='/admin/edit-cards' />;
 
-  // Главный рендер
-  if (modalActive.loading && !articleMeta._id) {
+  // Загрузка страницы (первичная)
+  if (modalActive.loading && !modalActive.open) {
     return <div className="w-full max-w-[1600px] mx-auto"><PageHeader title="Загрузка..." />{renderSpinner()}</div>;
   }
 
   return (
     <div className="w-full max-w-[1600px] mx-auto">
+      {/* 1. ЗАГОЛОВОК + КНОПКИ */}
       <PageHeader
         title="Редактирование"
         description={`Статья: "${articleMeta.name}"`}
       >
-        <button onClick={sendEditArticle} className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold">
-          Сохранить
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={(e) => sendEditArticle(e, false)}
+            className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 dark:bg-slate-700 dark:text-slate-200 rounded-lg font-bold text-sm transition-colors"
+          >
+            Сохранить черновик
+          </button>
+          <button
+            onClick={(e) => sendEditArticle(e, true)}
+            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold text-sm shadow-sm flex items-center gap-2 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            Опубликовать
+          </button>
+        </div>
       </PageHeader>
 
-      <div className="flex flex-col lg:flex-row gap-8 items-start h-[calc(100vh-200px)]">
-        <div className="flex-1 w-full bg-white dark:bg-slate-800 rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-full">
+      {/* 2. РАБОЧАЯ ОБЛАСТЬ */}
+      <div className="flex flex-col lg:flex-row gap-8 items-start relative h-[calc(100vh-200px)]">
+        <div className="flex-1 w-full bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden flex flex-col h-full">
           <div className="flex-1 overflow-y-auto p-6 bg-slate-50/50 dark:bg-slate-900/50">
-            <AreaNewTagsForEdit article={adminContent} />
+            {/* ИСПОЛЬЗУЕМ AreaNewTags (тот же, что и при создании) */}
+            {/* <AreaNewTagsForEdit article={adminContent} /> */}
+            <AreaNewTags />
           </div>
         </div>
 
-        <aside className="w-full lg:w-80 shrink-0 sticky top-4">
-          <PanelTags setModalActive={setModalActive} onSave={sendEditArticle} />
+        <aside className="w-full lg:w-80 shrink-0">
+          <div className="sticky top-4">
+            <PanelTags setModalActive={setModalActive} />
+          </div>
         </aside>
       </div>
 
+      {/* 3. МОДАЛКА */}
       {modalActive.open && (
         <Modal>
-          {/* Если сохраняем (есть ID и loading) - показываем спиннер, иначе успех/ошибка */}
-          {modalActive.loading && articleMeta._id ?
-            <div className="p-10">{renderSpinner()}</div> :
-            (!modalActive.error ? renderModalSuccess() : renderModalError())
-          }
+          {modalActive.loading ? renderSpinner() : (modalActive.error ? renderModalError() : renderModalSuccess())}
         </Modal>
       )}
     </div>
