@@ -1,26 +1,46 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Client404 = () => {
+  const navigate = useNavigate();
+
   return (
-    <main className="flex flex-col justify-center flex-1">
-      <div className="flex flex-col items-center justify-center gap-2 px-24">
-        <span className="text-8xl font-medium mb-2">404</span>
-        <span className="text-xl font-bold">
-          Такой страницы не существует!
-        </span>
-        <Link
-          className="border m-3 p-3 hover:bg-slate-100 active:bg-slate-200 transition"
-          to='/'>
-          Перейти на главную страницу.
-        </Link>
-        {/* <div className="w-16">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 17C9.85038 16.3697 10.8846 16 12 16C13.1154 16 14.1496 16.3697 15 17" stroke="#000" strokeWidth="1.5" strokeLinecap="round" />
-            <ellipse cx="15" cy="10.5" rx="1" ry="1.5" fill="#1C274C" />
-            <ellipse cx="9" cy="10.5" rx="1" ry="1.5" fill="#1C274C" />
-            <path d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z" stroke="#000" strokeWidth="1.5" />
+    <main className="flex items-center justify-center min-h-[80vh] w-full px-4">
+      <div className="text-center">
+
+        {/* Анимированная иконка 404 */}
+        <div className="relative mx-auto w-32 h-32 mb-6">
+          <svg className="w-full h-full text-slate-200 dark:text-slate-700" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
           </svg>
-        </div> */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-4xl text-slate-400 dark:text-slate-500">
+            ?
+          </div>
+        </div>
+
+        <h1 className="text-6xl font-black text-slate-900 dark:text-white mb-4">
+          404
+        </h1>
+
+        <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-md mx-auto">
+          Упс! Похоже, вы заблудились. Этой страницы не существует или она была удалена.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            onClick={() => navigate(-1)}
+            className="px-6 py-3 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          >
+            Вернуться назад
+          </button>
+
+          <button
+            onClick={() => navigate('/')}
+            className="px-6 py-3 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-transform active:scale-95"
+          >
+            На главную
+          </button>
+        </div>
+
       </div>
     </main>
   );

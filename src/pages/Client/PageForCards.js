@@ -32,6 +32,15 @@ const PageForCards = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const title = path === ''
+      ? 'Главная'
+      : path.charAt(0).toUpperCase() + path.slice(1);
+
+    document.title = `${title} | Мой Блог`;
+
+  }, [path]);
+
   return (
     <>
       {cards.length !== 0 && code !== 500 && !loading ?

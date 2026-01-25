@@ -58,16 +58,6 @@ const PanelTags = ({ setModalActive }) => {
     dispatch(updateReviewContentAnArticle(updatedContent));
   }
 
-  const handlePreviewArticle = async () => {
-    updateClassName();
-    if (idPreview) {
-      await axios.patch(`${process.env.REACT_APP_API_URL}admin/preview`, { _id: idPreview.id, content: [...content] })
-    } else {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}admin/preview`, [...content]);
-      setIdPreview(res.data);
-    }
-  }
-
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-4 flex flex-col gap-4">
 
@@ -97,17 +87,6 @@ const PanelTags = ({ setModalActive }) => {
           </div>
         ))}
       </div>
-
-      <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex flex-col gap-2">
-        <button
-          onClick={handlePreviewArticle}
-          className="w-full py-2 px-4 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-sm"
-        >
-          Предпросмотр
-        </button>
-        {/* Кнопок сохранения тут БОЛЬШЕ НЕТ */}
-      </div>
-
     </div>
   );
 };

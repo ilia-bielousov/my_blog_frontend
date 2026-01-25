@@ -77,16 +77,12 @@ const App = () => {
               <SinglePageForArticle />
             </PageTransition>
           } />
-          <Route path='preview' element={
-            <PageTransition>
-              <Review />
-            </PageTransition>
-          } />
         </Route>
         <Route path='/admin/*' element={<AdminLayout />}>
           <Route index element={
             <AdminHome />
           } />
+          <Route path='preview/:id' element={<Review />} />
           <Route path='articles' element={<AdminArticles />} />
           <Route path='create-card' element={<CreatingCard />} />
           {/* Пример где-то в твоих роутах */}

@@ -8,7 +8,7 @@ import {
   statusCreatingCard,
   resetComponentToArticle,
   resetPreviewContentAnArticle,
-  updateReviewContentAnArticle // Нужно для обновления стилей перед отправкой
+  updateReviewContentAnArticle
 } from "../../../store/adminActions";
 
 import PageHeader from "../../../components/PageHeader";
@@ -20,12 +20,12 @@ const CreatingArticle = () => {
   const dispatch = useDispatch();
 
   // Данные из Redux
-  const idArticle = useSelector(state => state.admin.id); // ID Карточки, созданной на прошлом шаге
-  const adminContent = useSelector(state => state.admin.creatingArticle.previewElements); // Контент статьи
+  const idArticle = useSelector(state => state.admin.id); // ID Карточки
+  const adminContent = useSelector(state => state.admin.creatingArticle.previewElements); // Контент
 
   const [, setRedirect] = useState(false);
   const [modalActive, setModalActive] = useState({ open: false, error: false, loading: false });
-  const [idPreview, setIdPreview] = useState(null); // ID для превью
+  const [idPreview, setIdPreview] = useState(null);
 
   useEffect(() => {
     // Если нет ID карточки (пользователь обновил страницу), нужно уходить
@@ -44,13 +44,11 @@ const CreatingArticle = () => {
   }
 
   // Если потеряли ID карточки - редирект на создание карточки
-  if (!idArticle && !localStorage.getItem('admin')) { // Упрощенная проверка для редиректа
+  if (!idArticle && !localStorage.getItem('admin')) {
     return <Navigate to='/admin/create-card' />
   }
 
-
-  // --- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ: Обновление классов (стилей) перед отправкой ---
-  // (Та же логика, что была в PanelTags, теперь здесь или можно вынести в util)
+  // --- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ: Обновление классов ---
   const updateClassName = () => {
     const updatedContent = adminContent.map(item => {
       const newItem = { ...item };
@@ -64,50 +62,62 @@ const CreatingArticle = () => {
       }
       return newItem;
     });
-    // Обновляем Redux, чтобы отправить красивые классы
     dispatch(updateReviewContentAnArticle(updatedContent));
-    return updatedContent; // Возвращаем для немедленного использования
+    return updatedContent;
   }
-
 
   // --- ЛОГИКА: ПРЕДПРОСМОТР ---
   const handlePreview = async () => {
     const contentToSend = updateClassName();
 
     try {
-      if (idPreview) {
-        await axios.patch(`${process.env.REACT_APP_API_URL}admin/preview`, { _id: idPreview, content: contentToSend });
+      let currentId = idPreview;
+
+      if (currentId) {
+        // Обновляем существующее превью
+        await axios.patch(`${process.env.REACT_APP_API_URL}admin/preview`, {
+          _id: currentId,
+          content: contentToSend
+        });
       } else {
+        // Создаем новое превью
         const res = await axios.post(`${process.env.REACT_APP_API_URL}admin/preview`, contentToSend);
-        setIdPreview(res.data.id || res.data); // Зависит от того, что возвращает бэк (ID)
+        currentId = res.data._id || res.data.id || res.data;
+        setIdPreview(currentId);
       }
-      // Можно добавить уведомление "Превью обновлено"
-      alert("Превью обновлено!");
+
+      // Открываем вкладку
+      if (currentId) {
+        window.open(`/admin/preview/${currentId}`, '_blank');
+      } else {
+        alert("Ошибка: сервер не вернул ID превью");
+      }
+
     } catch (e) {
       console.error(e);
-      alert("Ошибка превью");
+      alert("Ошибка создания превью.");
     }
   }
 
-
-  // --- ЛОГИКА: СОЗДАНИЕ СТАТЬИ (ПУБЛИКАЦИЯ) ---
-  const sendArticle = async () => {
+  // --- ЛОГИКА: СОЗДАНИЕ СТАТЬИ ---
+  // Добавили аргумент publish (по умолчанию true)
+  const sendArticle = async (publish = true) => {
     setModalActive({ open: true, loading: true, error: false });
     const contentToSend = updateClassName();
 
-    // Если было превью - удаляем его перед публикацией, чтобы не мусорить в БД
+    // Удаляем превью перед сохранением, если оно было
     if (idPreview) {
       try {
         await axios.delete(`${process.env.REACT_APP_API_URL}admin/preview/${idPreview}`);
+        setIdPreview(null);
       } catch (e) { console.error(e); }
     }
 
     try {
-      // ВАЖНО: Используем новый формат, который мы утвердили для контроллера
       const res = await axios.post(`${process.env.REACT_APP_API_URL}admin/create-article`, {
-        cardId: idArticle,       // ID карточки
-        content: contentToSend,  // Массив блоков
-        isPublished: true        // Сразу публикуем (или false, если хочешь черновик)
+        cardId: idArticle,
+        content: contentToSend,
+        isPublished: publish // <--- ТЕПЕРЬ ЗАВИСИТ ОТ КНОПКИ
       });
 
       if (res.data.status === 200) {
@@ -122,14 +132,14 @@ const CreatingArticle = () => {
   }
 
 
-  // --- Рендер модалок (как у тебя было) ---
+  // --- UI МОДАЛКИ ---
   const renderModal = () => (
     <div className="p-6 flex flex-col items-center">
-      {/* ... (твой код успеха без изменений) ... */}
       <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 text-green-600 dark:text-green-400">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
       </div>
       <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Успешно!</h3>
+      <p className="mb-4 text-slate-500 text-center">Статья сохранена.</p>
       <Link to="/admin" className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors shadow-sm">
         В админку
       </Link>
@@ -156,21 +166,30 @@ const CreatingArticle = () => {
 
   return (
     <div className="w-full max-w-[1600px] mx-auto">
-      {/* 1. Заголовок + КНОПКИ ДЕЙСТВИЯ */}
       <PageHeader
         title="Создание статьи"
         description="Конструктор контента: наполните статью содержанием."
       >
-        {/* ВОТ ОНИ, РОДИМЫЕ! */}
         <div className="flex gap-3">
+          {/* Кнопка ПРЕДПРОСМОТР */}
           <button
             onClick={handlePreview}
             className="px-4 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700 rounded-lg font-bold text-sm transition-colors"
           >
             Предпросмотр
           </button>
+
+          {/* --- НОВАЯ КНОПКА: ЧЕРНОВИК --- */}
           <button
-            onClick={sendArticle}
+            onClick={() => sendArticle(false)}
+            className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 dark:bg-slate-700 dark:text-slate-200 rounded-lg font-bold text-sm transition-colors"
+          >
+            Сохранить черновик
+          </button>
+
+          {/* Кнопка ПУБЛИКАЦИЯ */}
+          <button
+            onClick={() => sendArticle(true)}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-sm shadow-sm flex items-center gap-2 transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
@@ -189,7 +208,6 @@ const CreatingArticle = () => {
 
         <aside className="w-full lg:w-80 shrink-0">
           <div className="sticky top-4">
-            {/* Панель теперь просто инструменты, без кнопок */}
             <PanelTags setModalActive={setModalActive} />
           </div>
         </aside>

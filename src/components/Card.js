@@ -71,9 +71,9 @@ export default function Card({ choose, name, description, image, pseudoName, dat
           </p>
 
           {/* 3. Подвал карточки (Мета-инфо) */}
-          <div className="pt-4 mt-auto border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs text-slate-400">
-            <span className="font-medium text-blue-500 group-hover:underline">
-              Читать &rarr;
+          <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center">
+            <span className="text-blue-600 text-sm font-bold flex items-center gap-1 group-hover:no-underline">
+              Читать далее &rarr;
             </span>
           </div>
         </div>
