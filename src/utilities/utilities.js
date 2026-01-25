@@ -120,9 +120,14 @@ const createArticle = (content) => {
       case 'btn':
         return (
           <div key={key} className="flex justify-center my-8">
-            <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-lg transition transform active:scale-95">
+            <a
+              href={item.url || '#'}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-lg transition transform active:scale-95 no-underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {item.text || 'Нажать'}
-            </button>
+            </a>
           </div>
         );
 

@@ -7,9 +7,16 @@ import { updateReviewContentAnArticle } from "../../../../store/adminActions";
 import picture from './../../../../assets/images/picture.svg';
 
 const NewTag = (props) => {
-  const { tag, IDforElementOfArticle, text, image, alt, list, code, language } = props;
+  const { tag, IDforElementOfArticle, text, image, alt, list, code, language, url } = props;
 
   const dispatch = useDispatch();
+  const [localUrl, setLocalUrl] = useState(url || '');
+
+  // Синхронизация URL если пропсы изменились извне
+  useEffect(() => {
+    setLocalUrl(url || '');
+  }, [url]);
+
   // Получаем ВЕСЬ массив контента, чтобы обновить нужный элемент
   const fullContent = useSelector(state => state.admin.creatingArticle.previewElements);
 
@@ -105,6 +112,28 @@ const NewTag = (props) => {
     }
 
     switch (tag) {
+      case 'btn': {
+        return (
+          <div className={`my-4 relative ${!statusClickPanelTags ? 'z-30' : ''}`}>
+            <input
+              type="text"
+              value={localText}
+              onChange={(e) => setLocalText(e.target.value)}
+              onBlur={(e) => handleUpdate('text', e.target.value)}
+              placeholder="Текст кнопки"
+              className="w-full p-2 border border-slate-300 rounded mb-2"
+            />
+            <input
+              type="url"
+              value={localUrl}
+              onChange={(e) => setLocalUrl(e.target.value)}
+              onBlur={(e) => handleUpdate('url', e.target.value)}
+              placeholder="Ссылка для кнопки"
+              className="w-full p-2 border border-slate-300 rounded"
+            />
+          </div>
+        );
+      }
       case 'img': {
         const sendImage = async (e) => {
           if (e) e.preventDefault();
