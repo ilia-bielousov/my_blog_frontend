@@ -78,24 +78,6 @@ const Review = () => {
               </span>
             </nav>
 
-            {/* Хедер Статьи */}
-            <header className="mb-8 border-b border-slate-100 dark:border-slate-700 pb-8">
-              <span className="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-blue-600 uppercase bg-blue-50 rounded-full dark:bg-blue-900/30 dark:text-blue-400">
-                {/* Заглушка категории, так как в превью её может не быть */}
-                Категория
-              </span>
-
-              <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight mb-4 break-words">
-                {previewData.name || "Без названия"}
-              </h1>
-
-              {previewData.description && (
-                <p className="text-lg text-slate-500 dark:text-slate-400">
-                  {previewData.description}
-                </p>
-              )}
-            </header>
-
             {/* Тело статьи (Рендерер) */}
             <div className="prose prose-lg dark:prose-invert max-w-none prose-img:rounded-xl prose-headings:font-bold break-words">
               {createArticle(previewData.content)}

@@ -5,7 +5,6 @@ import { raportsArticle } from './adminRaportsArticles.js';
 
 const defaultState = {
   id: '',
-  diff: false,
   statusCreatingArticle: false,
   statusCreatingCard: false,
   creatingCard: creatingCard,
@@ -71,9 +70,6 @@ export const adminReducer = (state = defaultState, action) => {
       return { ...state, creatingArticle: { ...state.creatingArticle, IdElement: state.creatingArticle.IdElement + 1 } };
     case types.CHANGE_STATUS_CREATING_ARTICLE:
       return { ...state, statusCreatingArticle: action.payload };
-    case types.HOVER_INDEX_ELEMENT: {
-      return { ...state, creatingArticle: { ...state.creatingArticle, hoverIndexElement: action.payload } };
-    }
     case types.STATUS_CLICK_PANEL_TAGS: {
       return { ...state, creatingArticle: { ...state.creatingArticle, statusClickPanelTags: action.payload } };
     }

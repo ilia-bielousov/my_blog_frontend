@@ -95,7 +95,7 @@ const AdminToolbar = ({ isOpen, toggleSidebar }) => {
 
         <div className="p-4 border-t border-slate-100 dark:border-slate-700/50">
           <a
-            href="./../"
+            href="/"
             target='_blank'
             rel="noreferrer"
             title="Открыть блог"

@@ -33,3 +33,24 @@ body {
 .page-exit-active {
   display: none !important;
 }
+
+/* Глобальные стили для темы */
+body {
+  @apply bg-white text-slate-900 transition-colors duration-300; 
+  /* transition-colors делает плавное переключение */
+}
+
+/* Стили для темной темы */
+.dark body {
+  @apply bg-slate-900 text-slate-100;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-700 rounded-full;
+}

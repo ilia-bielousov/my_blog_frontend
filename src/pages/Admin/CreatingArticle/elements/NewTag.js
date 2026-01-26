@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
@@ -85,22 +85,29 @@ const NewTag = (props) => {
   // --- РЕНДЕР ТЕКСТОВЫХ БЛОКОВ ---
   const renderTextBlock = () => {
     return (
-      <div
-        ref={tagRef}
-        className={`${tagStyles[tag] || tagStyles.p} ${!statusClickPanelTags ? 'relative z-30' : ''}`}
-        contentEditable
-        suppressContentEditableWarning
-        data-placeholder={placeholders[tag]}
+      <Fragment>
+        <div
+          ref={tagRef}
+          className={`${tagStyles[tag] || tagStyles.p} ${!statusClickPanelTags ? 'relative z-30' : ''}`}
+          contentEditable
+          suppressContentEditableWarning
+          data-placeholder={placeholders[tag]}
 
-        // ВАЖНО: onInput обновляет только локальный стейт (быстро)
-        onInput={(e) => setLocalText(e.target.innerText)}
+          // ВАЖНО: onInput обновляет только локальный стейт (быстро)
+          onInput={(e) => setLocalText(e.target.innerText)}
 
-        // ВАЖНО: onBlur отправляет данные в Redux (надежно)
-        onBlur={(e) => handleUpdate(tag === 'ul' ? 'list' : 'text', e.target.innerText)}
-      >
-        {/* Используем dangerouslySetInnerHTML или children, но для contentEditable лучше так: */}
-        {text || list}
-      </div>
+          // ВАЖНО: onBlur отправляет данные в Redux (надежно)
+          onBlur={(e) => handleUpdate(tag === 'ul' ? 'list' : 'text', e.target.innerText)}
+        >
+          {/* Используем dangerouslySetInnerHTML или children, но для contentEditable лучше так: */}
+          {text || list}
+        </div>
+        {tag === 'ul' && (
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
+            Каждый пункт списка пиши с новой строки
+          </p>
+        )}
+      </Fragment>
     );
   };
 

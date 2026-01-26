@@ -4,15 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 
 import Modal from "../../components/Modal";
+// Импортируем НОВЫЙ скелет для статьи
+import SkeletonArticle from "../../components/SkeletonArticle";
+// Импортируем старый скелет для Сайдбара (если хочешь)
+import SkeletonCards from "../../components/SkeletonCards";
+
 import { removeStateArticle, removeStateCards, updateStatusError } from "../../store/clientReducer";
 import { fetchArticle } from "../../store/asyncAction/article";
 import { fetchCards } from "../../store/asyncAction/cardsClient";
 
 import { createArticle, getImageUrl } from "../../utilities/utilities.js";
 
+// Компонент карточки для сайдбара (оставляем как есть)
 const SidebarArticleCard = ({ article }) => {
   const imageSrc = getImageUrl(article.image);
-
   return (
     <Link
       to={`../${article.choose}/${article.pseudoName}`}
@@ -51,6 +56,7 @@ const SinglePageForArticle = () => {
 
   const currentSection = pathname.split('/')[1];
 
+  // Логика сайдбара
   const randomArticles = useMemo(() => {
     if (!cards || !Array.isArray(cards)) return [];
     const pool = cards.filter(c =>
@@ -68,54 +74,40 @@ const SinglePageForArticle = () => {
 
     window.scrollTo(0, 0);
 
+    // Чистим стейт при входе
     dispatch(removeStateCards());
     dispatch(removeStateArticle());
     dispatch(updateStatusError());
 
-    dispatch(fetchCards(currentSection));
-    dispatch(fetchArticle(id, currentSection));
+    // Загружаем данные
+    dispatch(fetchCards(currentSection)); // Для сайдбара
+    dispatch(fetchArticle(id, currentSection)); // Сама статья
 
     axios.patch(`${process.env.REACT_APP_API_URL}${pathname.slice(1)}`, { id })
       .catch(err => console.error(err));
 
-  }, [id, currentSection, dispatch]);
+  }, [id, currentSection, dispatch, pathname]); // Добавил pathname в зависимости
 
-  useEffect(() => {
-    if (article && article.name) {
-      document.title = `${article.name} | Мой Блог`;
-    } else {
-      document.title = 'Загрузка... | Мой Блог';
-    }
+  // Для этой страницы мы ждем ARTICLE, а не cards.
+  const isArticleLoading = !article && !error;
 
-    // Cleanup: при уходе со страницы возвращаем общий тайтл
-    return () => {
-      document.title = 'Мой Блог';
-    }
-  }, [article]);
-
-  const renderSpinner = () => (
-    <div className="flex justify-center py-20 min-h-[50vh]">
-      <div className="relative">
-        <div className="w-12 h-12 rounded-full absolute border-4 border-solid border-slate-200"></div>
-        <div className="w-12 h-12 rounded-full animate-spin absolute border-4 border-solid border-blue-600 border-t-transparent shadow-md"></div>
-      </div>
-    </div>
-  );
+  // Для сайдбара
+  const isSidebarLoading = (!cards || cards.length === 0);
 
   return (
     <>
-      {/* ИСПРАВЛЕНИЕ ЗДЕСЬ:
-         Было: className="w-full max-w-[1400px] mx-auto min-h-[80vh] py-8 px-4"
-         Стало: добавил md:pl-24. 
-         Это сдвигает контент вправо на 6rem (96px), освобождая место для стрелки (которая шириной 80px),
-         но только на экранах md и выше.
-      */}
       <main className="w-full max-w-[1400px] mx-auto min-h-[80vh] py-8 px-4 md:pl-24">
 
         <div className="flex flex-col lg:flex-row gap-12 items-start">
 
+          {/* === ЛЕВАЯ КОЛОНКА (СТАТЬЯ) === */}
           <article className="w-full lg:w-[70%] bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 md:p-12 animate-fadeIn">
-            {article ? (
+
+            {isArticleLoading ? (
+              // 1. Если статья грузится -> Показываем ArticleSkeleton (полоски текста)
+              <SkeletonArticle />
+            ) : article ? (
+              // 2. Если загрузилась -> Показываем контент
               <>
                 <nav className="mb-6">
                   <button
@@ -145,31 +137,41 @@ const SinglePageForArticle = () => {
                   {createArticle(article.content)}
                 </div>
               </>
-            ) : (
-              !error && renderSpinner()
-            )}
+            ) : null}
           </article>
 
+          {/* === ПРАВАЯ КОЛОНКА (САЙДБАР) === */}
           <aside className="w-full lg:w-[30%] space-y-8">
-            {randomArticles.length > 0 && (
-              <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm sticky top-4">
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                  <span className="w-1 h-6 bg-blue-600 rounded-full"></span>
-                  Интересное в разделе
-                </h3>
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm sticky top-4">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                <span className="w-1 h-6 bg-blue-600 rounded-full"></span>
+                Интересное в разделе
+              </h3>
 
-                <div className="flex flex-col gap-2">
-                  {randomArticles.map(item => (
+              <div className="flex flex-col gap-2">
+                {isSidebarLoading ? (
+                  // Если карточки для сайдбара грузятся - тут можно показать маленький скелетон
+                  // Или просто ничего не показывать. 
+                  // Если хочешь скелетон, то надо адаптировать SkeletonCards под вертикальный список
+                  // Пока оставим просто текст "Загрузка..." или пустой блок, чтобы не перегружать
+                  <div className="animate-pulse space-y-4">
+                    <div className="h-20 bg-slate-100 dark:bg-slate-700 rounded-lg"></div>
+                    <div className="h-20 bg-slate-100 dark:bg-slate-700 rounded-lg"></div>
+                    <div className="h-20 bg-slate-100 dark:bg-slate-700 rounded-lg"></div>
+                  </div>
+                ) : (
+                  randomArticles.map(item => (
                     <SidebarArticleCard key={item._id || item.pseudoName} article={item} />
-                  ))}
-                </div>
+                  ))
+                )}
               </div>
-            )}
+            </div>
           </aside>
 
         </div>
       </main>
 
+      {/* ОШИБКА */}
       {error && (
         code === 404 ? (
           <Navigate to={`../${currentSection}/error404`} replace={true} />
