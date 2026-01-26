@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, Navigate } from 'react-router-dom';
-import { fetchForAllCards } from '../../store/asyncAction/cardsAdmin'; // Используем тот же экшен получения всех карт
+import { fetchForAllCards } from '../../store/asyncAction/cardsAdmin';
 import PageHeader from "../../components/PageHeader";
 
 const AdminDrafts = () => {
@@ -15,9 +15,6 @@ const AdminDrafts = () => {
 
   if (!token) return <Navigate to='/' />;
 
-  // Фильтруем: берем ТОЛЬКО те, где isPublished === false (или нет такого поля)
-  // Примечание: тебе нужно будет адаптировать условие под то, как ты назовешь поле в БД
-  // Пока предположим, что черновики - это те, у которых нет контента или спец. флаг
   const drafts = allCards.filter(card => card.isPublished === false);
 
   return (
@@ -31,7 +28,7 @@ const AdminDrafts = () => {
         {drafts.length > 0 ? drafts.map(card => (
           <Link
             key={card._id}
-            to={`/admin/edit-article/${card.pseudoName}`} // Ведем на страницу редактирования
+            to={`/admin/edit-article/${card.pseudoName}`}
             className="group block p-6 bg-white dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl hover:border-blue-500 dark:hover:border-blue-400 transition-all"
           >
             <div className="flex justify-between items-start mb-4">

@@ -9,7 +9,7 @@ import InputFileCard from "./elements/InputFileCard.js";
 
 import Modal from "../../../components/Modal.js";
 import PageHeader from "../../../components/PageHeader";
-import { transliterate, getImageUrl } from "../../../utilities/utilities.js"; // Не забудь про getImageUrl
+import { transliterate, getImageUrl } from "../../../utilities/utilities.js";
 
 import { statusCreatingCard, changeStatusCreatingArticle, setResponceId } from "../../../store/adminActions.js";
 
@@ -17,7 +17,6 @@ const CreatingCard = () => {
   const dispatch = useDispatch();
   const [modalActive, setModalActive] = useState({ open: false, error: false, loading: true });
 
-  // Добавили imageLoading для индикации процесса загрузки самой картинки
   const [imageLoading, setImageLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(''); // Тут храним ссылку от Google
   const [createdCardId, setCreatedCardId] = useState(null);
@@ -30,30 +29,22 @@ const CreatingCard = () => {
     dispatch(changeStatusCreatingArticle(false));
   }, [dispatch]);
 
-  // --- ЛОГИКА АВТО-ЗАГРУЗКИ ПРИ ВЫБОРЕ ФАЙЛА ---
   useEffect(() => {
     const uploadImage = async () => {
-      // Если файла нет или это не объект File (например, уже строка), выходим
       if (!data.file || typeof data.file === 'string') return;
 
       setImageLoading(true);
       const formData = new FormData();
-      formData.append('file', data.file); // 'file' должно совпадать с multer на сервере
+      formData.append('file', data.file);
 
       try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}admin/upload`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
 
-        // Успех! Сервер вернул путь к картинке (GCS ссылка)
         setPreviewUrl(res.data.path);
-
-        // Опционально: можно сразу обновить data.file на строку, 
-        // но лучше хранить File объект отдельно, а ссылку отдельно, чтобы не путать валидацию.
-        // Пока просто сохраним ссылку в previewUrl.
       } catch (err) {
         console.error("Ошибка загрузки изображения:", err);
-        // Можно добавить вывод ошибки тостом
       } finally {
         setImageLoading(false);
       }
@@ -61,17 +52,12 @@ const CreatingCard = () => {
 
     uploadImage();
   }, [data.file]);
-  // ^ Триггерится каждый раз, когда меняется data.file
 
-
-  // Валидация
   const checkErrors = () => {
     checkErrorsInput('choose', data.choose);
     checkErrorsInput('name', data.name, 4, 30);
     checkErrorsInput('description', data.description, 10, 180);
-    // Проверяем не сам файл, а наличие загруженной ссылки, если файл был выбран
     if (!previewUrl && !data.file) {
-      // Ошибка, если вообще ничего нет
       checkErrorsInput('file', null);
     }
   }
@@ -79,7 +65,6 @@ const CreatingCard = () => {
   const checkErrorsInput = (fieldName, fieldValue, min = null, max = null) => {
     setErrors(prevState => {
       const updatedErrorElems = { ...prevState.errorElems };
-      // ... Твоя старая логика валидации ...
       if (typeof fieldValue === 'string' && fieldName !== 'choose' && fieldValue.length < min) {
         updatedErrorElems[fieldName] = fieldName === 'name' ? 'name' : 'description';
         return { ...prevState, [fieldName]: 'min', errorElems: updatedErrorElems };
@@ -105,28 +90,21 @@ const CreatingCard = () => {
   const handleSubmitForm = async (e) => {
     e.preventDefault();
 
-    // Проверяем ошибки и наличие загруженной картинки
     if (Object.keys(errors.errorElems).length === 0 && previewUrl) {
       setModalActive({ open: true, loading: true, error: false });
 
       try {
-        // ВТОРОЙ ЗАПРОС: Только данные карточки + ссылка на уже загруженное фото
         const createRes = await axios.post(`${process.env.REACT_APP_API_URL}admin/create-card`, {
           name: data.name,
           description: data.description,
           choose: data.choose,
-          image: previewUrl, // Используем ссылку от Google, полученную ранее
+          image: previewUrl,
           pseudoName: transliterate(data.name.replace(/ /g, '_'))
         });
 
         if (createRes.data.status === 200) {
-          // 1. Сохраняем ID в локальный стейт, чтобы использовать в ссылке
           setCreatedCardId(createRes.data.id);
-
-          // 2. Открываем модалку
           setModalActive({ open: true, loading: false, error: false });
-
-          // 3. (Опционально) Можно оставить диспатч, но для перехода он уже не критичен
           dispatch(setResponceId(createRes.data.id));
         }
       } catch (err) {
@@ -140,10 +118,8 @@ const CreatingCard = () => {
     return <Navigate to='/' />
   }
 
-  // --- UI Компоненты Модалок (без изменений) ---
   const renderModal = () => (
     <div className="p-6 flex flex-col items-center">
-      {/* ... твой код модалки успеха ... */}
       <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-600">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
       </div>
@@ -154,7 +130,6 @@ const CreatingCard = () => {
 
   const renderModalError = () => (
     <div className="p-6 flex flex-col items-center">
-      {/* ... твой код модалки ошибки ... */}
       <h3 className="text-xl font-bold text-red-600 mb-2">Ошибка</h3>
       <button className="px-6 py-2 bg-slate-200 rounded-lg" onClick={() => setModalActive({ open: false, error: null })}>Закрыть</button>
     </div>
@@ -166,11 +141,7 @@ const CreatingCard = () => {
         title="Новая публикация"
         description="Создание карточки: заполните данные и проверьте превью."
       />
-
-      {/* ГЛАВНАЯ СЕТКА: Слева форма, Справа превью */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-
-        {/* ЛЕВАЯ КОЛОНКА: ФОРМА (Занимает 2 части) */}
         <div className="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 md:p-8">
           <form onSubmit={handleSubmitForm} className="flex flex-col gap-6">
             <div className="space-y-6">
@@ -193,14 +164,9 @@ const CreatingCard = () => {
             </div>
           </form>
         </div>
-
-        {/* ПРАВАЯ КОЛОНКА: ПРЕВЬЮ (Занимает 1 часть)  */}
-        {/* ПРАВАЯ КОЛОНКА: ПРЕВЬЮ (Твой новый код) */}
         <div className="lg:col-span-1 sticky top-6">
           <h3 className="text-lg font-bold text-slate-500 mb-4 uppercase tracking-wider">Предпросмотр</h3>
-
           <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-lg transition-all hover:shadow-xl">
-            {/* Обложка */}
             <div className="h-48 w-full bg-slate-100 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center">
               {imageLoading ? (
                 <div className="flex flex-col items-center text-slate-400">
@@ -220,7 +186,6 @@ const CreatingCard = () => {
                 </div>
               )}
 
-              {/* Бейдж категории */}
               {data.choose && (
                 <div className="absolute top-3 left-3 px-3 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-full text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white shadow-sm">
                   {data.choose}
@@ -228,7 +193,6 @@ const CreatingCard = () => {
               )}
             </div>
 
-            {/* Контент карточки */}
             <div className="p-5">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 line-clamp-2">
                 {data.name || "Заголовок статьи..."}
@@ -247,7 +211,6 @@ const CreatingCard = () => {
         </div>
       </div>
 
-      {/* 3. Модалка */}
       {modalActive.open && (
         <Modal>
           {!modalActive.error ? renderModal() : renderModalError()}

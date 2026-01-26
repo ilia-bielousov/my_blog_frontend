@@ -43,7 +43,6 @@ const InputNameCard = ({ setData, errors }) => {
       {errors.description === 'zero' ? <div className="text-rose-500">поле "описание" есть обязательным</div> : null}
       {errors.description === 'min' ? <div className="text-rose-500">минимальная длина поля — 10 символа</div> : null}
       {errors.description === 'max' ? <div className="text-rose-500">максимальная длина поля — 180 символов</div> : null}
-      {/* <br /> */}
     </div>
   )
 };

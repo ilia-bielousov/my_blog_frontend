@@ -8,7 +8,6 @@ const AdminHome = () => {
     return <Navigate to='/' />
   }
 
-  // Данные для карточек возможностей
   const features = [
     {
       title: "1. Создание Карточек",
@@ -54,8 +53,6 @@ const AdminHome = () => {
 
   return (
     <main className="max-w-5xl pt-10 mx-auto px-4 pb-20">
-
-      {/* Приветствие */}
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 mb-8">
         <div className="flex items-center space-x-5 mb-6">
           <div className="p-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg shadow-blue-500/20">
@@ -80,7 +77,6 @@ const AdminHome = () => {
           </p>
         </div>
 
-        {/* Кнопка быстрого действия */}
         <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700">
           <Link
             to="/admin/create-card"
@@ -94,7 +90,6 @@ const AdminHome = () => {
         </div>
       </div>
 
-      {/* Сетка возможностей */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {features.map((item, index) => (
           <div key={index} className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full">

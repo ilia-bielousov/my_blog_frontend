@@ -5,7 +5,6 @@ import axios from 'axios';
 
 import AreaNewTags from './../CreatingArticle/elements/AreaNewTags';
 
-// Админские экшены
 import {
   setContent,
   resetComponentToArticle,
@@ -24,14 +23,11 @@ const EditingArticle = () => {
   const [modalActive, setModalActive] = useState({ open: false, error: false, loading: true });
   const [redirect, setRedirect] = useState(false);
 
-  // Контент из Redux
   const adminContent = useSelector(state => state.admin.creatingArticle.previewElements);
 
-  // Локальное состояние
   const [articleMeta, setArticleMeta] = useState({ name: '', _id: null, cardId: null });
-  const [idPreview, setIdPreview] = useState(null); // ID временного превью
+  const [idPreview, setIdPreview] = useState(null);
 
-  // 1. ЗАГРУЗКА ДАННЫХ
   useEffect(() => {
     const fetchData = async () => {
       dispatch(resetComponentToArticle());
@@ -62,7 +58,6 @@ const EditingArticle = () => {
     fetchData();
   }, [dispatch, id]);
 
-  // --- ОБНОВЛЕНИЕ СТИЛЕЙ ---
   const updateClassName = () => {
     const updatedContent = adminContent.map(item => {
       const newItem = { ...item };
@@ -80,33 +75,25 @@ const EditingArticle = () => {
     return updatedContent;
   }
 
-  // --- ЛОГИКА: ПРЕДПРОСМОТР (Была, но не использовалась) ---
   const handlePreview = async () => {
-    // 1. Подготавливаем контент с классами
     const contentToSend = updateClassName();
 
     try {
-      let currentId = idPreview; // Локальная переменная для мгновенного доступа
+      let currentId = idPreview;
 
       if (currentId) {
-        // ВАРИАНТ 1: Обновляем существующее превью
         await axios.patch(`${process.env.REACT_APP_API_URL}admin/preview`, {
           _id: currentId,
           content: contentToSend
         });
       } else {
-        // ВАРИАНТ 2: Создаем новое превью (первый раз)
         const res = await axios.post(`${process.env.REACT_APP_API_URL}admin/preview`, contentToSend);
 
-        // Получаем ID из ответа (поддержка разных форматов ответа бэка)
         currentId = res.data._id || res.data.id || res.data;
 
-        // Сохраняем в стейт на будущее
         setIdPreview(currentId);
       }
 
-      // 2. Открываем новую вкладку с КОНКРЕТНЫМ ID
-      // Используем currentId, так как стейт idPreview может еще не успеть обновиться
       if (currentId) {
         window.open(`/admin/preview/${currentId}`, '_blank');
       } else {
@@ -120,16 +107,14 @@ const EditingArticle = () => {
     }
   }
 
-  // 2. СОХРАНЕНИЕ / ОБНОВЛЕНИЕ
   const sendEditArticle = async (e, publish = false) => {
     e?.preventDefault();
     setModalActive({ open: true, loading: true, error: false });
 
-    // Если было создано превью - удаляем его перед сохранением оригинала
     if (idPreview) {
       try {
         await axios.delete(`${process.env.REACT_APP_API_URL}admin/preview/${idPreview}`);
-        setIdPreview(null); // Сбрасываем ID превью
+        setIdPreview(null);
       } catch (e) { console.error("Ошибка удаления превью:", e); }
     }
 
@@ -139,14 +124,12 @@ const EditingArticle = () => {
       let res;
 
       if (articleMeta._id) {
-        // ОБНОВЛЕНИЕ
         res = await axios.patch(`${process.env.REACT_APP_API_URL}admin/edit-article`, {
           id: articleMeta._id,
           content: contentToSend,
           isPublished: publish
         });
       } else {
-        // СОЗДАНИЕ (fallback)
         res = await axios.post(`${process.env.REACT_APP_API_URL}admin/create-article`, {
           cardId: articleMeta.cardId,
           content: contentToSend,
@@ -173,7 +156,6 @@ const EditingArticle = () => {
     }
   }
 
-  // --- UI КОМПОНЕНТЫ ---
   const renderSpinner = () => (
     <div className="flex justify-center items-center py-8">
       <svg className="animate-spin h-12 w-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -211,13 +193,11 @@ const EditingArticle = () => {
 
   return (
     <div className="w-full max-w-[1600px] mx-auto">
-      {/* 1. ЗАГОЛОВОК + КНОПКИ */}
       <PageHeader
         title="Редактирование"
         description={`Статья: "${articleMeta.name}"`}
       >
         <div className="flex gap-3">
-          {/* --- ДОБАВЛЕНА КНОПКА ПРЕДПРОСМОТРА --- */}
           <button
             onClick={handlePreview}
             className="px-4 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700 rounded-lg font-bold text-sm transition-colors"
@@ -241,7 +221,6 @@ const EditingArticle = () => {
         </div>
       </PageHeader>
 
-      {/* 2. РАБОЧАЯ ОБЛАСТЬ */}
       <div className="flex flex-col lg:flex-row gap-8 items-start relative h-[calc(100vh-200px)]">
         <div className="flex-1 w-full bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden flex flex-col h-full">
           <div className="flex-1 overflow-y-auto p-6 bg-slate-50/50 dark:bg-slate-900/50">
@@ -256,7 +235,6 @@ const EditingArticle = () => {
         </aside>
       </div>
 
-      {/* 3. МОДАЛКА */}
       {modalActive.open && (
         <Modal>
           {modalActive.loading ? renderSpinner() : (modalActive.error ? renderModalError() : renderModalSuccess())}

@@ -9,6 +9,14 @@ import SkeletonCards from "../../components/SkeletonCards";
 import { fetchCards } from "../../store/asyncAction/cardsClient";
 import { updateStatusError, removeStateCards, removeStateArticle } from "../../store/clientReducer";
 
+const TITLES = {
+  '': 'Мой блог',
+  'programming': 'Программирование',
+  'projects': 'Мои Проекты',
+  'modeling': '3D Моделирование',
+  'electronics': 'Электроника'
+};
+
 const PageForCards = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,7 +28,6 @@ const PageForCards = () => {
 
   const path = pathname.replace(/\//g, '');
 
-  // 1. Логика запросов
   useEffect(() => {
     dispatch(removeStateArticle());
     dispatch(updateStatusError());
@@ -29,35 +36,27 @@ const PageForCards = () => {
 
   }, [dispatch, path]);
 
-  // === ГЛАВНОЕ УСЛОВИЕ ===
+  useEffect(() => {
+    setTimeout(() => {
+      document.title = TITLES[path] || 'Мой блог';
+    }, 0);
+  }, [path]);
+
   const isLoading = (!cards || cards.length === 0) && !error;
   const isError500 = error && code === 500;
 
-  // 3. ЕДИНЫЙ RENDER
   return (
     <>
       <main className="w-full max-w-[1400px] mx-auto min-h-[80vh] py-8 px-4 flex justify-center items-center">
-
-        {/* ИСПРАВЛЕНИЕ ЗДЕСЬ:
-           Мы перенесли классы flex, justify-center и gap-8 в этот общий div.
-           Теперь неважно, что внутри (скелетоны или контент) — оно всегда будет по центру.
-        */}
         <div className="w-full flex flex-wrap justify-center gap-8">
-
           {isLoading ? (
-            // ВАРИАНТ 1: ЗАГРУЗКА
-            // SkeletonCards возвращает фрагмент, поэтому классы родителя (flex...) применятся к ним
             <SkeletonCards />
           ) : (
-            // ВАРИАНТ 2: КОНТЕНТ
-            // Content тоже должен возвращать список/фрагмент, и они встанут по центру
             <Content data={cards} />
           )}
-
         </div>
       </main>
 
-      {/* МОДАЛКА ОШИБКИ (Рендерится поверх, если есть ошибка) */}
       {isError500 && (
         <Modal>
           <div className="p-4 flex flex-col items-center text-center">
@@ -69,8 +68,8 @@ const PageForCards = () => {
             <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Что-то пошло не так</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Не удалось загрузить данные.</p>
             <div className="flex flex-col gap-3 w-full">
-              <button onClick={() => window.location.reload()} className="w-full rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 transition-colors">Обновить страницу</button>
-              <button onClick={() => path === '' ? window.location.reload() : navigate(-1)} className="w-full rounded-lg bg-white dark:bg-slate-700 px-4 py-2.5 text-sm font-semibold text-slate-900 dark:text-slate-200 shadow-sm ring-1 ring-inset ring-slate-300 dark:ring-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">Вернуться назад</button>
+              <button onClick={() => window.location.reload()} className="w-full rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm mouse:bg-red-500 transition-colors">Обновить страницу</button>
+              <button onClick={() => path === '' ? window.location.reload() : navigate(-1)} className="w-full rounded-lg bg-white dark:bg-slate-700 px-4 py-2.5 text-sm font-semibold text-slate-900 dark:text-slate-200 shadow-sm ring-1 ring-inset ring-slate-300 dark:ring-slate-600 mouse:bg-slate-50 dark:mouse:bg-slate-600 transition-colors">Вернуться назад</button>
             </div>
           </div>
         </Modal>

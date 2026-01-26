@@ -3,7 +3,6 @@ const SkeletonCards = () => {
   const RenderCard = () => {
     return (
       <div role="status"
-        // Добавил w-full max-w-[364px] вместо фиксированной ширины, чтобы на совсем мелких экранах сжималось
         className="w-full max-w-[364px] border border-gray-200 rounded-2xl shadow-md p-5 dark:border-slate-700 bg-white dark:bg-slate-800 animate-pulse"
       >
         <div className="flex items-center justify-center h-48 mb-4 bg-gray-200 rounded dark:bg-slate-700">
@@ -20,7 +19,6 @@ const SkeletonCards = () => {
     )
   }
 
-  // Рендерим побольше карточек (например 6), чтобы сетка выглядела заполненной
   return (
     <>
       <RenderCard />

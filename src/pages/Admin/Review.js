@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-// Импортируем рендерер и хелперы (путь проверь под свою структуру)
 import { createArticle } from "../../utilities/utilities.js";
 
 const Review = () => {
@@ -12,10 +11,8 @@ const Review = () => {
 
   useEffect(() => {
     if (!id) return;
-    // Получаем данные превью
     axios.get(`${process.env.REACT_APP_API_URL}admin/preview/${id}`)
       .then(res => {
-        // Обычно админка возвращает массив, берем первый элемент
         const data = Array.isArray(res.data) ? res.data[0] : res.data;
         setPreviewData(data);
         setLoading(false);
@@ -26,7 +23,6 @@ const Review = () => {
       });
   }, [id]);
 
-  // Спиннер (точно такой же, как в статье)
   const renderSpinner = () => (
     <div className="flex justify-center py-20 min-h-[50vh]">
       <div className="relative">
@@ -36,10 +32,8 @@ const Review = () => {
     </div>
   );
 
-  // Если загрузка
   if (loading) return renderSpinner();
 
-  // Если данных нет
   if (!previewData) {
     return (
       <div className="flex justify-center items-center h-screen text-xl text-slate-500">
@@ -50,17 +44,9 @@ const Review = () => {
 
   return (
     <>
-      {/* Используем те же классы для main, включая md:pl-24 
-         для отступа под стрелку (хотя самой стрелки тут нет, отступ сохраняет макет)
-      */}
       <main className="w-full max-w-[1400px] mx-auto min-h-[80vh] py-8 px-4 md:pl-24">
-
         <div className="flex flex-col lg:flex-row gap-12 items-start">
-
-          {/* === ЛЕВАЯ КОЛОНКА (КОНТЕНТ) === */}
           <article className="w-full lg:w-[70%] bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 md:p-12 animate-fadeIn">
-
-            {/* Кнопка "Закрыть" (вместо "Назад") */}
             <nav className="mb-6 flex justify-between items-center">
               <button
                 onClick={() => window.close()}
@@ -72,20 +58,16 @@ const Review = () => {
                 Закрыть предпросмотр
               </button>
 
-              {/* Индикатор режима превью */}
               <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded-full uppercase tracking-wider">
                 Preview Mode
               </span>
             </nav>
 
-            {/* Тело статьи (Рендерер) */}
             <div className="prose prose-lg dark:prose-invert max-w-none prose-img:rounded-xl prose-headings:font-bold break-words">
               {createArticle(previewData.content)}
             </div>
           </article>
 
-          {/* === ПРАВАЯ КОЛОНКА (САЙДБАР) === */}
-          {/* Здесь ставим визуальную заглушку (Skeleton), чтобы оценить макет */}
           <aside className="w-full lg:w-[30%] space-y-8 opacity-60 pointer-events-none select-none">
             <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm sticky top-4">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
@@ -93,7 +75,6 @@ const Review = () => {
                 Сайдбар (Пример)
               </h3>
 
-              {/* Фейковые карточки */}
               <div className="flex flex-col gap-4">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="flex gap-3 items-start p-2 border border-transparent rounded-lg">

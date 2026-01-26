@@ -27,24 +27,20 @@ const AdminArticles = () => {
     return <Navigate to='/' />
   }
 
-  // Хелпер для получения просмотров без грязи в JSX
   const getViews = (cardId) => {
     const article = allArticles.find(art => art.card === cardId);
     return article ? article.views : 0;
   };
 
   const renderCategoryStats = (category) => {
-    // Фильтруем карточки этой категории
     const categoryCards = allCards.filter(card => card.choose === category.block);
 
     if (categoryCards.length === 0) return null;
 
     return (
       <section key={category.block} className="mb-12 last:mb-0">
-        {/* Заголовок категории */}
         <div className="flex items-center gap-3 mb-6 border-b border-slate-200 dark:border-slate-700 pb-2">
           <span className={`p-2 rounded-lg ${category.bg} ${category.color}`}>
-            {/* Иконка графика */}
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
             </svg>
@@ -54,7 +50,6 @@ const AdminArticles = () => {
           </h3>
         </div>
 
-        {/* Сетка карточек статистики */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categoryCards.map((card) => {
             const views = getViews(card._id);
@@ -72,7 +67,6 @@ const AdminArticles = () => {
                   </p>
                 </div>
 
-                {/* Блок с просмотрами */}
                 <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/50">
                   <span className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
                     Просмотры

@@ -2,56 +2,50 @@ import { useEffect, useRef, useState, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
-// Единый экшен обновления
 import { updateReviewContentAnArticle } from "../../../../store/adminActions";
 import picture from './../../../../assets/images/picture.svg';
 
 const NewTag = (props) => {
-  const { tag, IDforElementOfArticle, text, image, alt, list, code, language, url } = props;
+  const { tag, IDforElementOfArticle, text, image, list, code, language, url, description } = props;
 
   const dispatch = useDispatch();
   const [localUrl, setLocalUrl] = useState(url || '');
 
-  // Синхронизация URL если пропсы изменились извне
+  const [listItems, setListItems] = useState(list ? list.split('\n') : ['']);
+
   useEffect(() => {
     setLocalUrl(url || '');
   }, [url]);
 
-  // Получаем ВЕСЬ массив контента, чтобы обновить нужный элемент
   const fullContent = useSelector(state => state.admin.creatingArticle.previewElements);
-
   const statusClickPanelTags = useSelector(state => state.admin.creatingArticle.statusClickPanelTags);
   const currentTagButton = useSelector(state => state.admin.creatingArticle.currentTagButton);
 
-  // --- ЛОКАЛЬНЫЙ СТЕЙТ ДЛЯ ИСПРАВЛЕНИЯ БАГОВ ВВОДА ---
   const [localText, setLocalText] = useState(text || '');
   const [localCode, setLocalCode] = useState(code || '');
   const [localLang, setLocalLang] = useState(language || '');
-  // ---------------------------------------------------
-
   const [file, setFile] = useState('');
   const [sourceImg, setSourceImg] = useState(image || null);
+  const [localDescription, setLocalDescription] = useState(description || '');
 
   const tagRef = useRef(null);
   const topRef = useRef(null);
   const bottomRef = useRef(null);
 
-  // Стили для DragOver
   const [classesForBorderTagTop, setClassesForBorderTagTop] = useState('w-full h-1/2 absolute top-0 left-0 z-10');
   const [classesForBorderTagBottom, setClassesForBorderTagBottom] = useState('w-full h-1/2 absolute bottom-0 left-0 z-10');
 
-  // Синхронизация: Если пропсы изменились извне (например, при первой загрузке), обновляем локальный стейт
   useEffect(() => {
     setLocalText(text || '');
     setLocalCode(code || '');
     setLocalLang(language || '');
     setSourceImg(image || null);
-  }, [text, code, language, image]);
+    setLocalDescription(description || '');
 
+    if (list) setListItems(list.split('\n'));
+  }, [text, code, language, image, list, description]);
 
-  // --- ФУНКЦИЯ ОБНОВЛЕНИЯ REDUX (вызывается onBlur) ---
   const handleUpdate = (field, value) => {
-    // Создаем новый массив с обновленным элементом
     const updatedContent = fullContent.map(item => {
       if (item.id === IDforElementOfArticle) {
         return { ...item, [field]: value };
@@ -61,15 +55,47 @@ const NewTag = (props) => {
     dispatch(updateReviewContentAnArticle(updatedContent));
   };
 
+  const updateListItem = (index, value) => {
+    const newItems = [...listItems];
+    newItems[index] = value;
+    setListItems(newItems);
+  };
 
-  // --- СТИЛИ ---
+  const saveList = () => {
+    const stringifiedList = listItems.join('\n');
+    handleUpdate('list', stringifiedList);
+  };
+
+  const handleKeyDownList = (e, index) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const newItems = [...listItems];
+      newItems.splice(index + 1, 0, '');
+
+      setListItems(newItems);
+      setTimeout(() => {
+        const nextInput = document.getElementById(`list-input-${IDforElementOfArticle}-${index + 1}`);
+        if (nextInput) nextInput.focus();
+      }, 0);
+    }
+    if (e.key === 'Backspace' && listItems[index] === '' && listItems.length > 1) {
+      e.preventDefault();
+      const newItems = listItems.filter((_, i) => i !== index);
+      setListItems(newItems);
+      handleUpdate('list', newItems.join('\n'));
+      setTimeout(() => {
+        const prevInput = document.getElementById(`list-input-${IDforElementOfArticle}-${index - 1}`);
+        if (prevInput) prevInput.focus();
+      }, 0);
+    }
+  };
+
   const baseStyle = "w-full outline-none bg-transparent transition-colors empty:before:content-[attr(data-placeholder)] empty:before:text-slate-300 cursor-text py-1";
   const tagStyles = {
     h1: `${baseStyle} text-4xl font-extrabold text-slate-900 dark:text-white mb-2 leading-tight`,
     h2: `${baseStyle} text-2xl font-bold text-slate-800 dark:text-slate-100 mt-4 mb-2`,
     h3: `${baseStyle} text-xl font-semibold text-slate-800 dark:text-slate-200 mt-2 mb-1`,
     p: `${baseStyle} text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-2 min-h-[1.5em]`,
-    ul: `${baseStyle} list-disc list-inside text-lg text-slate-700 dark:text-slate-300 mb-2 pl-4`,
     iframe: `${baseStyle} font-mono text-sm bg-slate-100 dark:bg-slate-800 p-2 rounded text-slate-600 border border-slate-200 dark:border-slate-700`,
   };
 
@@ -78,11 +104,9 @@ const NewTag = (props) => {
     h2: "Заголовок 2 уровня",
     h3: "Заголовок 3 уровня",
     p: "Начните писать текст...",
-    ul: "Элемент списка",
     iframe: "Вставьте <iframe src=...></iframe>",
   };
 
-  // --- РЕНДЕР ТЕКСТОВЫХ БЛОКОВ ---
   const renderTextBlock = () => {
     return (
       <Fragment>
@@ -92,33 +116,56 @@ const NewTag = (props) => {
           contentEditable
           suppressContentEditableWarning
           data-placeholder={placeholders[tag]}
-
-          // ВАЖНО: onInput обновляет только локальный стейт (быстро)
           onInput={(e) => setLocalText(e.target.innerText)}
-
-          // ВАЖНО: onBlur отправляет данные в Redux (надежно)
-          onBlur={(e) => handleUpdate(tag === 'ul' ? 'list' : 'text', e.target.innerText)}
+          onBlur={(e) => handleUpdate('text', e.target.innerText)}
         >
-          {/* Используем dangerouslySetInnerHTML или children, но для contentEditable лучше так: */}
-          {text || list}
+          {text}
         </div>
-        {tag === 'ul' && (
-          <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
-            Каждый пункт списка пиши с новой строки
-          </p>
-        )}
       </Fragment>
     );
   };
 
-
-  // --- ГЛАВНЫЙ RENDER SWITCH ---
   const determine = () => {
-    if (['h1', 'h2', 'h3', 'p', 'iframe', 'ul', 'blockquote'].includes(tag)) {
+    if (['h1', 'h2', 'h3', 'p', 'iframe', 'blockquote'].includes(tag)) {
       return renderTextBlock();
     }
 
     switch (tag) {
+      case 'ul': {
+        return (
+          <div className={`relative ${!statusClickPanelTags ? 'z-30' : ''} mb-4`}>
+            <input
+              type="text"
+              className="w-full bg-transparent font-semibold text-slate-800 dark:text-slate-200 text-lg mb-2 outline-none placeholder:text-slate-400 placeholder:font-normal"
+              placeholder="Заголовок списка (например: Ингредиенты:)"
+              value={localDescription}
+              onChange={(e) => setLocalDescription(e.target.value)}
+              onBlur={(e) => handleUpdate('description', e.target.value)}
+            />
+
+            <ul className="list-disc list-inside text-lg text-slate-700 dark:text-slate-300 pl-4">
+              {listItems.map((item, index) => (
+                <li key={index} className="flex items-start mb-1">
+                  <input
+                    id={`list-input-${IDforElementOfArticle}-${index}`}
+                    type="text"
+                    className="w-full bg-transparent outline-none border-b border-transparent focus:border-slate-200"
+                    value={item}
+                    placeholder="Элемент списка"
+                    onChange={(e) => updateListItem(index, e.target.value)}
+                    onBlur={saveList}
+                    onKeyDown={(e) => handleKeyDownList(e, index)}
+                  />
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-2 pl-4">
+              Enter — новый пункт, Backspace — удалить пустой
+            </p>
+          </div>
+        )
+      }
+
       case 'btn': {
         return (
           <div className={`my-4 relative ${!statusClickPanelTags ? 'z-30' : ''}`}>
@@ -145,15 +192,11 @@ const NewTag = (props) => {
         const sendImage = async (e) => {
           if (e) e.preventDefault();
           if (!file) return;
-
           const formData = new FormData();
           formData.append('file', file);
-
           try {
             const res = await axios.post(`${process.env.REACT_APP_API_URL}admin/upload`, formData);
-            // Обновляем сразу и Redux, и локальный стейт
             setSourceImg(res.data.path);
-
             const updatedContent = fullContent.map(item => {
               if (item.id === IDforElementOfArticle) {
                 return {
@@ -166,14 +209,12 @@ const NewTag = (props) => {
               return item;
             });
             dispatch(updateReviewContentAnArticle(updatedContent));
-
           } catch (err) { console.error('Ошибка загрузки', err); }
         }
 
         return (
           <div className={`relative ${!statusClickPanelTags ? 'z-30' : ''} my-4`}>
             {!sourceImg ? (
-              // ЗАГРУЗЧИК
               <div className="group relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl hover:border-blue-500 bg-slate-50 dark:bg-slate-900 transition-colors">
                 <div className="flex flex-col items-center pointer-events-none">
                   <img src={picture} alt="upload" className="w-8 h-8 mb-2 opacity-50" />
@@ -184,7 +225,6 @@ const NewTag = (props) => {
                   className="absolute inset-0 opacity-0 cursor-pointer"
                   onChange={e => {
                     setFile(e.target.files[0]);
-                    // Можно добавить автозагрузку, но кнопка надежнее
                   }}
                 />
                 {file && (
@@ -194,7 +234,6 @@ const NewTag = (props) => {
                 )}
               </div>
             ) : (
-              // КАРТИНКА
               <div className="relative group mx-auto max-w-full">
                 <img src={sourceImg} alt="uploaded" className="max-h-[500px] w-auto h-auto rounded-lg shadow mx-auto" />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg">
@@ -208,7 +247,6 @@ const NewTag = (props) => {
           </div>
         )
       }
-
       case 'code': {
         return (
           <div className={`my-4 relative group ${!statusClickPanelTags ? 'z-30' : ''}`}>
@@ -224,7 +262,7 @@ const NewTag = (props) => {
                 />
               </div>
               <textarea
-                value={localCode} // Привязываем к локальному стейту
+                value={localCode}
                 onChange={(e) => setLocalCode(e.target.value)}
                 onBlur={(e) => handleUpdate('code', e.target.value)}
                 placeholder="// Код..."
@@ -239,7 +277,6 @@ const NewTag = (props) => {
     }
   }
 
-  // --- DRAG STYLES ---
   const handleDragOverBlock = (e) => {
     e.preventDefault();
     if (e.target === topRef.current && currentTagButton)

@@ -85,7 +85,6 @@ const App = () => {
           <Route path='preview/:id' element={<Review />} />
           <Route path='articles' element={<AdminArticles />} />
           <Route path='create-card' element={<CreatingCard />} />
-          {/* Пример где-то в твоих роутах */}
           <Route path="drafts" element={<AdminDrafts />} />
           <Route path='create-article/:id' element={<CreatingArticle />} />
           <Route path='edit-cards' element={<AdminEditCards />} />

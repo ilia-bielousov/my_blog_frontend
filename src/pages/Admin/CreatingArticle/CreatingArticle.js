@@ -3,7 +3,6 @@ import { Navigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
-// Админские экшены
 import {
   statusCreatingCard,
   resetComponentToArticle,
@@ -19,8 +18,7 @@ import Modal from "../../../components/Modal";
 const CreatingArticle = () => {
   const dispatch = useDispatch();
 
-  // Данные из Redux
-  const idArticle = useSelector(state => state.admin.id); // ID Карточки
+  const idArticle = useSelector(state => state.admin.id);
   const adminContent = useSelector(state => state.admin.creatingArticle.previewElements); // Контент
 
   const [, setRedirect] = useState(false);
@@ -28,7 +26,6 @@ const CreatingArticle = () => {
   const [idPreview, setIdPreview] = useState(null);
 
   useEffect(() => {
-    // Если нет ID карточки (пользователь обновил страницу), нужно уходить
     if (idArticle) {
       dispatch(statusCreatingCard(false));
       dispatch(resetComponentToArticle());
@@ -43,12 +40,10 @@ const CreatingArticle = () => {
     return <Navigate to='/' />
   }
 
-  // Если потеряли ID карточки - редирект на создание карточки
   if (!idArticle && !localStorage.getItem('admin')) {
     return <Navigate to='/admin/create-card' />
   }
 
-  // --- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ: Обновление классов ---
   const updateClassName = () => {
     const updatedContent = adminContent.map(item => {
       const newItem = { ...item };
@@ -66,7 +61,6 @@ const CreatingArticle = () => {
     return updatedContent;
   }
 
-  // --- ЛОГИКА: ПРЕДПРОСМОТР ---
   const handlePreview = async () => {
     const contentToSend = updateClassName();
 
@@ -74,19 +68,16 @@ const CreatingArticle = () => {
       let currentId = idPreview;
 
       if (currentId) {
-        // Обновляем существующее превью
         await axios.patch(`${process.env.REACT_APP_API_URL}admin/preview`, {
           _id: currentId,
           content: contentToSend
         });
       } else {
-        // Создаем новое превью
         const res = await axios.post(`${process.env.REACT_APP_API_URL}admin/preview`, contentToSend);
         currentId = res.data._id || res.data.id || res.data;
         setIdPreview(currentId);
       }
 
-      // Открываем вкладку
       if (currentId) {
         window.open(`/admin/preview/${currentId}`, '_blank');
       } else {
@@ -99,13 +90,10 @@ const CreatingArticle = () => {
     }
   }
 
-  // --- ЛОГИКА: СОЗДАНИЕ СТАТЬИ ---
-  // Добавили аргумент publish (по умолчанию true)
   const sendArticle = async (publish = true) => {
     setModalActive({ open: true, loading: true, error: false });
     const contentToSend = updateClassName();
 
-    // Удаляем превью перед сохранением, если оно было
     if (idPreview) {
       try {
         await axios.delete(`${process.env.REACT_APP_API_URL}admin/preview/${idPreview}`);
@@ -117,7 +105,7 @@ const CreatingArticle = () => {
       const res = await axios.post(`${process.env.REACT_APP_API_URL}admin/create-article`, {
         cardId: idArticle,
         content: contentToSend,
-        isPublished: publish // <--- ТЕПЕРЬ ЗАВИСИТ ОТ КНОПКИ
+        isPublished: publish
       });
 
       if (res.data.status === 200) {
@@ -131,8 +119,6 @@ const CreatingArticle = () => {
     }
   }
 
-
-  // --- UI МОДАЛКИ ---
   const renderModal = () => (
     <div className="p-6 flex flex-col items-center">
       <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 text-green-600 dark:text-green-400">
@@ -163,7 +149,6 @@ const CreatingArticle = () => {
     </div>
   );
 
-
   return (
     <div className="w-full max-w-[1600px] mx-auto">
       <PageHeader
@@ -171,23 +156,18 @@ const CreatingArticle = () => {
         description="Конструктор контента: наполните статью содержанием."
       >
         <div className="flex gap-3">
-          {/* Кнопка ПРЕДПРОСМОТР */}
           <button
             onClick={handlePreview}
             className="px-4 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700 rounded-lg font-bold text-sm transition-colors"
           >
             Предпросмотр
           </button>
-
-          {/* --- НОВАЯ КНОПКА: ЧЕРНОВИК --- */}
           <button
             onClick={() => sendArticle(false)}
             className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 dark:bg-slate-700 dark:text-slate-200 rounded-lg font-bold text-sm transition-colors"
           >
             Сохранить черновик
           </button>
-
-          {/* Кнопка ПУБЛИКАЦИЯ */}
           <button
             onClick={() => sendArticle(true)}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-sm shadow-sm flex items-center gap-2 transition-colors"
@@ -198,7 +178,6 @@ const CreatingArticle = () => {
         </div>
       </PageHeader>
 
-      {/* 2. Рабочая область */}
       <div className="flex flex-col lg:flex-row gap-8 items-start relative h-[calc(100vh-200px)]">
         <div className="flex-1 w-full bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden flex flex-col h-full">
           <div className="flex-1 overflow-y-auto p-6 bg-slate-50/50 dark:bg-slate-900/50">
@@ -213,7 +192,6 @@ const CreatingArticle = () => {
         </aside>
       </div>
 
-      {/* 3. Модалка */}
       {modalActive.open && (
         <Modal>
           {modalActive.loading ? renderSpinner() : (modalActive.error ? renderModalError() : renderModal())}

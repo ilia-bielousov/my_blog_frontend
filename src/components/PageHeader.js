@@ -11,8 +11,6 @@ const PageHeader = ({ title, description, children }) => {
           </p>
         )}
       </div>
-
-      {/* Сюда будем передавать кнопки действий (например, "Сохранить", "Опубликовать") */}
       <div className="flex items-center gap-3">
         {children}
       </div>

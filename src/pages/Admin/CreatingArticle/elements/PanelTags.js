@@ -1,9 +1,6 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addCurrentTagButton, setStatusClickPanelTags, updateReviewContentAnArticle } from '../../../../store/adminActions';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addCurrentTagButton, setStatusClickPanelTags } from '../../../../store/adminActions';
 
-// ... (Твои массивы tagsRender и Icons оставляем без изменений) ...
 const tagsRender = [
   { title: 'Заголовок H1', dataTag: 'h1', label: 'H1', desc: 'Заголовок статьи' },
   { title: 'Заголовок H2', dataTag: 'h2', label: 'H2', desc: 'Секция' },
@@ -33,30 +30,11 @@ const Icons = {
 
 const PanelTags = ({ setModalActive }) => {
   const dispatch = useDispatch();
-  const content = useSelector(state => state.admin.creatingArticle.previewElements);
-
-  const [idPreview, setIdPreview] = useState(null);
 
   const dragStartHandler = (e, tagData) => {
     dispatch(addCurrentTagButton(tagData));
     dispatch(setStatusClickPanelTags(true));
   };
-
-  const updateClassName = () => {
-    const updatedContent = content.map(item => {
-      const newItem = { ...item };
-      switch (newItem.tag) {
-        case 'h1': newItem.className = 'text-3xl font-bold mb-5 max-md:text-2xl text-slate-900 dark:text-white'; break;
-        case 'h2': newItem.className = 'text-2xl font-bold mb-4 max-md:text-xl text-slate-800 dark:text-slate-100'; break;
-        case 'h3': newItem.className = 'text-xl mb-3 max-md:text-lg text-slate-800 dark:text-slate-200'; break;
-        case 'p': newItem.className = 'text-justify indent-12 mb-3 text-slate-600 dark:text-slate-300'; break;
-        case 'img': newItem.className = 'mx-auto p-3 rounded-lg'; break;
-        default: break;
-      }
-      return newItem;
-    });
-    dispatch(updateReviewContentAnArticle(updatedContent));
-  }
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-4 flex flex-col gap-4">

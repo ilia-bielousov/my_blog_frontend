@@ -45,6 +45,10 @@ const Content = ({ data }) => {
                 />
               )
             }
+
+            // ДОБАВЛЕНА ЭТА СТРОКА 👇
+            return null;
+
           }) : null}
         </div>
       </div>

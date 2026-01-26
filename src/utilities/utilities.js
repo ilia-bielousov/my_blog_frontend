@@ -1,8 +1,6 @@
-import { createElement } from "react";
 import CodeExample from "../components/CodeExample";
 import noImg from './../assets/images/no-img.svg';
 
-// Хелпер URL (тот же)
 const getImageUrl = (imagePath) => {
   if (!imagePath) return noImg;
   if (imagePath.startsWith('http') || imagePath.startsWith('data:')) return imagePath;
@@ -10,7 +8,6 @@ const getImageUrl = (imagePath) => {
   return `${process.env.REACT_APP_API_URL}${cleanPath}`;
 }
 
-// Рендер Картинки (тот же)
 const RenderImage = ({ imageSource, alt, className }) => {
   const imageUrl = getImageUrl(imageSource);
   return (
@@ -18,6 +15,7 @@ const RenderImage = ({ imageSource, alt, className }) => {
       <img
         alt={alt || 'image'}
         src={imageUrl}
+        loading="lazy"
         className={className || "w-full max-w-4xl h-auto rounded-xl shadow-md object-cover max-h-[600px]"}
         onError={(e) => { e.target.src = noImg; }}
       />
@@ -25,7 +23,6 @@ const RenderImage = ({ imageSource, alt, className }) => {
   );
 }
 
-// --- ГЛАВНЫЙ РЕНДЕРЕР ---
 const createArticle = (content) => {
   if (!content || !Array.isArray(content)) return null;
 
@@ -50,23 +47,32 @@ const createArticle = (content) => {
           />
         );
 
-      // === ИСПРАВЛЕННЫЕ СПИСКИ ===
       case 'ul': {
-        // Логика: разбиваем по переносу строки. 
-        // В админке нужно жать ENTER для нового пункта.
-        // Фильтруем пустые строки, чтобы не было пустых точек.
-        const listItems = item.text
-          ? item.text.split('\n').map(s => s.trim()).filter(Boolean)
-          : (item.list ? item.list.split(';').filter(Boolean) : []);
+        const rawContent = item.list || item.text || '';
+
+        const listItems = rawContent
+          .split('\n')
+          .map(s => s.trim())
+          .filter(Boolean);
+
+        if (listItems.length === 0) return null;
 
         return (
-          <ul key={key} className="my-6 pl-6 space-y-2">
-            {listItems.map((li, i) => (
-              <li key={i} className="list-disc text-lg text-slate-700 dark:text-slate-300 pl-2 marker:text-blue-500">
-                {li.replace(/<[^>]*>?/gm, '')}
-              </li>
-            ))}
-          </ul>
+          <div key={key} className="my-6">
+            {item.description && (
+              <p className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                {item.description}
+              </p>
+            )}
+
+            <ul className="pl-6 space-y-2">
+              {listItems.map((li, i) => (
+                <li key={i} className="list-disc text-lg text-slate-700 dark:text-slate-300 pl-2 marker:text-blue-500">
+                  {li}
+                </li>
+              ))}
+            </ul>
+          </div>
         )
       }
 
@@ -81,13 +87,12 @@ const createArticle = (content) => {
 
       case 'alert':
         return (
-          <div key={key} className="flex gap-4 p-4 my-6 text-blue-900 bg-blue-50 rounded-xl border border-blue-100 dark:bg-blue-900/20 dark:text-blue-100 dark:border-blue-800">
+          <div key={key} className="flex gap-4 p-2 my-3 items-center text-blue-900 bg-blue-50 rounded-xl border border-blue-100 dark:bg-blue-900/20 dark:text-blue-100 dark:border-blue-800">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 shrink-0 mt-0.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
             </svg>
             <div>
-              <p className="font-bold mb-1">Обратите внимание</p>
-              <p>{item.text}</p>
+              <p className="font-bold !m-2">Обратите внимание</p>
             </div>
           </div>
         );

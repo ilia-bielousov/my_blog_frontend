@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-// import arrow from './../assets/images/arrow-back.svg' // <-- Картинка больше не нужна
 
 const Header = () => {
   const navigate = useNavigate();
@@ -55,7 +54,6 @@ const Header = () => {
     }
   };
 
-  // Общая SVG иконка стрелки, чтобы не дублировать код
   const ArrowIcon = ({ className }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -63,40 +61,36 @@ const Header = () => {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
-      className={className} // Сюда прилетят размеры и цвета
+      className={className}
     >
       <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
     </svg>
   );
 
-
   return (
     <div className="max-md:flex max-md:justify-center max-md:items-center relative">
 
       {showArrow && (
-        // --- СТРЕЛКА НА ДЕСКТОПЕ (SVG) ---
         <div
           className={`
             fixed top-0 left-0 bottom-0 z-20 
             hidden md:flex flex-col justify-center items-center w-20 
             transition-all duration-300
             ${scrolled ? '' : ''} 
-            hover:bg-slate-100/50 dark:hover:bg-slate-800/50 cursor-pointer group
+            mouse:bg-slate-100/50 dark:mouse:bg-slate-800/50 cursor-pointer group
           `}
           onClick={handleGoBack}
           title="Назад"
         >
           <ArrowIcon
-            className="w-8 h-8 text-slate-700 dark:text-white opacity-60 group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-300"
+            className="w-8 h-8 text-slate-700 dark:text-white opacity-60 group-mouse:opacity-100 group-mouse:-translate-x-1 transition-all duration-300"
           />
         </div>
       )}
 
-      {/* --- МОБИЛЬНАЯ СТРЕЛКА (SVG) --- */}
       {showArrow && (
         <div className="md:hidden absolute left-4 top-6 z-20" onClick={handleGoBack}>
           <ArrowIcon
-            // И здесь тоже цвета
             className="w-6 h-6 text-slate-900 dark:text-white opacity-70"
           />
         </div>
@@ -110,10 +104,9 @@ const Header = () => {
         </span>
       </header>
 
-      {/* КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ */}
       <button
         onClick={toggleTheme}
-        className="fixed top-5 right-5 z-50 p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all shadow-sm"
+        className="fixed top-5 right-5 z-50 p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-yellow-400 mouse:bg-slate-200 dark:mouse:bg-slate-700 transition-all shadow-sm"
         aria-label="Toggle Dark Mode"
       >
         {darkMode ? (

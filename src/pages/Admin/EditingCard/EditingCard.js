@@ -3,9 +3,7 @@ import { Navigate, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 
-// Используем те же компоненты, что и при создании
 import InputCategoryCard from "../CreatingCard/elements/InputCategoryCard.js";
-import InputNameCard from "../CreatingCard/elements/InputNameCard.js";
 import InputFileCard from "../CreatingCard/elements/InputFileCard.js";
 
 import Modal from "../../../components/Modal.js";
@@ -14,33 +12,29 @@ import { fetchForAllCards } from '../../../store/asyncAction/cardsAdmin';
 import { transliterate, getImageUrl } from "../../../utilities/utilities.js";
 
 const EditingCard = () => {
-  const { pseudoName } = useParams(); // Получаем ID или имя из URL
+  const { pseudoName } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [token] = useState(localStorage.getItem('admin'));
 
   const allCards = useSelector(state => state.admin.raportsArticles.cards);
 
-  // Ищем карточку в Redux
   const currentCard = allCards.find(c => c.pseudoName === pseudoName);
 
   const [modalActive, setModalActive] = useState({ open: false, error: false, loading: false });
-  const [imageLoading, setImageLoading] = useState(false); // Для спиннера загрузки фото
+  const [imageLoading, setImageLoading] = useState(false);
 
-  // Добавил previewUrl. Изначально это может быть старая картинка из currentCard.
   const [previewUrl, setPreviewUrl] = useState('');
 
   const [data, setData] = useState({ name: '', description: '', choose: '', file: null, _id: null });
   const [errors, setErrors] = useState({ name: '', description: '', choose: '', errorElems: {} });
 
-  // 1. Загрузка списка всех карточек, если пусто
   useEffect(() => {
     if (allCards.length === 0) {
       dispatch(fetchForAllCards());
     }
   }, [dispatch, allCards.length]);
 
-  // 2. Заполнение формы при появлении данных (Инициализация)
   useEffect(() => {
     if (currentCard) {
       setData({
@@ -48,17 +42,14 @@ const EditingCard = () => {
         name: currentCard.name,
         description: currentCard.description,
         choose: currentCard.choose,
-        file: null // Файл сбрасываем
+        file: null
       });
-      // Устанавливаем текущую картинку как превью
       setPreviewUrl(currentCard.image);
     }
   }, [currentCard]);
 
-  // 3. Авто-загрузка НОВОЙ картинки в Google Cloud при выборе файла
   useEffect(() => {
     const uploadImage = async () => {
-      // Если файл не выбран или это не объект File, выходим
       if (!data.file || typeof data.file === 'string') return;
 
       setImageLoading(true);
@@ -70,7 +61,6 @@ const EditingCard = () => {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
 
-        // Обновляем превью на новую ссылку от Google
         setPreviewUrl(res.data.path);
 
       } catch (err) {
@@ -83,29 +73,22 @@ const EditingCard = () => {
     uploadImage();
   }, [data.file]);
 
-
-  // 4. Валидация
   const checkErrors = () => {
     let newErrors = {};
     if (!data.name || data.name.length < 4) newErrors.name = 'min';
     if (!data.description || data.description.length < 10) newErrors.description = 'min';
     if (!data.choose) newErrors.choose = 'radio';
-
-    // Проверка картинки: должна быть либо старая (previewUrl), либо новая загруженная
     if (!previewUrl && !data.file) {
-      // Можно добавить ошибку, если картинки вообще нет
     }
 
     setErrors(prev => ({ ...prev, errorElems: newErrors }));
     return Object.keys(newErrors).length === 0;
   }
 
-  // 5. Сохранение изменений
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (checkErrors()) {
-      // Если картинка все еще грузится, не даем сохранить
       if (imageLoading) {
         alert("Подождите загрузки изображения.");
         return;
@@ -114,8 +97,6 @@ const EditingCard = () => {
       setModalActive({ open: true, loading: true, error: false });
 
       try {
-        // Мы отправляем previewUrl как image. 
-        // Это может быть старая ссылка (если не меняли) или новая от Google.
         await axios.patch(`${process.env.REACT_APP_API_URL}admin/edit-card`, {
           id: data._id,
           name: data.name,
@@ -137,7 +118,6 @@ const EditingCard = () => {
   if (!token) return <Navigate to='/' />;
   if (!currentCard && allCards.length > 0) return <div className="p-10 text-center">Карточка не найдена</div>;
 
-  // --- Модалки ---
   const renderModalSuccess = () => (
     <div className="p-6 flex flex-col items-center">
       <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-600">
@@ -163,17 +143,11 @@ const EditingCard = () => {
         title="Редактирование карточки"
         description="Измените мета-информацию и посмотрите превью."
       />
-
-      {/* СЕТКА: Слева форма, Справа превью */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-
-        {/* ЛЕВАЯ КОЛОНКА: ФОРМА (2 части) */}
         <div className="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 md:p-8">
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="space-y-6">
               <InputCategoryCard setData={setData} errors={errors} choose={data.choose} defaultValue={data.choose} />
-
-              {/* Кастомный InputNameCard заменен на обычный инпут для надежности value */}
               <div className="space-y-1">
                 <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Название</label>
                 <input
@@ -183,7 +157,6 @@ const EditingCard = () => {
                   className="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:border-blue-500 transition-colors"
                 />
               </div>
-
               <div className="space-y-1">
                 <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Описание</label>
                 <textarea
@@ -219,12 +192,9 @@ const EditingCard = () => {
           </form>
         </div>
 
-        {/* ПРАВАЯ КОЛОНКА: ПРЕВЬЮ (Modern Style) */}
         <div className="lg:col-span-1 sticky top-6">
           <h3 className="text-lg font-bold text-slate-500 mb-4 uppercase tracking-wider">Предпросмотр</h3>
-
           <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-lg transition-all hover:shadow-xl">
-            {/* Обложка */}
             <div className="h-48 w-full bg-slate-100 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center">
               {imageLoading ? (
                 <div className="flex flex-col items-center text-slate-400">
@@ -244,7 +214,6 @@ const EditingCard = () => {
                 </div>
               )}
 
-              {/* Бейдж категории */}
               {data.choose && (
                 <div className="absolute top-3 left-3 px-3 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-full text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white shadow-sm">
                   {data.choose}
@@ -252,7 +221,6 @@ const EditingCard = () => {
               )}
             </div>
 
-            {/* Контент карточки */}
             <div className="p-5">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 line-clamp-2">
                 {data.name || "Заголовок статьи..."}
