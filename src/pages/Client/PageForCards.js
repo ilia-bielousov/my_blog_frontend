@@ -14,6 +14,8 @@ const PageForCards = () => {
   const dispatch = useDispatch();
 
   const cards = useSelector(state => state.client.cards) || null;
+  const cardsLoading = useSelector(state => state.client.cardsLoading);
+  const loadedPath = useSelector(state => state.client.loadedPath);
   const error = useSelector(state => state.client.error);
   const code = useSelector(state => state.client.code);
   const { pathname } = useLocation();
@@ -31,13 +33,13 @@ const PageForCards = () => {
 
   }, [path, isCatalogRoute, dispatch]);
 
-  const isLoading = (!cards || cards.length === 0) && !error;
+  const isLoading = (cardsLoading || loadedPath !== path || !cards) && !error;
   const isError500 = error && code === 500;
 
   return (
     <>
       <main className="w-full max-w-[1400px] mx-auto min-h-[80vh] py-8 px-4 flex justify-center items-center">
-        <div className="w-full flex flex-wrap justify-center gap-8">
+        <div className="w-full flex flex-wrap justify-center gap-8 max-md:gap-4 px-4 md:px-12 py-3">
           {isLoading ? (
             <SkeletonCards />
           ) : (

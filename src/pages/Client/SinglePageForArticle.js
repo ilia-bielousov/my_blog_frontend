@@ -47,6 +47,7 @@ const SinglePageForArticle = () => {
   const dispatch = useDispatch();
 
   const cards = useSelector(state => state.client.cards);
+  const cardsLoading = useSelector(state => state.client.cardsLoading);
   const article = useSelector(state => state.client.article);
   const error = useSelector(state => state.client.error);
   const code = useSelector(state => state.client.code);
@@ -105,7 +106,7 @@ const SinglePageForArticle = () => {
   }, [titleFromCard, article]);
 
   const isArticleLoading = !article && !error;
-  const isSidebarLoading = (!cards || cards.length === 0) && !error;
+  const isSidebarLoading = (cardsLoading || !cards || cards.length === 0) && !error;
 
   return (
     <>

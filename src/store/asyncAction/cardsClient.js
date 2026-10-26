@@ -1,12 +1,14 @@
-import { getCardsAction, statusErrorState, statusErrorCode } from "../clientReducer";
+import { getCardsAction, setCardsLoading, statusErrorState, statusErrorCode } from "../clientReducer";
 
 export const fetchCards = (pathname) => {
   return function (dispatch) {
+    dispatch(setCardsLoading(true));
+
     fetch(`${process.env.REACT_APP_API_URL}${pathname}`)
       .then(res => res.json())
       .then(data => {
         if (data.status === 200) {
-          dispatch(getCardsAction(data.data));
+          dispatch(getCardsAction(data.data, pathname));
           dispatch(statusErrorState(false));
           dispatch(statusErrorCode(200));
         }
@@ -15,6 +17,7 @@ export const fetchCards = (pathname) => {
         }
       })
       .catch(err => {
+        dispatch(setCardsLoading(false));
         dispatch(statusErrorState(true));
         dispatch(statusErrorCode(500));
       });

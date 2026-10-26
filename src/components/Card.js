@@ -22,7 +22,7 @@ export default function Card({ choose, name, description, image, pseudoName, dat
   }, [image]);
 
   return (
-    <div className="group relative flex flex-col w-full max-w-[380px] bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-300 mouse:shadow-xl mouse:-translate-y-1 mouse:border-blue-300 dark:mouse:border-blue-600">
+    <div className="group relative flex flex-col w-full sm:w-[380px] max-w-[380px] min-h-[416px] bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-300 mouse:shadow-xl mouse:-translate-y-1 mouse:border-blue-300 dark:mouse:border-blue-600">
 
       <Link to={`/${choose}/${pseudoName || ''}`} className="flex flex-col h-full" state={{ title: name }}>
         <div className="relative h-56 overflow-hidden bg-slate-100 dark:bg-slate-900">
