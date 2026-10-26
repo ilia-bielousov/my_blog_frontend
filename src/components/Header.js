@@ -99,7 +99,7 @@ const Header = () => {
       <header className="md:ml-24 ml-3 py-6">
         <span className="text-4xl max-md:text-3xl font-bold relative z-10 text-slate-900 dark:text-white transition-colors duration-300">
           <Link to='./' key='/'>
-            Мой блог
+            My Blog
           </Link>
         </span>
       </header>

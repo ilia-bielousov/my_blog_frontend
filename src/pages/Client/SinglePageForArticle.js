@@ -6,7 +6,7 @@ import axios from "axios";
 import Modal from "../../components/Modal";
 import SkeletonArticle from "../../components/SkeletonArticle";
 
-import { removeStateArticle, removeStateCards, updateStatusError } from "../../store/clientReducer";
+import { removeStateArticle, updateStatusError } from "../../store/clientReducer";
 import { fetchArticle } from "../../store/asyncAction/article";
 import { fetchCards } from "../../store/asyncAction/cardsClient";
 
@@ -16,7 +16,8 @@ const SidebarArticleCard = ({ article }) => {
   const imageSrc = getImageUrl(article.image);
   return (
     <Link
-      to={`../${article.choose}/${article.pseudoName}`}
+      to={`/${article.choose}/${article.pseudoName}`}
+      state={{ title: article.name }}
       className="group flex gap-3 items-start p-3 rounded-lg mouse:bg-slate-50 dark:mouse:bg-slate-800 transition-colors border border-transparent mouse:border-slate-200 dark:mouse:border-slate-700"
     >
       <div className="shrink-0 w-20 h-16 rounded-md overflow-hidden bg-slate-200">
@@ -41,11 +42,9 @@ const SidebarArticleCard = ({ article }) => {
 
 const SinglePageForArticle = () => {
   const { id } = useParams();
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const location = useLocation();
 
   const cards = useSelector(state => state.client.cards);
   const article = useSelector(state => state.client.article);
@@ -54,35 +53,45 @@ const SinglePageForArticle = () => {
 
   const currentSection = pathname.split('/')[1];
 
-  const titleFromCard = location.state?.title;
+  const titleFromCard = state?.title;
+
+  const articleId = article?._id;
 
   const randomArticles = useMemo(() => {
-    if (!cards || !Array.isArray(cards)) return [];
+    if (!cards || !Array.isArray(cards) || cards.length === 0) return [];
+
     const pool = cards.filter(c =>
-      c.pseudoName !== id && c._id !== article?._id &&
+      c.pseudoName !== id &&
+      c._id !== articleId &&
       c.choose === currentSection &&
       c.pseudoName !== currentSection
     );
+
     if (pool.length === 0) return [];
-    const shuffled = [...pool].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 4);
-  }, [cards, id, article, currentSection]);
+
+    return [...pool].sort(() => 0.5 - Math.random()).slice(0, 4);
+  }, [cards, id, articleId, currentSection]);
 
   useEffect(() => {
     if (!id) return;
     window.scrollTo(0, 0);
 
-    dispatch(removeStateCards());
     dispatch(removeStateArticle());
     dispatch(updateStatusError());
-
-    dispatch(fetchCards(currentSection));
     dispatch(fetchArticle(id, currentSection));
 
     axios.patch(`${process.env.REACT_APP_API_URL}${pathname.slice(1)}`, { id })
       .catch(err => console.error(err));
 
-  }, [id, currentSection, dispatch, pathname]);
+  }, [id, currentSection, pathname, dispatch]);
+
+  useEffect(() => {
+    const hasSectionCards = Array.isArray(cards) && cards.some(c => c.choose === currentSection);
+    if (!hasSectionCards && currentSection) {
+      dispatch(fetchCards(currentSection));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSection, dispatch]);
 
   useEffect(() => {
     if (titleFromCard) {
@@ -96,7 +105,7 @@ const SinglePageForArticle = () => {
   }, [titleFromCard, article]);
 
   const isArticleLoading = !article && !error;
-  const isSidebarLoading = (!cards || cards.length === 0);
+  const isSidebarLoading = (!cards || cards.length === 0) && !error;
 
   return (
     <>
@@ -140,10 +149,14 @@ const SinglePageForArticle = () => {
                     <div className="h-20 bg-slate-100 dark:bg-slate-700 rounded-lg"></div>
                     <div className="h-20 bg-slate-100 dark:bg-slate-700 rounded-lg"></div>
                   </div>
-                ) : (
+                ) : randomArticles.length > 0 ? (
                   randomArticles.map(item => (
                     <SidebarArticleCard key={item._id || item.pseudoName} article={item} />
                   ))
+                ) : (
+                  <p className="text-sm text-slate-400 dark:text-slate-500 py-2">
+                    Других статей в этом разделе пока нет
+                  </p>
                 )}
               </div>
             </div>

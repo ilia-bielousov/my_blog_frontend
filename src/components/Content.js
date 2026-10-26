@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+
 import SkeletonCards from "./SkeletonCards";
 import Card from "./Card";
 
 const Content = ({ data }) => {
   const { pathname } = useLocation();
   const [loading, setLoading] = useState(true);
+
   const path = pathname.replace(/\//g, '') || '/';
 
   useEffect(() => {
     setLoading(true);
 
-    if (data && data.length !== 0) {
+    if (data && data.length > 0) {
       setLoading(false);
     }
 
@@ -46,7 +48,6 @@ const Content = ({ data }) => {
               )
             }
 
-            // ДОБАВЛЕНА ЭТА СТРОКА 👇
             return null;
 
           }) : null}

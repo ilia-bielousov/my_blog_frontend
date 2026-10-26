@@ -7,40 +7,29 @@ import Modal from "../../components/Modal";
 import SkeletonCards from "../../components/SkeletonCards";
 
 import { fetchCards } from "../../store/asyncAction/cardsClient";
-import { updateStatusError, removeStateCards, removeStateArticle } from "../../store/clientReducer";
-
-const TITLES = {
-  '': 'Мой блог',
-  'programming': 'Программирование',
-  'projects': 'Мои Проекты',
-  'modeling': '3D Моделирование',
-  'electronics': 'Электроника'
-};
+import { updateStatusError, removeStateArticle } from "../../store/clientReducer";
 
 const PageForCards = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const cards = useSelector(state => state.client.cards);
+  const cards = useSelector(state => state.client.cards) || null;
   const error = useSelector(state => state.client.error);
   const code = useSelector(state => state.client.code);
   const { pathname } = useLocation();
 
-  const path = pathname.replace(/\//g, '');
+  const pathSegments = pathname.split('/').filter(Boolean);
+  const path = pathSegments[0] || '';
+  const isCatalogRoute = pathSegments.length <= 1;
 
   useEffect(() => {
+    if (!isCatalogRoute) return;
+
     dispatch(removeStateArticle());
     dispatch(updateStatusError());
     dispatch(fetchCards(path));
-    dispatch(removeStateCards());
 
-  }, [dispatch, path]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      document.title = TITLES[path] || 'Мой блог';
-    }, 0);
-  }, [path]);
+  }, [path, isCatalogRoute, dispatch]);
 
   const isLoading = (!cards || cards.length === 0) && !error;
   const isError500 = error && code === 500;
